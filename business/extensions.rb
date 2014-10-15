@@ -2,8 +2,6 @@ require 'bcrypt'
 
 module Authentik::Extensions
   module Passwordable
-    include ::BCrypt
-
     def self.included(recipient)
       recipient.class_eval do
         field :password_hash, type: String
@@ -12,11 +10,11 @@ module Authentik::Extensions
     end
 
     def password
-      @password ||= Password.new(password_hash)
+      @password ||= ::BCrypt::Password.new(password_hash)
     end
 
     def password=(new_password)
-      @password = Password.create(new_password)
+      @password = ::BCrypt::Password.create(new_password)
       self.password_hash = @password
     end
 
