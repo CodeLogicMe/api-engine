@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 module Authentik::Models
   RSpec.describe User do
-    context 'creating an app' do
+    context 'creating an user' do
       let(:jedi_temple) { create :app }
 
       subject do
