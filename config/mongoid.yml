@@ -15,6 +15,6 @@ test:
 production:
   sessions:
     default:
-      database: authentik_development
+      database: authentik_production
       hosts:
         - localhost:27017
