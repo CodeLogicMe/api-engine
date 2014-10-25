@@ -14,8 +14,7 @@ module Authentik
     end
     post :authenticate do
       Actions::AuthenticateApp.new(params).call
-      status 202
-      {result: 'ready to rumble!!!'}
+      status 202 and {result: 'ready to rumble!!!'}
     end
   end
 end
