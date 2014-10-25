@@ -30,7 +30,7 @@ module Authentik
 
     index({ system_name: 1 }, { unique: true, name: "system_name_index" })
 
-    validates_presence_of :name, :system_name
+    validates_presence_of :name, :system_name, :client
   end
 
   class Models::PrivateKey

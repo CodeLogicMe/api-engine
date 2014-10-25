@@ -5,6 +5,7 @@ FactoryGirl.define do
   end
 
   factory :app, class: Authentik::Models::App do
+    client
     name { Faker::Name.name }
   end
 
