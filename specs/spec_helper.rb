@@ -1,6 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 
 require 'rspec'
+require 'rack/test'
 
 require File.expand_path('../../config/application', __FILE__)
 
@@ -31,4 +32,11 @@ RSpec.configure do |config|
       example.run
     end
   end
+end
+
+def app
+  Authentik::API.new
+end
+def last_json
+  JSON.parse(last_response.body)
 end

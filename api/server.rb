@@ -8,8 +8,14 @@ module Authentik
     prefix :api
 
     desc 'Authentication endpoint'
-    post :auth do
-
+    params do
+      requires :public_key, type: String
+      requires :private_key, type: String
+    end
+    post :authenticate do
+      Actions::AuthenticateApp.new(params).call
+      status 202
+      {result: 'ready to rumble!!!'}
     end
 
     desc 'Display all users for a given app'
