@@ -48,10 +48,15 @@ module Authentik
     with :app, :params
 
     def call
-      Models::User.create! \
+      user = Models::User.new \
         app: app,
         email: params[:email],
         password: params[:password]
+
+      user.save!
+      user
+    rescue Mongoid::Errors::Validations
+      block_given? ? yield(user.errors.full_messages) : raise
     end
   end
 end

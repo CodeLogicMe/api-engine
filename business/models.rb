@@ -60,6 +60,6 @@ module Authentik
 
     embedded_in :app
 
-    validates_presence_of :email
+    validates :email, presence: true, uniqueness: true
   end
 end

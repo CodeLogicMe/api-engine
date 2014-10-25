@@ -30,14 +30,14 @@ module Authentik
     resources do
       desc 'Creates an user for the current app'
       params do
-        requires :email, type: String
+        requires :email, type: String, regexp: /.+@.+/
         requires :password, type: String
       end
       post :users do
         authenticate_app!
         data = { app: current_app, params: params }
         user = Actions::CreateUser.new(data).call do |errors|
-
+          error!({ errors: errors }, 400)
         end
         { id: user.id, email: user.email }
       end
