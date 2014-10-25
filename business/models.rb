@@ -57,7 +57,6 @@ module Authentik
     include Extensions::Passwordable
 
     field :email, type: String
-    field :token, type: String
 
     embedded_in :app
 

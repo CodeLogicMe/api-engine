@@ -45,3 +45,7 @@ def calculate_hmac(private_key, params)
   data = params.to_query
   hmac = OpenSSL::HMAC.digest(digest, private_key, data)
 end
+def set_auth_headers_for!(app, params)
+  header 'PublicKey', app.public_key
+  header 'Hmac', calculate_hmac(app.private_key.secret, params)
+end

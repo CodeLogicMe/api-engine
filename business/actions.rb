@@ -41,4 +41,17 @@ module Authentik
         query_string
     end
   end
+
+  class Actions::CreateUser
+    extend Extensions::Parameterizable
+
+    with :app, :params
+
+    def call
+      Models::User.create! \
+        app: app,
+        email: params[:email],
+        password: params[:password]
+    end
+  end
 end
