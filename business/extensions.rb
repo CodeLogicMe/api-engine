@@ -1,7 +1,7 @@
-require 'bcrypt'
-
 module Authentik::Extensions
   module Passwordable
+    require 'bcrypt'
+
     def self.included(recipient)
       recipient.class_eval do
         field :password_hash, type: String
@@ -34,6 +34,41 @@ module Authentik::Extensions
 
     def to_slug(value)
       value.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+    end
+  end
+
+  module Parameterizable
+    def with(*fields)
+      define_getters_for fields
+      define_initializer_for fields
+    end
+
+    private
+    def define_getters_for(fields)
+      self.class_eval do
+        attr_reader *Array(fields)
+      end
+    end
+
+    def define_initializer_for(fields)
+      define_method 'initialize' do |params|
+        fields.each do |field|
+          self.instance_variable_set "@#{field}", params.fetch(field)
+        end
+      end
+    end
+  end
+
+  module Randomizable
+    require 'securerandom'
+
+    def random(field, length: 128)
+      self.instance_eval do
+        after_initialize do
+          random_str = ::SecureRandom.hex Array(length).sample/2
+          self.send "#{field}=", random_str
+        end
+      end
     end
   end
 end
