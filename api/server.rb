@@ -17,22 +17,5 @@ module Authentik
       status 202
       {result: 'ready to rumble!!!'}
     end
-
-    desc 'Display all users for a given app'
-    params do
-      requires :app_key, type: String
-      requires :app_pass, type: String
-    end
-    resource :users do
-      get do
-        Models::User.all
-      end
-    end
-
-    resource :apps do
-      get do
-        Models::App.all
-      end
-    end
   end
 end
