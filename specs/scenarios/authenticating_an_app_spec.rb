@@ -3,46 +3,46 @@ require_relative '../spec_helper'
 module Authentik
   module Actions
     RSpec.describe AuthenticateApp do
-      let(:client) { create :client }
-      let(:app) do
-        CreateApp.new(client_id: client.id, name: 'Jedi Temple').call
-      end
+      let(:jedi_temple) { create :app }
 
       context 'a valid key and secret' do
-        let(:params) do
+        let(:auth) do
           {
-            public_key: app.public_key,
-            private_key: app.private_key.secret
+            public_key: jedi_temple.public_key,
+            hmac: calculate_hmac(jedi_temple.private_key.secret, {})
           }
         end
+        let(:data) { { query_string: '', auth: auth } }
 
-        subject { AuthenticateApp.new(params) }
+        subject { AuthenticateApp.new(data) }
 
-        it { expect(subject.call).to eq app }
+        it { expect(subject.call).to eq jedi_temple }
       end
 
       context 'a valid key but invalid secret' do
-        let(:params) do
+        let(:auth) do
           {
-            public_key: app.public_key,
-            private_key: 'super12345invalid09876secret1029384key'
+            public_key: jedi_temple.public_key,
+            hmac: calculate_hmac('super12345invalid09876secret1029384key', {})
           }
         end
+        let(:data) { { query_string: '', auth: auth } }
 
-        subject { AuthenticateApp.new(params) }
+        subject { AuthenticateApp.new(data) }
 
-        it { expect{subject.call}.to raise_error Mongoid::Errors::DocumentNotFound }
+        it { expect{subject.call}.to raise_error AuthenticateApp::InvalidCredentials }
       end
 
       context 'an invalid key but valid secret' do
-        let(:params) do
+        let(:auth) do
           {
             public_key: 'super12345invalid09876secret1029384key',
-            private_key: app.private_key.secret
+            hmac: calculate_hmac(jedi_temple.private_key.secret, {})
           }
         end
+        let(:data) { { query_string: '', auth: auth } }
 
-        subject { AuthenticateApp.new(params) }
+        subject { AuthenticateApp.new(data) }
 
         it { expect{subject.call}.to raise_error Mongoid::Errors::DocumentNotFound }
       end
@@ -52,22 +52,19 @@ module Authentik
   RSpec.describe API do
     include ::Rack::Test::Methods
 
-    describe 'with the correct data' do
-      let(:client) { create :client }
-      let(:dark_temple) do
-        Actions::CreateApp.new(
-          client_id: client.id, name: 'Dark Temple'
-        ).call
-      end
+    describe 'with a valid HMAC' do
+      let(:dark_temple) { create :app }
+      let(:private_key) { dark_temple.private_key.secret }
+      let(:params) { { what: 'ever' } }
 
       before do
-        post '/api/authenticate',
-          public_key: dark_temple.public_key,
-          private_key: dark_temple.private_key.secret
+        header 'PublicKey', dark_temple.public_key
+        header 'Hmac', calculate_hmac(private_key, params)
+        get '/api/authenticate', params
       end
 
       it { expect(last_response.status).to eq 202 }
-      it { expect(last_json["result"]).to eq 'ready to rumble!!!' }
+      it { expect(last_json["result"]).to eq 'Ready to rumble!!!' }
     end
   end
 end

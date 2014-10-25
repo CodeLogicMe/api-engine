@@ -11,22 +11,7 @@ module Authentik
         it { expect(subject).to_not be_a_new_record }
         it { expect(subject.system_name).to eq 'jedi-temple' }
         it { expect(subject.public_key.length).to eq 64 }
-      end
-    end
-  end
-
-  module Actions
-    RSpec.describe CreateApp do
-      let(:client) { create :client }
-
-      context 'creating an app' do
-        let(:params) { { name: 'Dark Temple', client_id: client.id } }
-
-        subject { CreateApp.new(params) }
-
-        it { expect(subject.call).to be_a Models::App }
-        it { expect(subject.call).to_not be_a_new_record }
-        it { expect(subject.call.name).to eq 'Dark Temple' }
+        it { expect(subject.private_key).to_not be_a_new_record }
       end
     end
   end

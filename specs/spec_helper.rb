@@ -40,3 +40,8 @@ end
 def last_json
   JSON.parse(last_response.body)
 end
+def calculate_hmac(private_key, params)
+  digest = OpenSSL::Digest.new('sha1')
+  data = params.to_query
+  hmac = OpenSSL::HMAC.digest(digest, private_key, data)
+end

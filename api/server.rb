@@ -7,14 +7,30 @@ module Authentik
     format :json
     prefix :api
 
-    desc 'Authentication endpoint'
-    params do
-      requires :public_key, type: String
-      requires :private_key, type: String
+    desc 'Authentication test endpoint' do
+      failure [[401, 'Unauthorized', "Entities::Error"]]
+      headers [
+        'PublicKey' => {
+          description: 'Identifies the Application',
+          required: true
+        },
+        'Hmac' => {
+          description: 'A hashed composed by the request timestamp, params and your private key'
+        }
+      ]
     end
-    post :authenticate do
-      Actions::AuthenticateApp.new(params).call
-      status 202 and {result: 'ready to rumble!!!'}
+    get :authenticate do
+      data = {
+        query_string: env.fetch('QUERY_STRING'),
+        auth: {
+          hmac: headers.fetch('Hmac'),
+          public_key: headers.fetch('Publickey')
+        }
+      }
+      Actions::AuthenticateApp.new(data).call do
+        error!({ message: 'Unauthorized' }, 401)
+      end
+      status 202 and {result: 'Ready to rumble!!!'}
     end
   end
 end
