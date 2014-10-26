@@ -5,7 +5,7 @@ module Authentik
     def authenticate_app!
       unless @current_app
         data = { auth: auth_keys, query_string: params_string }
-        Actions::AuthenticateApp.new(data).call do
+        @current_app = Actions::AuthenticateApp.new(data).call do
           error!({ message: 'Unauthorized' }, 401)
         end
       end

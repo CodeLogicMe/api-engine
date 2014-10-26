@@ -1,6 +1,8 @@
 require 'grape'
+require 'rack/cors'
 require_relative '../business/setup'
 require_relative './helpers'
+require_relative './resources'
 
 module Authentik
   class API < ::Grape::API
@@ -8,39 +10,16 @@ module Authentik
     format :json
     prefix :api
 
+    use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [ :get, :post, :put, :delete, :options ]
+      end
+    end
+
     helpers AuthHelpers
 
-    desc 'Authentication test endpoint' do
-      failure [401, 'Unauthorized']
-      headers [
-        'PublicKey' => {
-          description: 'Identifies the Application',
-          required: true
-        },
-        'Hmac' => {
-          description: 'A hashed composed by the private key and the query string'
-        }
-      ]
-    end
-    get :authenticate do
-      authenticate_app!
-      status 202 and {result: 'Ready to rumble!!!'}
-    end
-
-    resources do
-      desc 'Creates an user for the current app'
-      params do
-        requires :email, type: String, regexp: /.+@.+/
-        requires :password, type: String
-      end
-      post :users do
-        authenticate_app!
-        data = { app: current_app, params: params }
-        user = Actions::CreateUser.new(data).call do |errors|
-          error!({ errors: errors }, 400)
-        end
-        { id: user.id, email: user.email }
-      end
-    end
+    mount Resources::Auth
+    mount Resources::Users
   end
 end
