@@ -64,7 +64,7 @@ module Authk
       end
 
       it { expect(last_response.status).to eq 202 }
-      it { expect(last_json["result"]).to eq 'Ready to rumble!!!' }
+      it { expect(last_json["app"]).to eq dark_temple.name }
     end
   end
 end

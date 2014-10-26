@@ -10,16 +10,20 @@ module Authk::Extensions
     end
 
     def password
-      @password ||= ::BCrypt::Password.new(password_hash)
+      ::BCrypt::Password.new password_hash
     end
 
     def password=(new_password)
-      @password = ::BCrypt::Password.create(new_password)
-      self.password_hash = @password
+      self.password_hash = to_crypt_hash(new_password)
     end
 
     def password_checks?(pass)
       password == pass
+    end
+
+    private
+    def to_crypt_hash(pass)
+      ::BCrypt::Password.create pass
     end
   end
 

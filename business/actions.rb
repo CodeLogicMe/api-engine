@@ -19,7 +19,7 @@ module Authk
     def call
       app = Models::App.find_by public_key: auth[:public_key]
 
-      raise InvalidCredentials unless has_valid_hmac? app
+      fail InvalidCredentials unless has_valid_hmac? app
 
       app
     rescue InvalidCredentials => e
@@ -58,5 +58,25 @@ module Authk
     rescue Mongoid::Errors::Validations
       block_given? ? yield(user.errors.full_messages) : raise
     end
+  end
+
+  class Actions::AuthenticateUser
+    extend Extensions::Parameterizable
+
+    with :app, :email, :password
+
+    def call
+      user = app.users.find_by email: email
+
+      unless user.password_checks? password
+        fail InvalidPassword
+      end
+
+      user
+    rescue ::Mongoid::Errors::DocumentNotFound, InvalidPassword
+      block_given? ? yield : raise
+    end
+
+    InvalidPassword = Class.new(StandardError)
   end
 end
