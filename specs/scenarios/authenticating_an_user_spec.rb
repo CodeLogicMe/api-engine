@@ -62,7 +62,7 @@ module Authk
       let(:params) { { email: user.email, password: '1029384756' } }
 
       before do
-        set_auth_headers_for!(dark_temple, params)
+        set_auth_headers_for!(dark_temple, 'POST', params)
         post '/api/users/authenticate', params
       end
 
@@ -75,7 +75,7 @@ module Authk
       let(:params) { { email: user.email, password: 'wrong765password' } }
 
       before do
-        set_auth_headers_for!(dark_temple, params)
+        set_auth_headers_for!(dark_temple, 'POST', params)
         post '/api/users/authenticate', params
       end
 
@@ -86,7 +86,7 @@ module Authk
       let(:params) { { email: 'missing@email.org', password: 'wrong765password' } }
 
       before do
-        set_auth_headers_for!(dark_temple, params)
+        set_auth_headers_for!(dark_temple, 'POST', params)
         post '/api/users/authenticate', params
       end
 

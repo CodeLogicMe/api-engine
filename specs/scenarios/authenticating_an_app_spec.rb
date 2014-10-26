@@ -9,10 +9,10 @@ module Authk
         let(:auth) do
           {
             public_key: jedi_temple.public_key,
-            hmac: calculate_hmac(jedi_temple.private_key.secret, {})
+            hmac: calculate_hmac('GET', jedi_temple.private_key.secret, {})
           }
         end
-        let(:data) { { query_string: '', auth: auth } }
+        let(:data) { { verb: 'GET', query_string: '', auth: auth } }
 
         subject { AuthenticateApp.new(data) }
 
@@ -23,10 +23,10 @@ module Authk
         let(:auth) do
           {
             public_key: jedi_temple.public_key,
-            hmac: calculate_hmac('super12345invalid09876secret1029384key', {})
+            hmac: calculate_hmac('GET', 'super12345invalid09876secret1029384key', {})
           }
         end
-        let(:data) { { query_string: '', auth: auth } }
+        let(:data) { { verb: 'GET', query_string: '', auth: auth } }
 
         subject { AuthenticateApp.new(data) }
 
@@ -37,10 +37,10 @@ module Authk
         let(:auth) do
           {
             public_key: 'super12345invalid09876secret1029384key',
-            hmac: calculate_hmac(jedi_temple.private_key.secret, {})
+            hmac: calculate_hmac('GET', jedi_temple.private_key.secret, {})
           }
         end
-        let(:data) { { query_string: '', auth: auth } }
+        let(:data) { { verb: 'GET', query_string: '', auth: auth } }
 
         subject { AuthenticateApp.new(data) }
 
@@ -59,7 +59,7 @@ module Authk
 
       before do
         header 'PublicKey', dark_temple.public_key
-        header 'Hmac', calculate_hmac(private_key, params)
+        header 'Hmac', calculate_hmac('GET', private_key, params)
         get '/api/authenticate', params
       end
 

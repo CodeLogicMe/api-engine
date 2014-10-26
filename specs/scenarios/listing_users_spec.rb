@@ -12,7 +12,7 @@ module Authk
 
     describe 'for the current app' do
       before do
-        set_auth_headers_for!(dark_temple, {})
+        set_auth_headers_for!(dark_temple, 'GET', {})
         get '/api/users', {}
       end
 
@@ -24,7 +24,7 @@ module Authk
       let(:ligth_temple) { create :app }
 
       before do
-        set_auth_headers_for!(ligth_temple, {})
+        set_auth_headers_for!(ligth_temple, 'GET', {})
         get '/api/users', {}
       end
 

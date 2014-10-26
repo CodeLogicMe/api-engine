@@ -29,7 +29,7 @@ module Authk
       let(:params) { { email: 'anakin@sith.org', password: 'nnnooo!!!' } }
 
       before do
-        set_auth_headers_for! current_app, params
+        set_auth_headers_for! current_app, 'POST', params
         post '/api/users', params
       end
 
@@ -40,7 +40,7 @@ module Authk
 
     describe 'with invalid info' do
       before do
-        set_auth_headers_for! current_app, {}
+        set_auth_headers_for! current_app, 'POST', {}
         post '/api/users', {}
       end
 
@@ -53,7 +53,7 @@ module Authk
       let(:params) { { email: old_user.email, password: 'does not matter' } }
 
       before do
-        set_auth_headers_for! current_app, params
+        set_auth_headers_for! current_app, 'POST', params
         post '/api/users', params
       end
 

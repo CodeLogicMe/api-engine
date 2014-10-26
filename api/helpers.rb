@@ -4,7 +4,7 @@ module Authk
 
     def authenticate_app!
       unless @current_app
-        data = { auth: auth_keys, query_string: params_string }
+        data = { verb: verb, auth: auth_keys, query_string: params_string }
         @current_app = Actions::AuthenticateApp.new(data).call do
           error!({ message: 'Unauthorized' }, 401)
         end
@@ -16,8 +16,12 @@ module Authk
     end
 
     private
+    def verb
+      env['REQUEST_METHOD']
+    end
+
     def params_string
-      case env["REQUEST_METHOD"]
+      case env['REQUEST_METHOD']
       when 'GET'
         env.fetch('QUERY_STRING')
       when 'POST'

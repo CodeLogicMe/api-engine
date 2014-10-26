@@ -14,7 +14,7 @@ module Authk
   class Actions::AuthenticateApp
     extend Extensions::Parameterizable
 
-    with :query_string, :auth
+    with :verb, :query_string, :auth
 
     def call
       app = Models::App.find_by public_key: auth[:public_key]
@@ -38,7 +38,11 @@ module Authk
       OpenSSL::HMAC.digest \
         OpenSSL::Digest.new('sha1'),
         app.private_key.secret,
-        query_string
+        request_string
+    end
+
+    def request_string
+      verb + query_string
     end
   end
 
