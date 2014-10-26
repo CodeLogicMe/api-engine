@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> API Documentation</title>
+
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"></style>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+    <style>
+      * {
+        font-family: 'Open Sans', sans-serif;
+      }
+
+      body {
+        margin-bottom: 50px;
+      }
+
+      h2, h3 {
+        padding-bottom: 5px;
+      }
+
+      h2 {
+        border-bottom: 1px solid #bbb;
+      }
+
+      h3 {
+        border-bottom: 1px solid #eee;
+        margin-top: 40px;
+      }
+
+      .sidebar {
+        font-size: 12px;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .sidebar > .nav > li > a {
+        padding: 1px 10px 1px 18px;
+      }
+
+      .sidebar > .nav > li > .nav > li > a {
+        padding: 1px 10px 1px 38px;
+      }
+
+      .sidebar .nav .nav {
+        display: none;
+      }
+
+      .sidebar .nav .active > a {
+        font-weight: bold;
+        border-left: 2px solid #428bca;
+        padding-left: 16px;
+      }
+
+      .sidebar > .nav > li > .nav > .active > a {
+        padding-left: 36px;
+      }
+
+      .sidebar > .nav > .active > .nav {
+        display: block;
+        font-weight: normal;
+        border-left: none;
+      }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https:http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https:http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target=".sidebar">
+    <div class="container">
+<div class="col-md-9">
+<h1 id="api-calls">API Calls</h1>
+
+<h2 id="authenticate">Authenticate</h2>
+
+<h3 id="get-apiauthenticate">GET /api/authenticate</h3>
+
+<p>Authentication test endpoint</p>
+
+<h2 id="users">Users</h2>
+
+<h3 id="post-apiusers">POST /api/users</h3>
+
+<p>Creates an user for the current app</p>
+
+<table class="table table-striped table-condensed table-bordered">
+<thead>
+<tr>
+<th align="left">Parameter</th>
+<th align="left">Type</th>
+<th align="left">Required</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>email</code></td>
+<td align="left">String</td>
+<td align="left">Yes</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>password</code></td>
+<td align="left">String</td>
+<td align="left">Yes</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="col-md-3">
+<div class="sidebar affix">
+<h4>Table of Contents</h4>
+
+
+
+
+<ul class="nav">
+<li>
+<a href="#authenticate">Authenticate</a>
+
+<ul class="nav">
+<li><a href="#get-apiauthenticate">GET /api/authenticate</a></li>
+</ul>
+</li>
+<li>
+<a href="#users">Users</a>
+
+<ul class="nav">
+<li><a href="#post-apiusers">POST /api/users</a></li>
+</ul>
+</li>
+</ul>
+
+</div><!-- end .sidebar -->
+</div><!-- end .col-md-3 -->
+    </div><!-- end .container -->
+  </body>
+</html>

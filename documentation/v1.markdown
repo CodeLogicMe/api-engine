@@ -1,0 +1,20 @@
+
+# API Calls
+
+## Authenticate
+### GET /api/authenticate
+
+Authentication test endpoint
+
+
+## Users
+### POST /api/users
+
+Creates an user for the current app
+
+Parameter | Type | Required | Description
+:---------|:-----|:---------|:-----------
+`email` | String | Yes | 
+`password` | String | Yes | 
+
+
