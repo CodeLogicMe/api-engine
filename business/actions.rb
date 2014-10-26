@@ -83,4 +83,20 @@ module Authk
 
     InvalidPassword = Class.new(StandardError)
   end
+
+  class Actions::SetLooseData
+    extend Extensions::Parameterizable
+
+    with :app, :user_id, :data
+
+    def call
+      user = app.users.find user_id
+
+      user.loose_data.update_attributes! properties: data
+
+      user.loose_data
+    rescue ::Mongoid::Errors::DocumentNotFound => e
+      block_given? ? yield : raise
+    end
+  end
 end

@@ -16,5 +16,19 @@ FactoryGirl.define do
   factory :user, class: Authk::Models::User do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
+
+    factory :user_with_loose_data do
+      loose_data Authk::Models::LooseData.new(
+        properties: {
+          previous_saber: 'yellow',
+          current_saber: 'blue',
+          saber_type: 'dual'
+        }
+      )
+    end
   end
+
+  # factory :loose_data, class: Authk::Models::LooseData do
+  #   properties \
+  # end
 end

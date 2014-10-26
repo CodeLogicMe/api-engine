@@ -17,7 +17,11 @@ module Authk
       end
 
       it { expect(last_response.status).to eq 200 }
-      it { expect(last_json["total"]).to eq 5 }
+      it { expect(last_json['total']).to eq 5 }
+      it do
+        expect(last_json['list'].first.keys)
+          .to eq ['id', 'email']
+      end
     end
 
     describe 'with an app that has no users' do
@@ -29,7 +33,7 @@ module Authk
       end
 
       it { expect(last_response.status).to eq 200 }
-      it { expect(last_json["total"]).to eq 0 }
+      it { expect(last_json['total']).to eq 0 }
     end
   end
 end

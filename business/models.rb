@@ -59,7 +59,27 @@ module Authk
     field :email, type: String
 
     embedded_in :app
+    embeds_one :loose_data,
+      autobuild: true,
+      class_name: 'Authk::Models::LooseData'
 
     validates :email, presence: true, uniqueness: true
+
+    after_create do
+      self.loose_data.save!
+    end
+  end
+
+  class Models::LooseData
+    include ::Mongoid::Document
+    include ::Mongoid::Timestamps
+
+    field :properties, type: Hash
+
+    embedded_in :user
+
+    def to_h
+      self.properties.to_h
+    end
   end
 end

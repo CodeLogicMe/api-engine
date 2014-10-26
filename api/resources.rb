@@ -15,11 +15,13 @@ module Authk
       ]
     end
     get :authenticate do
-      status 202 and { app: current_app.name }
+      status 200 and { app: current_app.name }
     end
   end
 
   class Resources::Users < Grape::API
+    before { authenticate_app! }
+
     resources :users do
       desc 'Authenticate the user for the current app'
       params do
@@ -31,7 +33,7 @@ module Authk
         user = Actions::AuthenticateUser.new(data).call do
           error!({}, 404)
         end
-        status 202 and { id: user.id.to_s, email: user.email }
+        status 200 and { id: user.id.to_s, email: user.email }
       end
 
       desc 'List all users for the current app'
@@ -40,7 +42,10 @@ module Authk
         {
           total: users.count,
           list: users.map { |user|
-            { id: user.id, email: user.email }
+            {
+              id: user.id.to_s,
+              email: user.email
+            }
           }
         }
       end
@@ -51,12 +56,28 @@ module Authk
         requires :password, type: String, desc: 'User password'
       end
       post do
-        authenticate_app!
         data = { app: current_app, params: params }
         user = Actions::CreateUser.new(data).call do |errors|
           error!({ errors: errors }, 400)
         end
-        { id: user.id, email: user.email }
+        { id: user.id, email: user.email, data: user.loose_data }
+      end
+
+      desc "Updates user data"
+      params do
+        requires :id, type: String, desc: 'User identifier'
+        requires :data, type: Hash, desc: 'User data hash'
+      end
+      put '/:id/data' do
+        data = {
+          app: current_app,
+          user_id: params[:id],
+          data: params[:data]
+        }
+        loose_data = Actions::SetLooseData.new(data).call do
+          error!({}, 404)
+        end
+        status 201 and { data: loose_data.to_h }
       end
     end
   end

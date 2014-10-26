@@ -66,7 +66,7 @@ module Authk
         post '/api/users/authenticate', params
       end
 
-      it { expect(last_response.status).to eq 202 }
+      it { expect(last_response.status).to eq 200 }
       it { expect(last_json['id']).to eq user.id.to_s }
       it { expect(last_json['email']).to eq user.email }
     end

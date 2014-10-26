@@ -8,11 +8,6 @@ Authentication test endpoint
 
 
 ## Users
-### GET /api/users
-
-List all users for the current app
-
-
 ### POST /api/users
 
 Creates an user for the current app
@@ -21,6 +16,21 @@ Parameter | Type | Required | Description
 :---------|:-----|:---------|:-----------
 `email` | String | Yes | User email
 `password` | String | Yes | User password
+
+
+### GET /api/users
+
+List all users for the current app
+
+
+### PUT /api/users/:id/data
+
+Updates user data
+
+Parameter | Type | Required | Description
+:---------|:-----|:---------|:-----------
+`data` | Hash | Yes | User data hash
+`id` | | | (inherited)
 
 
 ### POST /api/users/authenticate

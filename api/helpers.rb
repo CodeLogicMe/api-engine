@@ -24,7 +24,7 @@ module Authk
       case env['REQUEST_METHOD']
       when 'GET'
         env.fetch('QUERY_STRING')
-      when 'POST'
+      else
         env['rack.request.form_hash'].to_query
       end
     end

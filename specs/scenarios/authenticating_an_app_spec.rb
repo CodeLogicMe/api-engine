@@ -63,7 +63,7 @@ module Authk
         get '/api/authenticate', params
       end
 
-      it { expect(last_response.status).to eq 202 }
+      it { expect(last_response.status).to eq 200 }
       it { expect(last_json["app"]).to eq dark_temple.name }
     end
   end
