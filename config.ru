@@ -5,8 +5,8 @@ require './frontend/server'
 
 class SubdomainDispatcher
   def initialize
-    @api      = Authentik::API.new
-    @frontend = Authentik::Frontend.new
+    @api      = Authk::API.new
+    @frontend = Authk::Frontend.new
   end
 
   def call(env)

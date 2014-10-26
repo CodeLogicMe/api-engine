@@ -1,4 +1,4 @@
-module Authentik
+module Authk
   class Resources::Auth < Grape::API
     desc 'Authentication test endpoint' do
       failure [401, 'Unauthorized']

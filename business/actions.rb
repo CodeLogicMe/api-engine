@@ -1,4 +1,4 @@
-module Authentik
+module Authk
   class Actions::NewPrivateKey
     extend Extensions::Parameterizable
 

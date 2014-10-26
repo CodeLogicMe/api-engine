@@ -1,4 +1,4 @@
-module Authentik
+module Authk
   module AuthHelpers
     extend ::Grape::API::Helpers
 

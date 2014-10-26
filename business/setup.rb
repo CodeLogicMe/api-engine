@@ -1,4 +1,4 @@
-module Authentik
+module Authk
   Models = Module.new
   Actions = Module.new
   Extensions = Module.new

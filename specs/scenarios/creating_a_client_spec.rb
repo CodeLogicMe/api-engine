@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authentik::Models
+module Authk::Models
   RSpec.describe Client do
     context 'creating a client' do
       subject do

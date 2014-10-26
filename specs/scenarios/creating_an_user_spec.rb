@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authentik
+module Authk
   module Models
     RSpec.describe User do
       context 'creating an user' do

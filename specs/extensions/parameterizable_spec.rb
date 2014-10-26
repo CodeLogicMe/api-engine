@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authentik::Extensions
+module Authk::Extensions
   RSpec.describe Parameterizable do
     klass = Class.new do
       extend Parameterizable

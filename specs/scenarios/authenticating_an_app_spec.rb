@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authentik
+module Authk
   module Actions
     RSpec.describe AuthenticateApp do
       let(:jedi_temple) { create :app }

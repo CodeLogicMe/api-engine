@@ -1,4 +1,4 @@
-module Authentik
+module Authk
   class Models::Client
     include ::Mongoid::Document
     include ::Mongoid::Timestamps

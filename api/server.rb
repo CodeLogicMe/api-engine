@@ -4,9 +4,9 @@ require_relative '../business/setup'
 require_relative './helpers'
 require_relative './resources'
 
-module Authentik
+module Authk
   class API < ::Grape::API
-    version 'v1', using: :header, vendor: 'authentik'
+    version 'v1', using: :header, vendor: 'authk'
     format :json
     prefix :api
 

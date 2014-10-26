@@ -1,4 +1,4 @@
-module Authentik::Extensions
+module Authk::Extensions
   module Passwordable
     require 'bcrypt'
 

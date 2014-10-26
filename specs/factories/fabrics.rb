@@ -1,19 +1,19 @@
 FactoryGirl.define do
-  factory :client, class: Authentik::Models::Client do
+  factory :client, class: Authk::Models::Client do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
   end
 
-  factory :app, class: Authentik::Models::App do
+  factory :app, class: Authk::Models::App do
     client
     name { Faker::Name.name }
   end
 
-  factory :private_key, class: Authentik::Models::PrivateKey do
+  factory :private_key, class: Authk::Models::PrivateKey do
     app
   end
 
-  factory :user, class: Authentik::Models::User do
+  factory :user, class: Authk::Models::User do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
   end
