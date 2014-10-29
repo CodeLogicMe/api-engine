@@ -4,6 +4,13 @@ task :environment do
   require './frontend/server'
 end
 
+task console: :environment do
+  require 'irb'
+  require 'irb/completion'
+  ARGV.clear
+  IRB.start
+end
+
 namespace :documentation do
   def pretty_type_name(name)
     name.to_s.split('::').last
