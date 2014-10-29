@@ -17,15 +17,15 @@ module Authk
 
     private
     def verb
-      env['REQUEST_METHOD']
+      env.fetch('REQUEST_METHOD')
     end
 
     def params_string
-      case env['REQUEST_METHOD']
+      case env.fetch('REQUEST_METHOD')
       when 'GET'
         env.fetch('QUERY_STRING')
       else
-        env['rack.request.form_hash'].to_query
+        env.fetch('rack.request.form_hash').to_query
       end
     end
 
