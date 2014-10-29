@@ -32,6 +32,7 @@ module Authk
     def auth_keys
       {
         hmac: headers.fetch('Hmac'),
+        timestamp: headers.fetch('Timestamp'),
         public_key: headers.fetch('Publickey')
       }
     end

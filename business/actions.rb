@@ -16,10 +16,12 @@ module Authk
 
     with :verb, :query_string, :auth
 
-    def call
-      app = Models::App.find_by public_key: auth[:public_key]
+    TOLERANCE = 1.minute
 
-      fail InvalidCredentials unless has_valid_hmac? app
+    def call
+      app = Models::App.find_by public_key: auth.fetch(:public_key)
+
+      fail InvalidCredentials unless valid_request? app
 
       app
     rescue InvalidCredentials => e
@@ -30,8 +32,12 @@ module Authk
 
     private
 
-    def has_valid_hmac?(app)
-      auth[:hmac] == calculate_hmac_for(app)
+    def valid_request?(app)
+      ( not expired? ) && valid_hmac?(app)
+    end
+
+    def valid_hmac?(app)
+      auth.fetch(:hmac) == calculate_hmac_for(app)
     end
 
     def calculate_hmac_for(app)
@@ -42,7 +48,13 @@ module Authk
     end
 
     def request_string
-      verb + query_string
+      verb + auth.fetch(:timestamp).to_s + query_string
+    end
+
+    def expired?
+      timestamp = auth.fetch(:timestamp)
+      now_utc = Time.now.utc.to_i
+      now_utc - TOLERANCE > timestamp.to_i
     end
   end
 

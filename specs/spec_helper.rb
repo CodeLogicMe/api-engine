@@ -40,12 +40,14 @@ end
 def last_json
   JSON.parse(last_response.body)
 end
-def calculate_hmac(verb, private_key, params)
+def calculate_hmac(verb, private_key, params, timestamp)
   digest = OpenSSL::Digest.new('sha1')
-  data = verb + params.to_query
+  data = verb + timestamp.to_s + params.to_query
   OpenSSL::HMAC.hexdigest(digest, private_key, data)
 end
 def set_auth_headers_for!(app, verb, params)
+  timestamp = Time.now.utc
+  header 'Timestamp', timestamp
   header 'PublicKey', app.public_key
-  header 'Hmac', calculate_hmac(verb, app.private_key.secret, params)
+  header 'Hmac', calculate_hmac(verb, app.private_key.secret, params, timestamp)
 end
