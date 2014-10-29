@@ -60,7 +60,7 @@ module Authk
         user = Actions::CreateUser.new(data).call do |errors|
           error!({ errors: errors }, 400)
         end
-        { id: user.id, email: user.email, data: user.loose_data }
+        { id: user.id, email: user.email, data: user.loose_data.to_h }
       end
 
       desc "Updates user data"

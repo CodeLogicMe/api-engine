@@ -43,7 +43,7 @@ end
 def calculate_hmac(verb, private_key, params)
   digest = OpenSSL::Digest.new('sha1')
   data = verb + params.to_query
-  hmac = OpenSSL::HMAC.digest(digest, private_key, data)
+  OpenSSL::HMAC.hexdigest(digest, private_key, data)
 end
 def set_auth_headers_for!(app, verb, params)
   header 'PublicKey', app.public_key

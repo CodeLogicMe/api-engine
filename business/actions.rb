@@ -35,7 +35,7 @@ module Authk
     end
 
     def calculate_hmac_for(app)
-      OpenSSL::HMAC.digest \
+      OpenSSL::HMAC.hexdigest \
         OpenSSL::Digest.new('sha1'),
         app.private_key.secret,
         request_string

@@ -28,7 +28,7 @@ module Authk
     embeds_many :users
     embeds_one :private_key
 
-    index({ system_name: 1 }, { unique: true, name: "system_name_index" })
+    index({ system_name: 1 }, { unique: true, name: 'system_name_index' })
 
     validates_presence_of :name, :system_name, :client
 
