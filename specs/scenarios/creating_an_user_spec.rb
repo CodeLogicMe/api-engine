@@ -48,7 +48,7 @@ module Authk
       it { expect(last_json['error']).to eq 'email is missing, email is invalid, password is missing' }
     end
 
-    describe 'with invalid info' do
+    describe 'with an existing email' do
       let(:old_user) { create :user, app: current_app }
       let(:params) { { email: old_user.email, password: 'does not matter' } }
 

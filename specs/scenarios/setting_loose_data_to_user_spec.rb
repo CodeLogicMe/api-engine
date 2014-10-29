@@ -59,12 +59,22 @@ module Authk
       it { expect(last_json['data']).to eq params[:data] }
     end
 
+    describe 'with missing data' do
+      before do
+        set_auth_headers_for!(dark_temple, 'PUT', {})
+        put '/api/users/019283u092183/data', {}
+      end
+
+      it { expect(last_response.status).to eq 400 }
+      it { expect(last_json['error']).to eq 'data is missing' }
+    end
+
     describe 'Updating data for an unexisting user' do
       let(:params) { { data: { 'new_saber' => 'red' } } }
 
       before do
         set_auth_headers_for!(dark_temple, 'PUT', params)
-        put "/api/users/019283u092183/data", params
+        put '/api/users/019283u092183/data', params
       end
 
       it { expect(last_response.status).to eq 404 }
