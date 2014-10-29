@@ -30,7 +30,7 @@ Updates user data
 Parameter | Type | Required | Description
 :---------|:-----|:---------|:-----------
 `data` | Hash | Yes | User data hash
-`id` | | | (inherited)
+`id` | String | Yes | User identifier
 
 
 ### POST /api/users/authenticate
