@@ -2,18 +2,16 @@ module RestInMe
   module AuthHelpers
     extend ::Grape::API::Helpers
 
-    def authenticate_app!
-      unless @current_app
+    def current_app
+      @current_app ||= begin
         data = { verb: verb, auth: auth_keys, query_string: params_string }
+
         @current_app = Actions::AuthenticateApp.new(data).call do
           error!({ message: 'Unauthorized' }, 401)
         end
       end
     end
-
-    def current_app
-      @current_app ||= authenticate_app!
-    end
+    alias_method :authenticate_app!, :current_app
 
     private
     def verb

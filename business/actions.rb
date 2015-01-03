@@ -21,7 +21,8 @@ module RestInMe
     def call
       app = Models::App.find_by public_key: auth.fetch(:public_key)
 
-      fail InvalidCredentials unless valid_request? app
+      valid_request?(app) or
+        fail InvalidCredentials
 
       app
     rescue InvalidCredentials => e
@@ -107,7 +108,7 @@ module RestInMe
       user.loose_data.update_attributes! properties: data
 
       user.loose_data
-    rescue ::Mongoid::Errors::DocumentNotFound => e
+    rescue ::Mongoid::Errors::DocumentNotFound
       block_given? ? yield : raise
     end
   end
