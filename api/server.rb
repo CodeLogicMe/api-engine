@@ -2,7 +2,7 @@ require 'grape'
 require 'rack/cors'
 require_relative '../business/setup'
 require_relative './helpers'
-require_relative './resources'
+require_all 'api/resources/*.rb'
 
 module RestInMe
   class API < ::Grape::API
@@ -21,7 +21,7 @@ module RestInMe
 
     helpers AuthHelpers
 
-    mount Resources::Auth
+    mount Resources::Authentication
     mount Resources::Users
   end
 end
