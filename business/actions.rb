@@ -1,4 +1,4 @@
-module Authk
+module RestInMe
   class Actions::NewPrivateKey
     extend Extensions::Parameterizable
 

@@ -1,4 +1,4 @@
-module Authk::Extensions
+module RestInMe::Extensions
   module Passwordable
     require 'bcrypt'
 

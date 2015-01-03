@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authk
+module RestInMe
   RSpec.describe API do
     include ::Rack::Test::Methods
 

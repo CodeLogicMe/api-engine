@@ -1,4 +1,4 @@
-module Authk
+module RestInMe
   class Models::Client
     include ::Mongoid::Document
     include ::Mongoid::Timestamps
@@ -61,7 +61,7 @@ module Authk
     embedded_in :app
     embeds_one :loose_data,
       autobuild: true,
-      class_name: 'Authk::Models::LooseData'
+      class_name: 'RestInMe::Models::LooseData'
 
     validates :email, presence: true, uniqueness: true
 

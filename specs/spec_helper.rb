@@ -35,7 +35,7 @@ RSpec.configure do |config|
 end
 
 def app
-  Authk::API.new
+  RestInMe::API.new
 end
 def last_json
   JSON.parse(last_response.body)

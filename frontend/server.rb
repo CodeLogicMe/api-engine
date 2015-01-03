@@ -1,6 +1,6 @@
 require 'sinatra'
 
-module Authk
+module RestInMe
   class Frontend < Sinatra::Base
     set :public_folder, File.dirname(__FILE__) + '/public'
 

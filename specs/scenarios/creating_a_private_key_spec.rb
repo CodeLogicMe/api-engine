@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authk::Models
+module RestInMe::Models
   RSpec.describe PrivateKey do
     context 'creating an app' do
       let(:app) { create :app }
@@ -12,7 +12,7 @@ module Authk::Models
   end
 end
 
-module Authk::Actions
+module RestInMe::Actions
   RSpec.describe NewPrivateKey do
     context 'creating an app' do
       let(:private_key) { create :private_key }

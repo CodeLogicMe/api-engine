@@ -4,9 +4,9 @@ require_relative '../business/setup'
 require_relative './helpers'
 require_relative './resources'
 
-module Authk
+module RestInMe
   class API < ::Grape::API
-    version 'v1', using: :header, vendor: 'authk'
+    version 'v1', using: :header, vendor: 'restinme'
     format :json
     prefix :api
 

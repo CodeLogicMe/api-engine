@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module Authk
+module RestInMe
   module Actions
     RSpec.describe AuthenticateUser do
       let(:jedi_temple) { create :app }

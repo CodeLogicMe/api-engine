@@ -1,24 +1,24 @@
 FactoryGirl.define do
-  factory :client, class: Authk::Models::Client do
+  factory :client, class: RestInMe::Models::Client do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
   end
 
-  factory :app, class: Authk::Models::App do
+  factory :app, class: RestInMe::Models::App do
     client
     name { Faker::Name.name }
   end
 
-  factory :private_key, class: Authk::Models::PrivateKey do
+  factory :private_key, class: RestInMe::Models::PrivateKey do
     app
   end
 
-  factory :user, class: Authk::Models::User do
+  factory :user, class: RestInMe::Models::User do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
 
     factory :user_with_loose_data do
-      loose_data Authk::Models::LooseData.new(
+      loose_data RestInMe::Models::LooseData.new(
         properties: {
           previous_saber: 'yellow',
           current_saber: 'blue',
@@ -28,7 +28,7 @@ FactoryGirl.define do
     end
   end
 
-  # factory :loose_data, class: Authk::Models::LooseData do
+  # factory :loose_data, class: RestInMe::Models::LooseData do
   #   properties \
   # end
 end

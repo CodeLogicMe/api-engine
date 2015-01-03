@@ -1,4 +1,4 @@
-module Authk
+module RestInMe
   class Resources::Auth < Grape::API
     before { authenticate_app! }
 

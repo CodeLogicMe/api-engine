@@ -1,4 +1,4 @@
-module Authk
+module RestInMe
   module AuthHelpers
     extend ::Grape::API::Helpers
 

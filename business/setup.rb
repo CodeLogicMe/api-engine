@@ -1,4 +1,4 @@
-module Authk
+module RestInMe
   Models = Module.new
   Actions = Module.new
   Extensions = Module.new
