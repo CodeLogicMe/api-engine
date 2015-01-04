@@ -28,6 +28,7 @@ GEM
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
     equalizer (0.0.9)
+    executable-hooks (1.3.2)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
     faker (1.4.3)
@@ -107,6 +108,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt
   database_cleaner
+  executable-hooks
   factory_girl
   faker
   foreman

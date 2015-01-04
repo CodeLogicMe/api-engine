@@ -6,7 +6,7 @@ FactoryGirl.define do
 
   factory :app, class: RestInMe::Models::App do
     client
-    name { Faker::Name.name }
+    name { Faker::Company.name }
   end
 
   factory :private_key, class: RestInMe::Models::PrivateKey do

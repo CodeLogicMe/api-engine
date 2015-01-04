@@ -35,6 +35,18 @@ module RestInMe
     after_create do
       self.private_key = Models::PrivateKey.new
     end
+
+    def as_class_name
+      system_name.gsub(/-/, '_').camelize
+    end
+
+    def app_constant
+      unless ::Object.constants.include?(as_class_name)
+        ::Object.const_set(as_class_name, ::Module.new)
+      end
+
+      ::Object.const_get(as_class_name)
+    end
   end
 
   class Models::PrivateKey

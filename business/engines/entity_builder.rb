@@ -2,7 +2,8 @@ require 'hashie/mash'
 
 module RestInMe
   class Engines::EntityBuilder
-    def initialize(config)
+    def initialize(app, config)
+      @app = app
       @config = ::Hashie::Mash.new config
     end
 
@@ -20,16 +21,10 @@ module RestInMe
 
     def bootstrap_klass
       config = @config
-      ::Class.new do
-        include ::Mongoid::Document
-        include ::Mongoid::Timestamps
-
-        store_in collection: config.name
-
-        define_singleton_method :name do
-          config.name
-        end
-      end
+      app = @app
+      klass = ::Class.new(Entity)
+      app.app_constant.const_set config.name.capitalize, klass
+      klass
     end
 
     def mix_in_fields(klass)
