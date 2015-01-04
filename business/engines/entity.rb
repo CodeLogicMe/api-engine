@@ -6,9 +6,13 @@ module RestInMe
     end
 
     module ClassMethods
-      def field(name, type:)
+      def field(name)
         define_method(name) { @attributes.fetch(name) }
         define_method("#{name}=") { |value| @attributes[name] = value }
+      end
+
+      def store_as(name)
+        @@collection_name = name
       end
 
       def create(app:, **fields)
@@ -21,19 +25,15 @@ module RestInMe
       end
 
       def persist(inst)
-        collection = Array(inst.app[collection_name])
+        collection = Array(inst.app[@@collection_name])
         collection << inst.attributes
 
-        inst.app.update_attribute collection_name, collection
+        inst.app.update_attribute @@collection_name, collection
         inst.app.reload
       end
 
       def count(app)
-        app.reload[collection_name].count
-      end
-
-      def collection_name
-        name.demodulize.underscore.pluralize
+        app.reload[@@collection_name].count
       end
     end
 

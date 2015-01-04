@@ -8,8 +8,6 @@ module RestInMe
     end
 
     def call
-      config = @config
-
       klass = bootstrap_klass
 
       mix_in_fields klass
@@ -20,31 +18,41 @@ module RestInMe
     private
 
     def bootstrap_klass
-      config = @config
-      app = @app
+      name = collection_name
+
+      # I need these variables available in the next lexical scope
+      app_name = @app.name.classify
+      klass_name = @config.name.classify
+
       klass = ::Class.new do
         include Entity
+
+        store_as name
+
+        klass_name_proc = -> {
+          "<##{app_name}::#{klass_name}>"
+        }
+
+        define_singleton_method :name, klass_name_proc
+        define_singleton_method :to_s, klass_name_proc
       end
-      app.app_constant.const_set config.name.capitalize, klass
-      klass
+    end
+
+    def collection_name
+      @config.name.pluralize.underscore
     end
 
     def mix_in_fields(klass)
-      @config.fields.map(&as_field_config)
-        .each { |field| field.apply_on klass }
-    end
-
-    def as_field_config
-      lambda { |field| FieldConfig.new(field) }
+      @config.fields
+        .each { |field| FieldConfig.new(field).apply_on klass }
     end
   end
 
   class FieldConfig < ::OpenStruct
     def apply_on(klass)
-      type_klass = ::Module.const_get type.capitalize
       field_name = proper_field_name
       klass.instance_eval do
-        field field_name.to_sym, type: type_klass
+        field field_name.to_sym
       end
     end
 
