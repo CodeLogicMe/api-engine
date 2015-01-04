@@ -23,7 +23,7 @@ module RestInMe
           model = entity_klass.create(app: app, full_name: 'Jin Ju')
 
           expect(entity_klass.name).to include 'Croud'
-          expect(entity_klass.count).to eq 1
+          expect(entity_klass.count(app)).to eq 1
           expect(model.full_name).to eq 'Jin Ju'
         end
       end

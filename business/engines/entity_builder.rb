@@ -22,7 +22,9 @@ module RestInMe
     def bootstrap_klass
       config = @config
       app = @app
-      klass = ::Class.new(Entity)
+      klass = ::Class.new do
+        include Entity
+      end
       app.app_constant.const_set config.name.capitalize, klass
       klass
     end
