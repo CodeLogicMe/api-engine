@@ -15,7 +15,7 @@ module RestInMe
         origins '*'
         resource '*',
         headers: :any,
-        methods: [ :get, :post, :put, :delete, :options ]
+        methods: %i( get post put delete options )
       end
     end
 

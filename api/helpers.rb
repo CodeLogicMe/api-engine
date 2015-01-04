@@ -14,6 +14,7 @@ module RestInMe
     alias_method :authenticate_app!, :current_app
 
     private
+
     def verb
       env.fetch('REQUEST_METHOD')
     end
