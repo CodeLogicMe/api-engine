@@ -8,6 +8,8 @@ require File.expand_path('../../config/application', __FILE__)
 require './api/server'
 require './frontend/server'
 
+require 'pry'
+
 require 'database_cleaner'
 require 'factory_girl'
 require 'faker'
@@ -38,7 +40,7 @@ def app
   RestInMe::API.new
 end
 def last_json
-  JSON.parse(last_response.body)
+  Hashie::Mash.new JSON.parse(last_response.body)
 end
 def calculate_hmac(verb, private_key, params, timestamp)
   digest = OpenSSL::Digest.new('sha1')

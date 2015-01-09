@@ -7,6 +7,6 @@ module RestInMe
 end
 
 require_relative './extensions'
-require_relative './models'
 require_relative './actions'
 require_rel './engines/*.rb'
+require_rel './models/*.rb'

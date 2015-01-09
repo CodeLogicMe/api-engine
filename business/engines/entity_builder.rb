@@ -30,11 +30,12 @@ module RestInMe
         store_as name
 
         klass_name_proc = -> {
-          "<##{app_name}::#{klass_name}>"
+          "#{app_name}::#{klass_name}"
         }
 
         define_singleton_method :name, klass_name_proc
         define_singleton_method :to_s, klass_name_proc
+        define_singleton_method :inspect, klass_name_proc
       end
     end
 
@@ -51,15 +52,14 @@ module RestInMe
   class FieldConfig < ::OpenStruct
     def apply_on(klass)
       field_name = proper_field_name
-      klass.instance_eval do
-        field field_name.to_sym
-      end
+      parser = Parsers.const_get(type.capitalize)
+      klass.instance_eval { field field_name.to_sym, parser }
     end
 
     private
 
     def proper_field_name
-      field_name.downcase.gsub /\s/, '_'
+      name.downcase.gsub /\s/, '_'
     end
   end
 end

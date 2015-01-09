@@ -13,6 +13,8 @@ group :dvelopment, :test do
   gem 'factory_girl'
   gem 'faker'
   gem 'database_cleaner'
+  gem 'pry'
+  gem 'did_you_mean'
 end
 
 group :development do

@@ -6,9 +6,9 @@ module RestInMe
     end
 
     module ClassMethods
-      def field(name)
-        define_method(name) { @attributes.fetch(name) }
-        define_method("#{name}=") { |value| @attributes[name] = value }
+      def field(name, parser)
+        define_method(name, &getter(name, parser))
+        define_method("#{name}=", &setter(name, parser))
       end
 
       def store_as(name)
@@ -18,7 +18,9 @@ module RestInMe
       def create(app:, **fields)
         inst = new(app: app, **fields)
 
-        return false unless inst.valid?
+        inst.valid? or
+          return false
+
         inst.save
 
         inst
@@ -34,6 +36,16 @@ module RestInMe
 
       def count(app)
         app.reload[@@collection_name].count
+      end
+
+      private
+
+      def getter(name, parser)
+        -> { parser.call @attributes.fetch(name) }
+      end
+
+      def setter(name, parser)
+        -> (value) { @attributes[name] = parser.call(value) }
       end
     end
 
@@ -71,6 +83,11 @@ module RestInMe
       def valid?
         true
       end
+
+      def to_s
+        "#<#{self.class.name} @attributes=#{@attributes}, @app_id=\"#{@app_id}\">"
+      end
+      alias_method :inspect, :to_s
     end
   end
 end

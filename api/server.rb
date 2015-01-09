@@ -23,5 +23,6 @@ module RestInMe
 
     mount Resources::Authentication
     mount Resources::Users
+    mount Resources::Endpoints
   end
 end

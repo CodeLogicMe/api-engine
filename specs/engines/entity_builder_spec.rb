@@ -10,7 +10,7 @@ module RestInMe
           {
             name: 'croud',
             fields: [
-              { field_name: 'Full Name', type: 'string' }
+              { name: 'Full Name', type: 'string' }
             ]
           }
         end
@@ -34,8 +34,8 @@ module RestInMe
           {
             name: 'fighter',
             fields: [
-              { field_name: 'name', type: 'string' },
-              { field_name: 'age', type: 'integer' }
+              { name: 'name', type: 'string' },
+              { name: 'age', type: 'integer' }
             ]
           }
         end
