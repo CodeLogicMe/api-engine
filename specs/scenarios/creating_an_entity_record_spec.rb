@@ -6,7 +6,7 @@ module RestInMe
 
     let(:ultra_pod) { create :app }
 
-    describe 'for the current app' do
+    context 'for the current app' do
       let(:params) { { name: 'Nerdcast', episodes: 352 } }
 
       before do
@@ -16,9 +16,9 @@ module RestInMe
       end
 
       it do
-        expect(last_response.status).to eq 201
-        expect(last_json.name).to eq 'Nerdcast'
-        expect(last_json.episodes).to eq 352
+        expect(last_response.status).to eql 201
+        expect(last_json.name).to eql 'Nerdcast'
+        expect(last_json.episodes).to eql 352
       end
     end
   end

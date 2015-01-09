@@ -8,6 +8,12 @@ module RestInMe::Models
     factory :app, class: App do
       client
       name { ::Faker::Company.name }
+
+      trait :with_config do
+        after(:create) do |instance|
+          create :app_config, app: instance
+        end
+      end
     end
 
     factory :app_config, class: AppConfig do

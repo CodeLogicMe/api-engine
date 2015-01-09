@@ -15,6 +15,10 @@ module RestInMe
         @@collection_name = name
       end
 
+      def all(app)
+        app.reload[@@collection_name]
+      end
+
       def create(app:, **fields)
         inst = new(app: app, **fields)
 
@@ -27,10 +31,13 @@ module RestInMe
       end
 
       def persist(inst)
-        collection = Array(inst.app[@@collection_name])
-        collection << inst.attributes
+        collection = Array(inst.app.reload[@@collection_name])
+        collection.push inst.attributes.to_hash
 
-        inst.app.update_attribute @@collection_name, collection
+        inst.app.reload.update_attribute(
+          @@collection_name, collection
+        )
+
         inst.app.reload
       end
 

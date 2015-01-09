@@ -35,6 +35,13 @@ module RestInMe
     end
 
     resource '/:entity_name' do
+      get do
+        {
+          count: current_entity.count(current_app),
+          items: current_entity.all(current_app)
+        }
+      end
+
       post do
         entity = current_entity.create(
           app: current_app, **entity_params
