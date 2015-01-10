@@ -3,7 +3,7 @@ module RestInMe
     helpers do
       def check_entity_for_current_app!
         unless current_app.has_entity?(entity_name)
-          error!('Not Found', 404)
+          error!({ errors: ['Not Found'] }, 404)
         end
       end
 
@@ -12,10 +12,10 @@ module RestInMe
       end
 
       def current_entity
-        @entity ||= begin
+        #@entity ||= begin
           entity_config = current_app.config_for(entity_name)
           Engines::EntityBuilder.new(current_app, entity_config).call
-        end
+        #end
       end
 
       def entity_params

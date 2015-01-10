@@ -4,9 +4,23 @@ module RestInMe
   RSpec.describe Engines::EntityBuilder do
     include ::Rack::Test::Methods
 
-    context 'for the current app' do
-      let(:ultra_pod) { create :app, :with_config }
+    let(:ultra_pod) { create :app, :with_config }
 
+    context 'for another app' do
+      let(:new_app) { create :app }
+
+      before do
+        set_auth_headers_for!(new_app, 'GET', {})
+        get '/api/podcasts'
+      end
+
+      it do
+        expect(last_response.status).to eql 404
+        expect(last_json.errors).to eql ['Not Found']
+      end
+    end
+
+    context 'for the current app' do
       before do
         10.times do |index|
           params = { name: "NerdCast-#{index}" }
