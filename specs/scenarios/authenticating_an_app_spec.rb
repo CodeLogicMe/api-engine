@@ -57,98 +57,54 @@ module RestInMe
       end
     end
   end
+end
 
-  RSpec.describe API do
-    describe 'GETting' do
-      include ::Rack::Test::Methods
+shared_examples 'as authenticable endpoint' do |verb, url, status|
+  describe 'with a valid HMAC' do
+    let(:dark_temple) { create :app }
+    let(:private_key) { dark_temple.private_key.secret }
+    let(:params) { { what: 'ever' } }
 
-      describe 'with a valid HMAC' do
-        let(:dark_temple) { create :app }
-        let(:private_key) { dark_temple.private_key.secret }
-        let(:params) { { what: 'ever' } }
+    before do
+      timestamp = Time.now.utc
+      header 'Timestamp', timestamp
+      header 'PublicKey', dark_temple.public_key
+      header 'Hmac', calculate_hmac(verb.upcase, private_key, params, timestamp)
 
-        before do
-          timestamp = Time.now.utc
-          header 'Timestamp', timestamp
-          header 'PublicKey', dark_temple.public_key
-          header 'Hmac', calculate_hmac('GET', private_key, params, timestamp)
-          get '/api/authenticate', params
-        end
-
-        it do
-          expect(last_response.status).to eq 200
-          expect(last_json['app']).to eq dark_temple.name
-        end
-      end
+      public_send(verb.downcase, url, params)
     end
 
-    describe 'POSTing' do
-      include ::Rack::Test::Methods
-
-      describe 'with a valid HMAC' do
-        let(:dark_temple) { create :app }
-        let(:private_key) { dark_temple.private_key.secret }
-        let(:params) { { what: 'ever' } }
-
-        before do
-          timestamp = Time.now.utc
-          header 'Timestamp', timestamp
-          header 'PublicKey', dark_temple.public_key
-          header 'Hmac', calculate_hmac('POST', private_key, params, timestamp)
-          post '/api/authenticate', params
-        end
-
-        it do
-          expect(last_response.status).to eq 201
-          expect(last_json['app']).to eq dark_temple.name
-        end
-      end
-    end
-
-    describe 'DELETEing' do
-      include ::Rack::Test::Methods
-
-      describe 'with a valid HMAC' do
-        let(:dark_temple) { create :app }
-        let(:private_key) { dark_temple.private_key.secret }
-        let(:params) { { what: 'ever' } }
-
-        before do
-          timestamp = Time.now.utc
-          header 'Timestamp', timestamp
-          header 'PublicKey', dark_temple.public_key
-          header 'Hmac', calculate_hmac('DELETE', private_key, params, timestamp)
-          delete '/api/authenticate/some_id', params
-        end
-
-        it do
-          expect(last_response.status).to eq 200
-          expect(last_json['app']).to eq dark_temple.name
-        end
-      end
-    end
-
-    describe 'PATCHing' do
-      include ::Rack::Test::Methods
-
-      describe 'with a valid HMAC' do
-        let(:dark_temple) { create :app }
-        let(:private_key) { dark_temple.private_key.secret }
-        let(:params) { { what: 'ever' } }
-
-        before do
-          timestamp = Time.now.utc
-          header 'Timestamp', timestamp
-          header 'PublicKey', dark_temple.public_key
-          header 'Hmac', calculate_hmac('PATCH', private_key, params, timestamp)
-          patch '/api/authenticate/some_id', params
-        end
-
-        it do
-          expect(last_response.status).to eq 200
-          expect(last_json['app']).to eq dark_temple.name
-        end
-      end
+    it do
+      expect(last_response.status).to eq status
+      expect(last_json['app']).to eq dark_temple.name
     end
   end
+end
+
+RSpec.describe RestInMe::API do
+  include ::Rack::Test::Methods
+
+  it_behaves_like \
+    'as authenticable endpoint',
+    'GET',
+    '/api/authenticate',
+    200
+
+  it_behaves_like \
+    'as authenticable endpoint',
+    'POST',
+    '/api/authenticate',
+    201
+
+  it_behaves_like \
+    'as authenticable endpoint',
+    'PATCH',
+    '/api/authenticate/some_id',
+    200
+
+  it_behaves_like \
+    'as authenticable endpoint',
+    'DELETE',
+    '/api/authenticate/some_id',
+    200
 end
