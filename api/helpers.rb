@@ -6,8 +6,8 @@ module RestInMe
       @current_app ||= begin
         data = { verb: verb, auth: auth_keys, query_string: params_string }
 
-        @current_app = Actions::AuthenticateApp.new(data).call do
-          error!({ message: 'Unauthorized' }, 401)
+        Actions::AuthenticateApp.new(data).call do
+          error!({ errors: ['Unauthorized'] }, 401)
         end
       end
     end

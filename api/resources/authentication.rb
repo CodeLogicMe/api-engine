@@ -19,5 +19,10 @@ module RestInMe
       status 200
       { app: current_app.name }
     end
+
+    post :authenticate do
+      status 201
+      { app: current_app.name }
+    end
   end
 end
