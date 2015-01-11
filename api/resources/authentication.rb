@@ -10,12 +10,14 @@ module RestInMe
           required: true
         },
         'Hmac' => {
-          description: 'A hashed composed by the private key and the query string'
+          description: 'A hashed composed by the private key and the query string',
+          required: true
         }
       ]
     end
     get :authenticate do
-      status 200 and { app: current_app.name }
+      status 200
+      { app: current_app.name }
     end
   end
 end
