@@ -22,7 +22,6 @@ module RestInMe
     helpers AuthHelpers
 
     mount Resources::Authentication
-    mount Resources::Users
     mount Resources::Endpoints
   end
 end
