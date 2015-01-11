@@ -12,10 +12,10 @@ module RestInMe
       end
 
       def current_entity
-        #@entity ||= begin
+        @entity ||= begin
           entity_config = current_app.config_for(entity_name)
           Engines::EntityBuilder.new(current_app, entity_config).call
-        #end
+        end
       end
 
       def entity_params
@@ -38,7 +38,7 @@ module RestInMe
       get do
         {
           count: current_entity.count(current_app),
-          items: current_entity.all(current_app)
+          items: current_entity.all(current_app).map(&:attributes)
         }
       end
 
@@ -47,6 +47,14 @@ module RestInMe
           app: current_app, **entity_params
         )
         entity.attributes.to_h
+      end
+
+      delete '/:id' do
+        current_entity.delete(
+          app: current_app, id: params.fetch(:id)
+        )
+
+        status 204
       end
     end
   end

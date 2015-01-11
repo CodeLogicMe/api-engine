@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 module RestInMe
-  RSpec.describe Engines::EntityBuilder do
+  RSpec.describe 'listing an entity collection' do
     include ::Rack::Test::Methods
 
     let(:ultra_pod) { create :app, :with_config }
@@ -34,7 +34,7 @@ module RestInMe
       it do
         expect(last_response.status).to eql 200
         expect(last_json['count']).to eql 10
-        expect(last_json.items.last.keys).to eql %w(name created_at updated_at)
+        expect(last_json.items.last.keys).to eql %w(id name created_at updated_at)
         expect(last_json.items.last.name).to eql 'NerdCast-9'
       end
     end

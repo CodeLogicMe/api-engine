@@ -16,7 +16,20 @@ module RestInMe
       end
 
       def all(app)
-        app.reload[@@collection_name]
+        Array(app.reload[@@collection_name])
+          .map { |item| build app, item }
+      end
+
+      def find(app:, id:)
+        item = app.reload[@@collection_name].find { |item|
+          item.fetch('id').to_s == id.to_s
+        }.inject({}) do |memo, (k,v)|
+          memo[k.to_sym] = v; memo
+        end
+
+        inst = new app: app
+        inst.attributes = item.to_hash
+        inst
       end
 
       def create(app:, **fields)
@@ -25,17 +38,34 @@ module RestInMe
         inst.valid? or
           return false
 
+        inst.attributes['created_at'] = ::Time.now.utc
+        inst.attributes['updated_at'] = ::Time.now.utc
         inst.save
 
         inst
       end
 
       def persist(inst)
-        collection = Array(inst.app.reload[@@collection_name])
-        collection.push inst.attributes.to_hash
+        collection = all(inst.app)
+        collection.push inst
 
         inst.app.reload.update_attribute(
-          @@collection_name, collection
+          @@collection_name, collection.map(&:attributes)
+        )
+
+        inst.app.reload
+      end
+
+      def delete(app:, id:)
+        inst = find(app: app, id: id)
+
+        collection = all(inst.app)
+        collection.reject! do |item|
+          item.id == inst.attributes.fetch(:id)
+        end
+
+        inst.app.reload.update_attribute(
+          @@collection_name, collection.map(&:attributes)
         )
 
         inst.app.reload
@@ -54,6 +84,12 @@ module RestInMe
       def setter(name, parser)
         -> (value) { @attributes[name] = parser.call(value) }
       end
+
+      def build(app, params)
+        inst = new(app: app, **{})
+        inst.attributes = params
+        inst
+      end
     end
 
     module InstanceMethods
@@ -61,17 +97,20 @@ module RestInMe
         @attributes = {}
 
         self.app = app
+        attributes['id'] = ::BSON::ObjectId.new.to_s
 
         fields.each do |key, value|
-          public_send("#{key}=", value)
+          public_send "#{key}=", value
         end
       end
 
+      attr_writer :attributes
       def attributes
-        attrs = Hashie::Mash.new(@attributes)
-        attrs.created_at ||= Time.now.utc
-        attrs.updated_at ||= Time.now.utc
-        attrs
+        @attributes
+      end
+
+      def id
+        attributes['id']
       end
 
       def save
