@@ -104,5 +104,51 @@ module RestInMe
         end
       end
     end
+
+    describe 'DELETEing' do
+      include ::Rack::Test::Methods
+
+      describe 'with a valid HMAC' do
+        let(:dark_temple) { create :app }
+        let(:private_key) { dark_temple.private_key.secret }
+        let(:params) { { what: 'ever' } }
+
+        before do
+          timestamp = Time.now.utc
+          header 'Timestamp', timestamp
+          header 'PublicKey', dark_temple.public_key
+          header 'Hmac', calculate_hmac('DELETE', private_key, params, timestamp)
+          delete '/api/authenticate/some_id', params
+        end
+
+        it do
+          expect(last_response.status).to eq 200
+          expect(last_json['app']).to eq dark_temple.name
+        end
+      end
+    end
+
+    describe 'PATCHing' do
+      include ::Rack::Test::Methods
+
+      describe 'with a valid HMAC' do
+        let(:dark_temple) { create :app }
+        let(:private_key) { dark_temple.private_key.secret }
+        let(:params) { { what: 'ever' } }
+
+        before do
+          timestamp = Time.now.utc
+          header 'Timestamp', timestamp
+          header 'PublicKey', dark_temple.public_key
+          header 'Hmac', calculate_hmac('PATCH', private_key, params, timestamp)
+          patch '/api/authenticate/some_id', params
+        end
+
+        it do
+          expect(last_response.status).to eq 200
+          expect(last_json['app']).to eq dark_temple.name
+        end
+      end
+    end
   end
 end

@@ -24,5 +24,15 @@ module RestInMe
       status 201
       { app: current_app.name }
     end
+
+    delete 'authenticate/:id' do
+      status 200
+      { app: current_app.name }
+    end
+
+    patch 'authenticate/:id' do
+      status 200
+      { app: current_app.name }
+    end
   end
 end
