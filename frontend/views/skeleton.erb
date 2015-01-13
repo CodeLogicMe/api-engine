@@ -1,20 +1,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Authk</title>
+    <title>RestInMe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/bootstrap.css" media="screen">
-    <link rel="stylesheet" href="/bootswatch.min.css">
+    <link rel="stylesheet" href="/stylesheets/skeleton.css">
   </head>
   <body>
-    <%= erb :header %>
+    <% if current_client.signed_in? %>
+      <%= erb :header %>
+    <% end %>
 
-    <div class="container">
+    <div class="site-page">
       <%= yield %>
     </div>
 
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../assets/js/bootswatch.js"></script>
+    <script src="/stylesheets/skeleton.css"></script>
+    <script src="/javascripts/app.js"></script>
   </body>
 </html>

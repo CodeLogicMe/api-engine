@@ -22,6 +22,7 @@ module RestInMe::Extensions
     end
 
     private
+
     def to_crypt_hash(pass)
       ::BCrypt::Password.create pass
     end
