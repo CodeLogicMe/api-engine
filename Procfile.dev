@@ -1,2 +1,2 @@
 db: mongod
-web: bundle exec rackup
+web: bundle exec rerun rackup --pattern *.rb

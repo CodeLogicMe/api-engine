@@ -1,4 +1,5 @@
 require 'sinatra'
+require_relative './assets_server'
 
 module RestInMe
   class Frontend < Sinatra::Base
@@ -23,6 +24,8 @@ module RestInMe
     get '/' do
       erb :home, layout: :skeleton
     end
+
+    use AssetsServer
 
     get '/dashboard' do
       @apps = current_client.apps

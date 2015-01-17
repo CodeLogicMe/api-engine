@@ -15,9 +15,12 @@ group :dvelopment, :test do
   gem 'database_cleaner'
   gem 'pry'
   gem 'did_you_mean'
+  gem 'stylus'
 end
 
 group :development do
   gem 'foreman'
   gem 'executable-hooks'
+  gem 'rerun'
+  gem 'rb-fsevent'
 end

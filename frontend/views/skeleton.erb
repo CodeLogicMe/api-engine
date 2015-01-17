@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>RestInMe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/skeleton.css">
+    <link rel="stylesheet" href="/assets/stylesheets/skeleton.css">
   </head>
   <body>
     <% if current_client.signed_in? %>
@@ -14,7 +14,6 @@
       <%= yield %>
     </div>
 
-    <script src="/stylesheets/skeleton.css"></script>
     <script src="/javascripts/app.js"></script>
   </body>
 </html>
