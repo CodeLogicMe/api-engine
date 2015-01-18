@@ -9,6 +9,12 @@ class AssetsServer < Sinatra::Base
   end
 
   get '/assets/**/:filename' do
+    if params['filename'].match /\.js$/
+      content_type 'application/javascript'
+    elsif params['filename'].match /\.css$/
+      content_type 'text/css'
+    end
+
     assets.fetch(params.fetch('filename'))
   end
 end

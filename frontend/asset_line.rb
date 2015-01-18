@@ -4,7 +4,8 @@ class AssetLine
     assets_root = options.fetch(:root)
 
     @compilers = [
-      CSS.new(env, assets_root),
+      SimpleAsset.new(env, assets_root, type: 'stylesheets', ext: 'css'),
+      SimpleAsset.new(env, assets_root, type: 'javascripts', ext: 'js'),
       Stylus.new(env, assets_root),
       NullCompiler.new
     ]
@@ -20,14 +21,15 @@ class AssetLine
 
   private
 
-  class CSS
-    def initialize(env, root)
+  class SimpleAsset
+    def initialize(env, root, options)
       @env = env
-      @root = File.join root, 'stylesheets'
+      @root = File.join root, options.fetch(:type)
+      @ext = options.fetch(:ext)
     end
 
     def can_handle?(filename)
-      filename.match(/\.css$/i) &&
+      filename.match(/\.#{@ext}$/i) &&
         File.exist?(file_path(filename))
     end
 
@@ -37,25 +39,26 @@ class AssetLine
 
     private
 
-    def extensionless(filename)
-      filename.gsub /\.css$/, ''
-    end
-
     def file_path(filename)
-      File.join(@root, "#{extensionless(filename)}.css")
+      File.join(@root, filename.gsub(/(?<=\.).+$/, @ext))
     end
   end
 
-  class Stylus < CSS
+  class Stylus < SimpleAsset
     require 'stylus'
 
-    def compile(filename)
-      path = File.join(@root, "#{extensionless(filename)}.styl")
-      ::Stylus.compile File.new(path), **css_options
+    def initialize(env, root)
+      super(env, root, type: 'stylesheets', ext: 'styl')
     end
 
-    def file_path(filename)
-      File.join(@root, "#{extensionless(filename)}.styl")
+    def can_handle?(filename)
+      filename.match(/\.css$/i) &&
+        File.exist?(file_path(filename))
+    end
+
+    def compile(filename)
+      path = File.join(@root, filename.gsub(/(?<=\.)css$/i, 'styl'))
+      ::Stylus.compile File.new(path), **css_options
     end
 
     def css_options
