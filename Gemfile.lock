@@ -14,6 +14,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    backports (3.6.4)
     bcrypt (3.1.7)
     bson (2.3.0)
     builder (3.2.2)
@@ -114,6 +115,15 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    sinatra-contrib (1.4.2)
+      backports (>= 2.0)
+      multi_json
+      rack-protection
+      rack-test
+      sinatra (~> 1.4.0)
+      tilt (~> 1.3)
+    sinatra-namespace (1.0)
+      sinatra-contrib
     slop (3.6.0)
     stylus (1.0.1)
       execjs
@@ -153,4 +163,5 @@ DEPENDENCIES
   rerun
   rspec
   sinatra
+  sinatra-namespace
   stylus

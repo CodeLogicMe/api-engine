@@ -1,26 +1,5 @@
 <div class="site-header">
-  <div class="site-breadcumb">
-
-  </div>
-
-  <div class="site-header-nav">
-    <span></span>
-
-    <ul>
-      <li class="site-header-nav-item">
-        <a href="/my_apps">My Apps</a>
-      </li>
-      <li class="site-header-nav-item">
-        <a href="/account">Account</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="site-header-app-nav">
-    <% @apps.each do |app| %>
-      <a href="/my_apps/#{app.slug}/config" class="site-header-app-config">
-        <%= app.name %>
-      </a>
-    <% end %>
+  <div class="site-breadcumb js-breadcumb">
+    <a href="/apps">Apps</a>
   </div>
 </div>

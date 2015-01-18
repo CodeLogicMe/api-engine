@@ -15,7 +15,6 @@ module RestInMe
     random :public_key, length: 64
 
     belongs_to :client
-    embeds_many :users
     embeds_one :private_key
     embeds_one :app_config,
       class_name: 'RestInMe::Models::AppConfig',

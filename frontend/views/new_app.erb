@@ -1,0 +1,13 @@
+<form action="/apps" method="post">
+  <fieldset>
+    <legend>New App</legend>
+
+    <input type="text"
+           name="app[name]"
+           value="<%= @app.name %>"
+           placeholder="Name"
+           autofocus="true"/>
+
+    <input type="submit" value="submit" />
+  </fieldset>
+</form>

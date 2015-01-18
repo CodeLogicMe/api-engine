@@ -1,35 +1,23 @@
 require 'sinatra'
+
 require_relative './assets_server'
+require_relative './apps'
 
 module RestInMe
   class Frontend < Sinatra::Base
     set :public_folder, File.dirname(__FILE__) + '/public'
 
-    helpers do
-      def current_client
-        client_id = request.cookies['client_id']
+    use AssetsServer
+    use Apps
 
-        return Models::NilClient.new if client_id.nil?
-
-        @client ||= Models::Client.find(client_id)
-      end
-
-      def set_current_client(client)
-        @client = client
-        response.set_cookie 'client_id',
-          { value: client.id.to_s, max_age: '604800' }
-      end
-    end
+    helpers Helpers::ClientAccess
 
     get '/' do
-      erb :home, layout: :skeleton
-    end
-
-    use AssetsServer
-
-    get '/dashboard' do
-      @apps = current_client.apps
-      erb :dashboard, layout: :skeleton
+      if current_client.signed_in?
+        redirect to('/apps')
+      else
+        erb :landing, layout: :skeleton
+      end
     end
 
     post '/sign_in' do

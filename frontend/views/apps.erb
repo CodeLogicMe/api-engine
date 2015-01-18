@@ -1,0 +1,9 @@
+<div class="my-apps">
+  <a href="/apps/new">create an awesome app</a>
+
+  <% @apps.each do |app| %>
+    <a href="/apps/<%= app.slug %>" class="">
+      <%= app.name %>
+    </a>
+  <% end %>
+</div>

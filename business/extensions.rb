@@ -58,7 +58,8 @@ module RestInMe::Extensions
     def define_initializer_for(fields)
       define_method 'initialize' do |params|
         fields.each do |field|
-          self.instance_variable_set "@#{field}", params.fetch(field)
+          value = params.fetch(field) { params.fetch(field.to_s) }
+          self.instance_variable_set "@#{field}", value
         end
       end
     end

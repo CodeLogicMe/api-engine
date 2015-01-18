@@ -1,4 +1,16 @@
 module RestInMe
+  class Actions::CreateApp
+    extend Extensions::Parameterizable
+
+    with :name, :client
+
+    def call
+      Models::App.create \
+        client: client,
+        name: name
+    end
+  end
+
   class Actions::NewPrivateKey
     extend Extensions::Parameterizable
 
@@ -56,60 +68,6 @@ module RestInMe
       timestamp = auth.fetch(:timestamp)
       now_utc = Time.now.utc.to_i
       now_utc - TOLERANCE > timestamp.to_i
-    end
-  end
-
-  class Actions::CreateUser
-    extend Extensions::Parameterizable
-
-    with :app, :params
-
-    def call
-      user = Models::User.new \
-        app: app,
-        email: params[:email],
-        password: params[:password]
-
-      user.save!
-      user
-    rescue Mongoid::Errors::Validations
-      block_given? ? yield(user.errors.full_messages) : raise
-    end
-  end
-
-  class Actions::AuthenticateUser
-    extend Extensions::Parameterizable
-
-    with :app, :email, :password
-
-    def call
-      user = app.users.find_by email: email
-
-      unless user.password_checks? password
-        fail InvalidPassword
-      end
-
-      user
-    rescue ::Mongoid::Errors::DocumentNotFound, InvalidPassword
-      block_given? ? yield : raise
-    end
-
-    InvalidPassword = Class.new(StandardError)
-  end
-
-  class Actions::SetLooseData
-    extend Extensions::Parameterizable
-
-    with :app, :user_id, :data
-
-    def call
-      user = app.users.find user_id
-
-      user.loose_data.update_attributes! properties: data
-
-      user.loose_data
-    rescue ::Mongoid::Errors::DocumentNotFound
-      block_given? ? yield : raise
     end
   end
 end

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'grape'
 gem 'sinatra'
+gem 'sinatra-namespace'
 gem 'mongoid'
 gem 'bcrypt'
 gem 'rack-cors'
