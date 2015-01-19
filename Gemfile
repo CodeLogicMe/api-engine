@@ -8,6 +8,10 @@ gem 'bcrypt'
 gem 'rack-cors'
 gem 'require_all'
 
+gem 'stylus'
+gem '6to5'
+gem 'coffee-script'
+
 group :dvelopment, :test do
   gem 'rspec'
   gem 'rack-test'
@@ -16,7 +20,6 @@ group :dvelopment, :test do
   gem 'database_cleaner'
   gem 'pry'
   gem 'did_you_mean'
-  gem 'stylus'
 end
 
 group :development do
