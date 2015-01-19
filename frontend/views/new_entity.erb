@@ -1,0 +1,119 @@
+<div class="row">
+  <div class="new-entity col half" data-controller="AppConfig" data-action="NewEntity">
+    <h2>New Entity</h2>
+
+    <input type="text" name="entity[name]" placeholder="Name" autofocus="true"/>
+
+    <h3>Fields</h3>
+    <input data-key="name" type="text" placeholder="field name" />
+    <%= select_tag 'type', options: entity_field_types %>
+
+    <button class="add-field">add +</button>
+
+    <button class="save-entity row">Save entity</button>
+  </div>
+
+  <div class="entity-preview col half" data-controller="AppConfig" data-action="EntityPreview">
+    <h2>Preview</h2>
+    <hr />
+
+    <div class="endpoint-preview">
+      <h3 class="entity-preview-name row">
+        GET
+        /api/<span data-key="entity:name"></span>
+      </h3>
+      <hr class="row" />
+
+      <table class="endpoint-preview-params full">
+        <thead>
+          <tr>
+            <td>Parameter</td>
+            <td>Type</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="default-field">
+            <td>created_at</td>
+            <td>DateTime</td>
+          </tr>
+          <tr class="default-field">
+            <td>updated_at</td>
+            <td>DateTime</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint-preview">
+      <h3 class="entity-preview-name row">
+        POST
+        /api/<span data-key="entity:name"></span>
+      </h3>
+      <hr class="row" />
+
+      <table class="endpoint-preview-params full">
+        <thead>
+          <tr>
+            <td>Parameter</td>
+            <td>Type</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="endpoint-preview">
+      <h3 class="entity-preview-name row">
+        GET
+        /api/<span data-key="entity:name"></span>/:id
+      </h3>
+      <hr class="row" />
+
+      <table class="endpoint-preview-params full">
+        <thead>
+          <tr>
+            <td>Parameter</td>
+            <td>Type</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="default-field">
+            <td>created_at</td>
+            <td>DateTime</td>
+          </tr>
+          <tr class="default-field">
+            <td>updated_at</td>
+            <td>DateTime</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint-preview">
+      <h3 class="entity-preview-name row">
+        PATCH
+        /api/<span data-key="entity:name"></span>/:id
+      </h3>
+      <hr class="row" />
+
+      <table class="endpoint-preview-params full">
+        <thead>
+          <tr>
+            <td>Parameter</td>
+            <td>Type</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="endpoint-preview">
+      <h3 class="entity-preview-name row">
+        DELETE
+        /api/<span data-key="entity:name"></span>/:id
+      </h3>
+      <hr class="row" />
+    </div>
+  </div>
+</div>
+

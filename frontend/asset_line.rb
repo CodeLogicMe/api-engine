@@ -7,6 +7,8 @@ class AssetLine
       CSS.new(env, assets_root),
       JS.new(env, assets_root),
       Stylus.new(env, assets_root),
+      CoffeeScript.new(env, assets_root),
+      ES6.new(env, assets_root),
       NullCompiler.new
     ]
   end
@@ -70,8 +72,7 @@ class AssetLine
     end
 
     def compile(filename)
-      path = File.join(@root, filename.gsub(/(?<=\.)css$/i, 'styl'))
-      ::Stylus.compile File.new(path), **css_options
+      ::Stylus.compile File.new(file_path(filename)), **css_options
     end
 
     def css_options
@@ -83,6 +84,42 @@ class AssetLine
           compress: false
         }
       }[@env]
+    end
+  end
+
+  class CoffeeScript < SimpleAsset
+    require 'coffee-script'
+
+    EXT = 'coffee'.freeze
+
+    def initialize(env, root)
+      super(env, root, type: 'javascripts', ext: EXT)
+    end
+
+    def can_handle?(filename)
+      super(filename, real_ext: 'js')
+    end
+
+    def compile(filename)
+      ::CoffeeScript.compile File.read(file_path(filename))
+    end
+  end
+
+  class ES6 < SimpleAsset
+    require '6to5'
+
+    EXT = 'es6'.freeze
+
+    def initialize(env, root)
+      super(env, root, type: 'javascripts', ext: EXT)
+    end
+
+    def can_handle?(filename)
+      super(filename, real_ext: 'js')
+    end
+
+    def compile(filename)
+      ::ES6to5.transform File.read(file_path(filename))
     end
   end
 

@@ -1,9 +1,13 @@
 <div class="my-apps">
   <a href="/apps/new">create an awesome app</a>
 
-  <% @apps.each do |app| %>
-    <a href="/apps/<%= app.slug %>" class="">
-      <%= app.name %>
-    </a>
-  <% end %>
+  <ul class="app-list">
+    <% @apps.each do |app| %>
+      <li>
+        <a href="/apps/<%= app.system_name %>" class="">
+          <%= app.name %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
 </div>

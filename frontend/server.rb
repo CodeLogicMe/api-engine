@@ -26,9 +26,9 @@ module RestInMe
       if client
         set_current_client client
 
-        redirect to('/dashboard')
+        redirect to('/apps')
       else
-        redirect to('/sign_in')
+        redirect to('/landing')
       end
     end
 
@@ -38,9 +38,9 @@ module RestInMe
       if client
         set_current_client client
 
-        redirect to('/dashboard')
+        redirect to('/apps')
       else
-        redirect to('/sign_up')
+        redirect to('/landing')
       end
     end
   end
