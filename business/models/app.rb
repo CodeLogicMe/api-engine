@@ -45,5 +45,11 @@ module RestInMe
         field_config['name'] == field_name.to_s
       end
     end
+
+    def entities
+      app_config.entities.map do |entity|
+        Engines::EntityBuilder.new(self, entity).call
+      end
+    end
   end
 end

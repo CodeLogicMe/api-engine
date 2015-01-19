@@ -49,7 +49,7 @@ def calculate_hmac(verb, private_key, params, timestamp)
 end
 def set_auth_headers_for!(app, verb, params)
   timestamp = Time.now.utc
-  header 'Timestamp', timestamp
+  header 'Timestamp', timestamp.to_s
   header 'Publickey', app.public_key
   header 'Hmac', calculate_hmac(verb, app.private_key.secret, params, timestamp)
 end

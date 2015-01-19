@@ -4,7 +4,11 @@ module RestInMe
 
     def current_app
       @current_app ||= begin
-        data = { verb: verb, auth: auth_keys, query_string: params_string }
+        data = {
+          verb: verb,
+          auth: auth_keys,
+          query_string: params_string
+        }
 
         Actions::AuthenticateApp.new(data).call do
           error!({ errors: ['Unauthorized'] }, 401)
@@ -30,9 +34,9 @@ module RestInMe
 
     def auth_keys
       {
-        hmac: headers.fetch('Hmac'),
-        timestamp: headers.fetch('Timestamp'),
-        public_key: headers.fetch('Publickey')
+        hmac: headers.fetch('Hmac') { 'missing' },
+        timestamp: headers.fetch('Timestamp') { 'missing' },
+        public_key: headers.fetch('Publickey') { 'missing' }
       }
     end
   end

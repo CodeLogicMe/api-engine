@@ -20,22 +20,36 @@ module RestInMe
       end
     end
 
-    context 'for the current app' do
-      before do
-        10.times do |index|
-          params = { name: "NerdCast-#{index}" }
-          set_auth_headers_for!(ultra_pod, 'POST', params)
-          post '/api/podcasts', params
+    describe 'for the current app' do
+      context 'with existing entries' do
+        before do
+          10.times do |index|
+            params = { name: "NerdCast-#{index}" }
+            set_auth_headers_for!(ultra_pod, 'POST', params)
+            post '/api/podcasts', params
+          end
+          set_auth_headers_for!(ultra_pod, 'GET', {})
+          get '/api/podcasts'
         end
-        set_auth_headers_for!(ultra_pod, 'GET', {})
-        get '/api/podcasts'
+
+        it do
+          expect(last_response.status).to eql 200
+          expect(last_json['count']).to eql 10
+          expect(last_json.items.last.keys).to eql %w(id name created_at updated_at)
+          expect(last_json.items.last.name).to eql 'NerdCast-9'
+        end
       end
 
-      it do
-        expect(last_response.status).to eql 200
-        expect(last_json['count']).to eql 10
-        expect(last_json.items.last.keys).to eql %w(id name created_at updated_at)
-        expect(last_json.items.last.name).to eql 'NerdCast-9'
+      context 'without entries' do
+        before do
+          set_auth_headers_for!(ultra_pod, 'GET', {})
+          get '/api/podcasts'
+        end
+
+        it do
+          expect(last_response.status).to eql 200
+          expect(last_json['count']).to eql 0
+        end
       end
     end
   end

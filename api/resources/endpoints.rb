@@ -8,7 +8,7 @@ module RestInMe
       end
 
       def entity_name
-        params[:entity_name].singularize
+        params[:entity_name]
       end
 
       def current_entity

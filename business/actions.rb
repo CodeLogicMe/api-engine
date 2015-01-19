@@ -31,6 +31,9 @@ module RestInMe
     TOLERANCE = 1.minute
 
     def call
+      auth.values.any?(&:empty?) and
+        fail InvalidCredentials
+
       app = Models::App.find_by public_key: auth.fetch(:public_key)
 
       valid_request?(app) or
@@ -65,9 +68,24 @@ module RestInMe
     end
 
     def expired?
-      timestamp = auth.fetch(:timestamp)
+      timestamp = Time.parse(auth.fetch(:timestamp))
       now_utc = Time.now.utc.to_i
       now_utc - TOLERANCE > timestamp.to_i
+    end
+  end
+
+  class AddEntity
+    extend Extensions::Parameterizable
+
+    with :name, :fields
+
+    def call(app)
+      set = app.app_config.entities
+      if set.none? { |item| item['name'] == name }
+        set << { name: name, fields: fields }
+        app.app_config.update_attributes \
+          entities: set
+      end
     end
   end
 end

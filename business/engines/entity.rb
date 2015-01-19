@@ -72,7 +72,13 @@ module RestInMe
       end
 
       def count(app)
-        app.reload[@@collection_name].count
+        app.reload
+
+        if app[@@collection_name].nil?
+          0
+        else
+          app.reload[@@collection_name].count
+        end
       end
 
       private

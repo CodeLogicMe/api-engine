@@ -10,7 +10,7 @@ module RestInMe
           let(:auth) do
             now_utc = Time.now.utc
             {
-              timestamp: now_utc,
+              timestamp: now_utc.to_s,
               public_key: jedi_temple.public_key,
               hmac: calculate_hmac('GET', jedi_temple.private_key.secret, {}, now_utc)
             }
@@ -27,7 +27,7 @@ module RestInMe
           let(:auth) do
             now_utc = Time.now.utc
             {
-              timestamp: now_utc,
+              timestamp: now_utc.to_s,
               public_key: jedi_temple.public_key,
               hmac: calculate_hmac('GET', 'super12345invalid09876secret1029384key', {}, now_utc)
             }
@@ -43,7 +43,7 @@ module RestInMe
           let(:auth) do
             now_utc = Time.now.utc
             {
-              timestamp: now_utc,
+              timestamp: now_utc.to_s,
               public_key: 'super12345invalid09876secret1029384key',
               hmac: calculate_hmac('GET', jedi_temple.private_key.secret, {}, now_utc)
             }
@@ -67,7 +67,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
 
     before do
       timestamp = Time.now.utc
-      header 'Timestamp', timestamp
+      header 'Timestamp', timestamp.to_s
       header 'PublicKey', dark_temple.public_key
       header 'Hmac', calculate_hmac(verb.upcase, private_key, params, timestamp)
 
