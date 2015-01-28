@@ -14,7 +14,7 @@ module RestInMe
       def current_entity
         @entity ||= begin
           entity_config = current_app.config_for(entity_name)
-          Engines::EntityBuilder.new(current_app, entity_config).call
+          EntityBuilder.new(current_app, entity_config).call
         end
       end
 
@@ -46,7 +46,7 @@ module RestInMe
         entity = current_entity.create(
           app: current_app, **entity_params
         )
-        entity.attributes.to_h
+        entity.attributes
       end
 
       delete '/:id' do

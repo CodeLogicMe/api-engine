@@ -1,7 +1,7 @@
 require 'hashie/mash'
 
 module RestInMe
-  class Engines::EntityBuilder
+  class EntityBuilder
     def initialize(app, config)
       @app = app
       @config = ::Hashie::Mash.new config
@@ -24,7 +24,7 @@ module RestInMe
       app_name = @app.name.classify
       klass_name = @config.name.classify
 
-      klass = ::Class.new do
+      ::Class.new do
         include Entity
 
         store_as name
@@ -44,8 +44,9 @@ module RestInMe
     end
 
     def mix_in_fields(klass)
-      @config.fields
-        .each { |field| FieldConfig.new(field).apply_on klass }
+      @config
+        .fields
+        .each { |f| FieldConfig.new(f).apply_on klass }
     end
   end
 
@@ -53,7 +54,9 @@ module RestInMe
     def apply_on(klass)
       field_name = proper_field_name
       parser = Parsers.const_get(type.capitalize)
-      klass.instance_eval { field field_name.to_sym, parser }
+      klass.instance_eval do
+        field field_name.to_s, parser
+      end
     end
 
     private

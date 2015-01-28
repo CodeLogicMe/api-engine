@@ -10,8 +10,8 @@ module RestInMe::Models
       name { ::Faker::Company.name }
 
       trait :with_config do
-        after(:create) do |instance|
-          create :app_config, app: instance
+        after(:create) do |app|
+          create :app_config, app: app
         end
       end
     end
@@ -22,8 +22,11 @@ module RestInMe::Models
         [{
           name: 'podcasts',
           fields: [
+            { name: 'id', type: 'string' },
             { name: 'name', type: 'string' },
-            { name: 'episodes', type: 'integer' }
+            { name: 'episodes', type: 'integer' },
+            { name: 'created_at', type: 'string' },
+            { name: 'updated_at', type: 'datetime' }
           ]
         }]
       }

@@ -1,4 +1,63 @@
 module RestInMe
+  class Repository < ::Struct.new(:app, :collection_name)
+    require 'ostruct'
+
+    def klass
+      @klass ||= begin
+        config = app.config_for(collection_name)
+        EntityBuilder.new(app, config).call
+      end
+    end
+
+    def build(obj)
+      inst = klass.new(app: app, **{})
+      inst.attributes = obj
+      inst
+    end
+
+    def all
+      Array(app.reload[collection_name])
+        .map { |item| build item  }
+    end
+
+    def count
+      app.reload
+
+      if app[collection_name].nil?
+        0
+      else
+        app.reload[collection_name].count
+      end
+    end
+
+    def valid?(obj)
+      true
+    end
+
+    def create(obj)
+      valid?(obj) && persist(obj)
+    end
+
+    def save(obj)
+      valid?(obj) && persist(obj)
+    end
+
+    def persist(obj)
+      obj['id'] ||= ::BSON::ObjectId.new.to_s
+
+      inst = obj.is_a?(Hash) ? build(obj) : obj
+
+      collection = all
+      collection.push inst
+
+      app.reload.update_attribute(
+        collection_name, collection.map(&:attributes)
+      )
+
+      inst
+    end
+  end
+
   module Entity
     def self.included(receiver)
       receiver.extend         ClassMethods
@@ -16,8 +75,7 @@ module RestInMe
       end
 
       def all(app)
-        Array(app.reload[@@collection_name])
-          .map { |item| build app, item }
+        Repository.new(app, @@collection_name).all
       end
 
       def find(app:, id:)
@@ -32,28 +90,23 @@ module RestInMe
         inst
       end
 
-      def create(app:, **fields)
-        inst = new(app: app, **fields)
+      def create(app:, **obj)
+        obj
 
-        inst.valid? or
+        repo = Repository.new(app, @@collection_name)
+        repo.valid?(obj) or
           return false
 
-        inst.attributes['created_at'] = ::Time.now.utc
-        inst.attributes['updated_at'] = ::Time.now.utc
-        inst.save
+        obj['created_at'] = ::Time.now.utc
+        obj['updated_at'] = ::Time.now.utc
 
-        inst
+        repo.create(obj)
       end
 
-      def persist(inst)
-        collection = all(inst.app)
-        collection.push inst
-
-        inst.app.reload.update_attribute(
-          @@collection_name, collection.map(&:attributes)
-        )
-
-        inst.app.reload
+      def persist(obj)
+        Repository
+          .new(app, @@collection_name)
+          .persist(obj)
       end
 
       def delete(app:, id:)
@@ -61,7 +114,7 @@ module RestInMe
 
         collection = all(inst.app)
         collection.reject! do |item|
-          item.id == inst.attributes.fetch(:id)
+          item.id == inst.attributes.fetch('id')
         end
 
         inst.app.reload.update_attribute(
@@ -72,13 +125,7 @@ module RestInMe
       end
 
       def count(app)
-        app.reload
-
-        if app[@@collection_name].nil?
-          0
-        else
-          app.reload[@@collection_name].count
-        end
+        Repository.new(app, @@collection_name).count
       end
 
       private
@@ -90,12 +137,6 @@ module RestInMe
       def setter(name, parser)
         -> (value) { @attributes[name] = parser.call(value) }
       end
-
-      def build(app, params)
-        inst = new(app: app, **{})
-        inst.attributes = params
-        inst
-      end
     end
 
     module InstanceMethods
@@ -103,20 +144,25 @@ module RestInMe
         @attributes = {}
 
         self.app = app
-        attributes['id'] = ::BSON::ObjectId.new.to_s
 
-        fields.each do |key, value|
-          public_send "#{key}=", value
+        fields.each do |field, value|
+          set field, value
         end
       end
 
-      attr_writer :attributes
-      def attributes
-        @attributes
+      def set(field, value)
+        public_send "#{field}=", value
+      end
+
+      attr_reader :attributes
+      def attributes=(values)
+        values.each do |key, value|
+          set key, value
+        end
       end
 
       def id
-        attributes['id']
+        @attributes['id']
       end
 
       def save
@@ -130,10 +176,6 @@ module RestInMe
 
       def app
         @app ||= Models::App.find(@app_id)
-      end
-
-      def valid?
-        true
       end
 
       def to_s

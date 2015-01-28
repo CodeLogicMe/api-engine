@@ -32,11 +32,16 @@ module RestInMe
           get '/api/podcasts'
         end
 
-        it do
+        it 'should contain all defined fields' do
           expect(last_response.status).to eql 200
           expect(last_json['count']).to eql 10
-          expect(last_json.items.last.keys).to eql %w(id name created_at updated_at)
-          expect(last_json.items.last.name).to eql 'NerdCast-9'
+
+          #p last_response.body
+          last_json.items.each_with_index do |item, index|
+            expect(last_json.items[index].keys)
+              .to match_array %w(id name created_at updated_at)
+            expect(last_json.items[index].name).to eql "NerdCast-#{index}"
+          end
         end
       end
 
