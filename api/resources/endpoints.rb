@@ -11,20 +11,15 @@ module RestInMe
         params[:entity_name]
       end
 
-      def current_entity
-        @entity ||= begin
-          entity_config = current_app.config_for(entity_name)
-          EntityBuilder.new(current_app, entity_config).call
-        end
+      def current_repository
+        @repository ||= Repository.new(current_app, entity_name)
       end
 
       def entity_params
         @entity_params ||= begin
           params.select { |key, value|
             current_app.has_field?(entity_name, key)
-          }.inject({}) do |memo, (k,v)|
-            memo[k.to_sym] = v; memo
-          end
+          }
         end
       end
     end
@@ -37,23 +32,19 @@ module RestInMe
     resource '/:entity_name' do
       get do
         {
-          count: current_entity.count(current_app),
-          items: current_entity.all(current_app).map(&:attributes)
+          count: current_repository.count,
+          items: current_repository.all.map(&:attributes)
         }
       end
 
       post do
-        entity = current_entity.create(
-          app: current_app, **entity_params
-        )
-        entity.attributes
+        current_repository
+          .create(entity_params)
+          .attributes
       end
 
       delete '/:id' do
-        current_entity.delete(
-          app: current_app, id: params.fetch(:id)
-        )
-
+        current_repository.delete params.fetch(:id)
         status 204
       end
     end

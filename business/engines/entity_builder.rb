@@ -27,8 +27,6 @@ module RestInMe
       ::Class.new do
         include Entity
 
-        store_as name
-
         klass_name_proc = -> {
           "#{app_name}::#{klass_name}"
         }
