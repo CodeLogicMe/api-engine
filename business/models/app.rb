@@ -28,6 +28,10 @@ module RestInMe
       self.private_key = Models::PrivateKey.new
     end
 
+    def to_param
+      system_name
+    end
+
     def has_entity?(name)
       app_config.entities.any? do |entity|
         entity['name'].to_s == name.to_s
