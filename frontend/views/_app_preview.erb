@@ -1,0 +1,17 @@
+<div class="app-preview col third" data-controller="AppCtrl" data-action="Preview" data-id="<%= app.id %>">
+  <a class="name" href="<%= app_path(app) %>">
+    <%= app.name %>
+  </a>
+
+  <%= erb :_app_enabler, locals: { app: app } %>
+
+  <div class="rate-limit">
+    <span class="label">Rate Limit</span>
+    <span class="actual">854</span>
+    <span class="maximum">/ 1000</span>
+  </div>
+
+  <a href="<%= app_tier_path(app) %>" class="cta-upgrade">
+    Upgrade Plan
+  </a>
+</div>

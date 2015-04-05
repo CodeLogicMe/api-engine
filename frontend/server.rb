@@ -12,9 +12,9 @@ module RestInMe
 
     helpers Helpers::ClientAccess
 
-    get '/' do
+    get "/" do
       if current_client.signed_in?
-        redirect to('/apps')
+        redirect to("/apps")
       else
         erb :landing, layout: :skeleton
       end

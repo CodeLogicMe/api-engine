@@ -8,21 +8,21 @@ module RestInMe
 
     helpers Helpers::ClientAccess
 
-    namespace '/apps' do
-      get '/?' do
+    namespace "/my_apps" do
+      get "/?" do
         @apps = current_client.apps
-        erb :apps, layout: :skeleton
+        erb :my_apps, layout: :application
       end
 
-      get '/new/?' do
+      get "/new/?" do
         @app = Models::App.new
-        erb :new_app, layout: :skeleton
+        erb :new_app, layout: :application
       end
 
-      post '/?' do
-        params['app'].merge!(client: current_client)
-        @app = Actions::CreateApp.new(params['app']).call do |app|
-          erb :new_app, layout: :skeleton
+      post "/?" do
+        params["app"].merge!(client: current_client)
+        @app = Actions::CreateApp.new(params["app"]).call do |app|
+          erb :new_app, layout: :application
           return
         end
 
@@ -75,6 +75,16 @@ module RestInMe
 
           {} and status 204
         end
+      end
+    end
+
+    helpers do
+      def app_path(model_or_id)
+        "/my_apps/#{model_or_id.to_param}"
+      end
+
+      def app_tier_path(model_or_id)
+        "/my_apps/#{model_or_id.to_param}/config#tier"
       end
     end
   end
