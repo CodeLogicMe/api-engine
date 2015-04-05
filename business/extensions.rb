@@ -1,4 +1,4 @@
-module RestInMe::Extensions
+module Extensions
   module Passwordable
     require 'bcrypt'
 

@@ -1,47 +1,45 @@
-require 'sinatra'
+require "sinatra"
 
-require_relative './assets_server'
-require_relative './apps'
+require_relative "./assets_server"
+require_relative "./my_apps"
 
-module RestInMe
-  class Frontend < Sinatra::Base
-    set :public_folder, File.dirname(__FILE__) + '/public'
+class Frontend < Sinatra::Base
+  set :public_folder, File.dirname(__FILE__) + "/public"
 
-    use AssetsServer
-    use Apps
+  use AssetsServer
+  use MyApps
 
-    helpers Helpers::ClientAccess
+  helpers Helpers::ClientAccess
 
-    get "/" do
-      if current_client.signed_in?
-        redirect to("/apps")
-      else
-        erb :landing, layout: :skeleton
-      end
+  get "/" do
+    if current_client.signed_in?
+      redirect to("/apps")
+    else
+      erb :landing, layout: :skeleton
     end
+  end
 
-    post '/sign_in' do
-      client = Models::Client.authenticate params[:client]
+  post '/sign_in' do
+    client = Models::Client.authenticate params[:client]
 
-      if client
-        set_current_client client
+    if client
+      set_current_client client
 
-        redirect to('/apps')
-      else
-        redirect to('/landing')
-      end
+      redirect to('/apps')
+    else
+      redirect to('/landing')
     end
+  end
 
-    post '/sign_up' do
-      client = Models::Client.create params[:client]
+  post '/sign_up' do
+    client = Models::Client.create params[:client]
 
-      if client
-        set_current_client client
+    if client
+      set_current_client client
 
-        redirect to('/apps')
-      else
-        redirect to('/landing')
-      end
+      redirect to('/apps')
+    else
+      redirect to('/landing')
     end
   end
 end

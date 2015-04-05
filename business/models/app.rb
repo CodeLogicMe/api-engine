@@ -1,15 +1,15 @@
-module RestInMe
-  class Models::App
-    include ::Mongoid::Document
-    include ::Mongoid::Timestamps
+module Models
+  class App
+    include Mongoid::Document
+    include Mongoid::Timestamps
     extend Extensions::Sluggable
     extend Extensions::Randomizable
 
     store_in collection: 'apps'
 
-    field :name,          type: ::String
-    field :system_name,   type: ::String
-    field :public_key,    type: ::String
+    field :name,          type: String
+    field :system_name,   type: String
+    field :public_key,    type: String
 
     slug :name, on: :system_name
     random :public_key, length: 64
@@ -17,7 +17,7 @@ module RestInMe
     belongs_to :client
     embeds_one :private_key
     embeds_one :app_config,
-      class_name: 'RestInMe::Models::AppConfig',
+      class_name: 'Models::AppConfig',
       autobuild: true
 
     index({ system_name: 1 }, { unique: true, name: 'system_name_index' })
@@ -25,7 +25,7 @@ module RestInMe
     validates_presence_of :name, :system_name, :client
 
     after_create do
-      self.private_key = Models::PrivateKey.new
+      self.private_key = PrivateKey.new
     end
 
     def to_param

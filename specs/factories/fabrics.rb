@@ -1,13 +1,13 @@
-module RestInMe::Models
-  ::FactoryGirl.define do
+module Models
+  FactoryGirl.define do
     factory :client, class: Client do
-      email { ::Faker::Internet.email }
-      password { ::Faker::Internet.password }
+      email { Faker::Internet.email }
+      password { Faker::Internet.password }
     end
 
     factory :app, class: App do
       client
-      name { ::Faker::Company.name }
+      name { Faker::Company.name }
 
       trait :with_config do
         after(:create) do |app|
@@ -17,7 +17,6 @@ module RestInMe::Models
     end
 
     factory :app_config, class: AppConfig do
-      app
       entities {
         [{
           name: 'podcasts',

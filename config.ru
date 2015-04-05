@@ -5,8 +5,8 @@ require './frontend/server'
 
 class SubdomainDispatcher
   def initialize
-    @api      = RestInMe::API.new
-    @frontend = RestInMe::Frontend.new
+    @api      = API.new
+    @frontend = Frontend.new
   end
 
   def call(env)

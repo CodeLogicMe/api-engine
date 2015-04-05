@@ -1,10 +1,8 @@
-module RestInMe
-  class Models::AppConfig
-    include Mongoid::Document
-    include Mongoid::Timestamps::Updated
+class Models::AppConfig
+  include Mongoid::Document
+  include Mongoid::Timestamps::Updated
 
-    field :entities, type: ::Array, default: []
+  field :entities, type: Array, default: []
 
-    embedded_in :app
-  end
+  embedded_in :app
 end

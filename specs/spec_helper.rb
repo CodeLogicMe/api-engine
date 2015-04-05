@@ -37,7 +37,7 @@ RSpec.configure do |config|
 end
 
 def app
-  RestInMe::API.new
+  API.new
 end
 def last_json
   Hashie::Mash.new JSON.parse(last_response.body)

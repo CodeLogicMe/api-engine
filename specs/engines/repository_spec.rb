@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe RestInMe::Repository do
+RSpec.describe Repository do
   let(:app) { create :app }
 
   describe 'with a single field' do

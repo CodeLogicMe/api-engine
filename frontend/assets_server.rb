@@ -15,6 +15,6 @@ class AssetsServer < Sinatra::Base
       content_type "text/css"
     end
 
-    assets.fetch(params.fetch("filename"))
+    assets.fetch params.fetch("filename")
   end
 end

@@ -1,30 +1,28 @@
 require_relative '../../business/engines/parsers'
 
-module RestInMe
-  ::RSpec.describe Parsers do
-    describe String do
-      subject { Parsers::String }
+RSpec.describe Parsers do
+  describe String do
+    subject { Parsers::String }
 
-      it 'with a string' do
-        expect(subject.call('lukelex')).to eq 'lukelex'
-      end
-      it 'with an integer as string' do
-        expect(subject.call('123')).to eq '123'
-      end
-      it 'with an integer' do
-        expect(subject.call(456)).to eq '456'
-      end
+    it 'with a string' do
+      expect(subject.call('lukelex')).to eq 'lukelex'
     end
+    it 'with an integer as string' do
+      expect(subject.call('123')).to eq '123'
+    end
+    it 'with an integer' do
+      expect(subject.call(456)).to eq '456'
+    end
+  end
 
-    describe Integer do
-      subject { Parsers::Integer }
+  describe Integer do
+    subject { Parsers::Integer }
 
-      it 'with an integer as string' do
-        expect(subject.call('123')).to eq 123
-      end
-      it 'with an integer' do
-        expect(subject.call(123)).to eq 123
-      end
+    it 'with an integer as string' do
+      expect(subject.call('123')).to eq 123
+    end
+    it 'with an integer' do
+      expect(subject.call(123)).to eq 123
     end
   end
 end

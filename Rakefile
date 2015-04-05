@@ -93,7 +93,7 @@ namespace :documentation do
   end
 
   task markdown: :environment do
-    versions = RestInMe::API.routes.sort_by(&:route_path).group_by(&:route_version).reject { |version, _| version.nil? }
+    versions = API.routes.sort_by(&:route_path).group_by(&:route_version).reject { |version, _| version.nil? }
 
     docpath = Pathname.new './documentation'
     docpath.mkpath

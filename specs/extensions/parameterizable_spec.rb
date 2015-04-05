@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-module RestInMe::Extensions
+module Extensions
   RSpec.describe Parameterizable do
     klass = Class.new do
       extend Parameterizable
