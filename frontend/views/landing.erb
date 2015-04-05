@@ -9,13 +9,4 @@
   </form>
 </div>
 
-<div class="sign-in-form">
-  <h3>Sign In</h3>
-
-  <form class="sign-in" action="/sign_in" method="post">
-    <input type="text" name="client[email]" placeholder="Email" />
-    <input type="password" name="client[password]" placeholder="Password" />
-
-    <input type="submit" value="submit" />
-  </form>
-</div>
+<%= erb :_login %>
