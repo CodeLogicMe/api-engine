@@ -8,9 +8,9 @@ gem 'bcrypt'
 gem 'rack-cors'
 gem 'require_all'
 
-gem 'stylus'
-gem '6to5'
-gem 'coffee-script'
+gem "stylus"
+gem "babel-transpiler"
+gem "coffee-script"
 
 group :dvelopment, :test do
   gem 'rspec'

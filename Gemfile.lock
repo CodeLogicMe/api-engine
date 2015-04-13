@@ -1,10 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    6to5 (0.2.1)
-      6to5-source (~> 1.14)
-      execjs (~> 2.0)
-    6to5-source (1.15.0)
     activemodel (4.1.6)
       activesupport (= 4.1.6)
       builder (~> 3.1)
@@ -18,6 +14,10 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    babel-source (5.0.12)
+    babel-transpiler (0.7.0)
+      babel-source (>= 4.0, < 6)
+      execjs (~> 2.0)
     backports (3.6.4)
     bcrypt (3.1.7)
     bson (2.3.0)
@@ -154,7 +154,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  6to5
+  babel-transpiler
   bcrypt
   coffee-script
   database_cleaner

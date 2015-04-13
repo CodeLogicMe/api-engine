@@ -106,20 +106,20 @@ class AssetLine
   end
 
   class ES6 < SimpleAsset
-    require '6to5'
+    require "babel/transpiler"
 
-    EXT = 'es6'.freeze
+    EXT = "es6".freeze
 
     def initialize(env, root)
-      super(env, root, type: 'javascripts', ext: EXT)
+      super(env, root, type: "javascripts", ext: EXT)
     end
 
     def can_handle?(filename)
-      super(filename, real_ext: 'js')
+      super(filename, real_ext: "js")
     end
 
     def compile(filename)
-      ::ES6to5.transform File.read(file_path(filename))
+      ::Babel::Transpiler.transform File.read(file_path(filename))
     end
   end
 
