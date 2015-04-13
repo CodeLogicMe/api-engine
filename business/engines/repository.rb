@@ -1,7 +1,8 @@
 require "forwardable"
+require_relative "operation"
 
 class Repository < Struct.new(:app, :collection_name)
-  extend ::Forwardable
+  extend Forwardable
 
   def_delegator :klass, :new, :build
   def_delegators :all, :first, :count
@@ -19,12 +20,14 @@ class Repository < Struct.new(:app, :collection_name)
   end
 
   def valid?(obj)
-    true
+    validation_klass.new.valid?(obj)
   end
 
   def save(obj)
-    inst = obj.is_a?(::Hash) ? build(obj) : obj
-    valid?(inst) && persist(inst)
+    inst = obj.is_a?(Hash) ? build(obj) : obj
+    result = valid?(inst)
+    persist(inst)
+    result
   end
   alias_method :create, :save
 
@@ -50,10 +53,22 @@ class Repository < Struct.new(:app, :collection_name)
       end
   end
 
+  def validation_klass
+    @validation_klass ||=
+      begin
+        config = app.reload.validations_for(collection_name)
+        if config
+          ::ValidationBuilder.new(app, config).call
+        else
+          ::ValidationBuilder::Fake
+        end
+      end
+  end
+
   def persist(inst)
-    inst.set("id", ::BSON::ObjectId.new.to_s)
-    inst.set("created_at", ::Time.now.utc)
-    inst.set("updated_at", ::Time.now.utc, force: true)
+    inst.set("id", BSON::ObjectId.new.to_s)
+    inst.set("created_at", Time.now.utc)
+    inst.set("updated_at", Time.now.utc, force: true)
 
     new_collection = all + Array(inst)
 

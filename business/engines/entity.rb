@@ -15,7 +15,7 @@ module Entity
     private
 
     def getter(name, parser)
-      -> { parser.call @attributes.fetch(name) }
+      -> { parser.call @attributes[name] }
     end
 
     def setter(name, parser)

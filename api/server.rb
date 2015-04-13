@@ -7,12 +7,13 @@ require_rel "./resources/*.rb"
 class API < ::Grape::API
   version "v1", using: :header, vendor: "restinme"
   format :json
+  content_type :json, "application/json"
   prefix :api
 
   use ::Rack::Cors do
     allow do
-      origins '*'
-      resource '*',
+      origins "*"
+      resource "*",
         headers: :any,
         methods: %i( get post put delete options )
     end

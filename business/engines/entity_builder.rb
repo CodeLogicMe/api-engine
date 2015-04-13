@@ -3,7 +3,7 @@ require "hashie/mash"
 class EntityBuilder
   def initialize(app, config)
     @app = app
-    @config = ::Hashie::Mash.new config
+    @config = Hashie::Mash.new config
   end
 
   def call
@@ -23,7 +23,7 @@ class EntityBuilder
     app_name = @app.name.classify
     klass_name = @config.name.classify
 
-    ::Class.new do
+    Class.new do
       include Entity
 
       klass_name_proc = -> {
@@ -47,7 +47,7 @@ class EntityBuilder
   end
 end
 
-class FieldConfig < ::OpenStruct
+class FieldConfig < OpenStruct
   def apply_on(klass)
     field_name = proper_field_name
     parser = Parsers.const_get(type.capitalize)

@@ -2,7 +2,7 @@ class Resources::Endpoints < Grape::API
   helpers do
     def check_entity_for_current_app!
       unless current_app.has_entity?(entity_name)
-        error!({ errors: ['Not Found'] }, 404)
+        error!({ errors: ["Not Found"] }, 404)
       end
     end
 
@@ -29,7 +29,7 @@ class Resources::Endpoints < Grape::API
     check_entity_for_current_app!
   end
 
-  resource '/:entity_name' do
+  resource "/:entity_name" do
     get do
       {
         count: current_repository.count,
@@ -38,12 +38,16 @@ class Resources::Endpoints < Grape::API
     end
 
     post do
-      current_repository
-        .create(entity_params)
-        .attributes
+      validations = current_repository.create(entity_params)
+      if validations.ok?
+        validations.result.attributes
+      else
+        status 400
+        { errors: validations.errors }
+      end
     end
 
-    delete '/:id' do
+    delete "/:id" do
       current_repository.delete params.fetch(:id)
       status 204
     end
