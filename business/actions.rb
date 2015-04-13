@@ -82,8 +82,7 @@ class Actions::AddEntity
     set = app.app_config.entities
     if set.none? { |item| item['name'] == name }
       set << { name: name, fields: fields }
-      app.app_config.update_attributes \
-        entities: set
+      app.app_config.update_attributes entities: set
     end
   end
 end
