@@ -4,20 +4,30 @@ module AuthHelpers
   def current_app
     @current_app ||=
       begin
-        data = {
-          verb: verb,
-          auth: auth_keys,
-          query_string: params_string
-        }
+        if auth_data[:auth][:public_key] == "missing"
+          unauthorized!
+        end
 
-        ::Actions::AuthenticateApp.new(data).call do
-          error!({ errors: ['Unauthorized'] }, 401)
+        Actions::AuthenticateApp.new(auth_data).call do
+          unauthorized!
         end
       end
   end
   alias_method :authenticate_app!, :current_app
 
+  def unauthorized!
+    error!({ errors: ["Unauthorized"] }, 401)
+  end
+
   private
+
+  def auth_data
+    @auth_data ||= {
+      verb: verb,
+      auth: auth_keys,
+      query_string: params_string
+    }
+  end
 
   def verb
     env.fetch "REQUEST_METHOD"
