@@ -5,19 +5,15 @@ module AuthHelpers
     @current_app ||=
       begin
         if auth_data[:auth][:public_key] == "missing"
-          unauthorized!
+          error!({}, 404)
         end
 
         Actions::AuthenticateApp.new(auth_data).call do
-          unauthorized!
+          error!({ errors: ["Unauthorized"] }, 401)
         end
       end
   end
   alias_method :authenticate_app!, :current_app
-
-  def unauthorized!
-    error!({ errors: ["Unauthorized"] }, 401)
-  end
 
   private
 
