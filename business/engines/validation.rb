@@ -28,7 +28,7 @@ module Validation
     def check_for_errors(entity)
       self.class.validations.map { |checker|
         value = entity.public_send checker.field
-        unless checker.with value
+        unless checker.with? value
           checker.error_message
         end
       }.compact
