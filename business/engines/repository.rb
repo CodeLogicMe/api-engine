@@ -1,5 +1,4 @@
 require "forwardable"
-require_relative "operation"
 
 class Repository < Struct.new(:app, :collection_name)
   extend Forwardable
