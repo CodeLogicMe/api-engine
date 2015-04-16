@@ -17,7 +17,7 @@ RSpec.describe API do
       expect(last_json.episodes).to eql 352
     end
 
-    context "without require data" do
+    context "without the required data" do
       before do
         ultra_pod = create :app, :with_config
         set_auth_headers_for!(ultra_pod, "POST", {})
@@ -28,7 +28,8 @@ RSpec.describe API do
         expect(last_response.status).to eql 400
         expect(last_json.errors.length).to eql 2
         expect(last_json.errors).to match_array [
-          "Name can't be blank", "Episodes can't be blank"
+          "Name can't be blank",
+          "Episodes can't be blank"
         ]
       end
     end
