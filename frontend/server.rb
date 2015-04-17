@@ -37,7 +37,7 @@ class Frontend < Sinatra::Base
     if client
       set_current_client client
 
-      redirect to('/apps')
+      redirect to('/my_apps')
     else
       redirect to('/landing')
     end
