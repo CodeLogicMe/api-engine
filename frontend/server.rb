@@ -19,6 +19,10 @@ class Frontend < Sinatra::Base
     end
   end
 
+  get '/sign_in' do
+    erb :sign_in, layout: :skeleton
+  end
+
   post '/sign_in' do
     client = Models::Client.authenticate params[:client]
 
@@ -27,8 +31,12 @@ class Frontend < Sinatra::Base
 
       redirect to('/my_apps')
     else
-      redirect to('/')
+      redirect to('/sign_in')
     end
+  end
+
+  get '/sign_up' do
+    erb :sign_up, layout: :skeleton
   end
 
   post '/sign_up' do
@@ -39,7 +47,7 @@ class Frontend < Sinatra::Base
 
       redirect to('/my_apps')
     else
-      redirect to('/landing')
+      redirect to('/sign_up')
     end
   end
 end
