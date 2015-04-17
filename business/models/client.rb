@@ -7,7 +7,7 @@ class Models::Client
 
   field :email, type: String
 
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: true
 
   has_many :apps
 
