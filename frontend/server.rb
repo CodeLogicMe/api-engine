@@ -11,9 +11,9 @@ class Frontend < Sinatra::Base
 
   helpers Helpers::ClientAccess
 
-  get "/" do
+  get '/' do
     if current_client.signed_in?
-      redirect to("/apps")
+      redirect to('/my_apps')
     else
       erb :landing, layout: :skeleton
     end
@@ -25,9 +25,9 @@ class Frontend < Sinatra::Base
     if client
       set_current_client client
 
-      redirect to('/apps')
+      redirect to('/my_apps')
     else
-      redirect to('/landing')
+      redirect to('/')
     end
   end
 

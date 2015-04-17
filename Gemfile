@@ -8,9 +8,9 @@ gem 'bcrypt'
 gem 'rack-cors'
 gem 'require_all'
 
-gem "stylus"
-gem "babel-transpiler"
-gem "coffee-script"
+gem 'stylus'
+gem 'babel-transpiler'
+gem 'coffee-script'
 
 group :dvelopment, :test do
   gem 'rspec'
@@ -20,6 +20,7 @@ group :dvelopment, :test do
   gem 'database_cleaner'
   gem 'pry'
   gem 'did_you_mean'
+  gem 'capybara'
 end
 
 group :development do

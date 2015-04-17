@@ -1,6 +1,7 @@
-require 'sinatra/namespace'
+require "sinatra/base"
+require "sinatra/namespace"
 
-require_relative './helpers'
+require_relative "./helpers"
 
 class MyApps < Sinatra::Base
   register Sinatra::Namespace
@@ -8,6 +9,12 @@ class MyApps < Sinatra::Base
   helpers Helpers::ClientAccess
 
   namespace "/my_apps" do
+    before do
+      unless current_client.signed_in?
+        redirect "/"
+      end
+    end
+
     get "/?" do
       @apps = current_client.apps
       erb :my_apps, layout: :application
@@ -28,7 +35,7 @@ class MyApps < Sinatra::Base
       redirect to("/apps/#{app.system_name}")
     end
 
-    namespace '/:slug' do
+    namespace "/:slug" do
       helpers do
         def current_app
           current_client.apps.find_by(system_name: params['slug'])
@@ -36,8 +43,8 @@ class MyApps < Sinatra::Base
 
         def entity_field_types
           [
-            OpenStruct.new(name: 'String', value: 'string'),
-            OpenStruct.new(name: 'Integer', value: 'integer')
+            OpenStruct.new(name: "String", value: "string"),
+            OpenStruct.new(name: "Integer", value: "integer")
           ]
         end
 
