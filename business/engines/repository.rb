@@ -1,4 +1,4 @@
-require "forwardable"
+require 'forwardable'
 
 class Repository < Struct.new(:app, :collection_name)
   extend Forwardable
@@ -55,7 +55,7 @@ class Repository < Struct.new(:app, :collection_name)
   def validation_klass
     @validation_klass ||=
       begin
-        config = app.reload.validations_for(collection_name)
+        config = app.reload.config_for(collection_name)
         if config
           ::ValidationBuilder.new(app, config).call
         else

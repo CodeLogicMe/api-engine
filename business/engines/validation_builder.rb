@@ -18,20 +18,15 @@ class ValidationBuilder
   private
 
   def bootstrap_klass
-    name = collection_name
-
     Class.new do
       include Validation
     end
   end
 
-  def collection_name
-    @config.name.pluralize.underscore
-  end
-
   def mix_in_validations(klass)
     @config
       .fields
+      .select { |f| Array(f.validates).any? }
       .each { |f| FieldValidation.new(f).apply_on klass }
   end
 

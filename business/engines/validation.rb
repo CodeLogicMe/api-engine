@@ -5,10 +5,12 @@ module Validation
   end
 
   module ClassMethods
-    attr_reader :validations
-    def validate(name, with:)
+    def validations
       @validations ||= []
-      @validations << with.new(name)
+    end
+
+    def validate(name, with:)
+      validations << with.new(name)
     end
   end
 

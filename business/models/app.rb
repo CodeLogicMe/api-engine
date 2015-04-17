@@ -44,12 +44,6 @@ module Models
       end
     end
 
-    def validations_for(name)
-      app_config.validations.find do |validations_set|
-        validations_set["name"].to_s == name.to_s
-      end
-    end
-
     def has_field?(entity_name, field_name)
       config_for(entity_name)["fields"].any? do |field_config|
         field_config["name"] == field_name.to_s
