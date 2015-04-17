@@ -8,14 +8,8 @@ class MyApps < Sinatra::Base
 
   helpers Helpers::ClientAccess
 
-  namespace "/my_apps" do
-    before do
-      unless current_client.signed_in?
-        redirect "/"
-      end
-    end
-
-    get "/?" do
+  namespace '/my_apps' do
+    get '/?' do
       @apps = current_client.apps
       erb :my_apps, layout: :application
     end

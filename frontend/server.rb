@@ -2,21 +2,29 @@ require "sinatra"
 
 require_relative "./assets_server"
 require_relative "./my_apps"
+require_relative './app_builder'
 
 class Frontend < Sinatra::Base
   set :public_folder, File.dirname(__FILE__) + "/public"
 
   use AssetsServer
   use MyApps
+  use AppBuilder
 
   helpers Helpers::ClientAccess
+
+  before do
+    unless current_client.signed_in?
+      redirect '/'
+    end
+  end
 
   get '/' do
     if current_client.signed_in?
       redirect to('/my_apps')
-    else
-      erb :landing, layout: :skeleton
     end
+
+    erb :landing, layout: :skeleton
   end
 
   get '/sign_in' do
