@@ -7,15 +7,64 @@
 
 @import "header"
 
-.resource-list
-  color white
-  height 100%
-  background-color gray
+.app-builder .nav-bar
+  overflow hidden
+  padding 10px
+  border-bottom 1px solid black
 
-  .nav-bar
-    padding 10px
-    border-bottom 1px solid black
+  .title
+    text-transform capitalize
+
+.app-builder
+  .list, .constructor
+    color white
+    height 100%
+    background-color gray
+
+  .constructor
+    display none
+
+.app-builder .list
+  ul
+    list-style-type none
 
   .item
     padding 10px
+    text-transform capitalize
 
+    &:hover
+      cursor pointer
+
+.preview
+  padding 15px
+
+.constructor
+  .back-to-list
+    text-align center
+
+    &:hover
+      cursor pointer
+
+.resource-preview
+  float left
+  width 250px
+  margin 0 15px
+  background-color #FFFFFF
+  border 2px solid black
+
+  &.selected
+    border-color yellow
+
+  > *
+    padding 5px
+
+  .title
+    background-color #CCCCCC
+    text-transform capitalize
+    border-bottom 2px solid black
+
+    &:hover
+      cursor pointer
+
+  .fields
+    list-style-type none

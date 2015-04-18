@@ -6,21 +6,23 @@
     <link rel="stylesheet" href="/assets/stylesheets/app_builder.css">
   </head>
   <body>
-    <%= erb :header %>
+    <div class="site">
+      <%= erb :header %>
 
-    <div class="site row">
-      <div class="site-page col o-fifth">
+      <div class="site-page row">
         <%= yield %>
       </div>
     </div>
 
-    <script src="/assets/javascripts/raphael.js"></script>
+    <script src="/assets/javascripts/polyfills.js"></script>
+    <script src="/assets/javascripts/handlebars.js"></script>
     <script src="/assets/javascripts/zepto.js"></script>
     <script src="/assets/javascripts/stik-core.js"></script>
     <script src="/assets/javascripts/stik-courier.js"></script>
     <script src="/assets/javascripts/stik-view-bag.js"></script>
     <script src="/assets/javascripts/stik-dom-lib-loader.js"></script>
     <script src="/assets/javascripts/behaviors/shownable.js"></script>
+    <script src="/assets/javascripts/app_builder.js"></script>
   </body>
 </html>
 

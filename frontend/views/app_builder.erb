@@ -1,20 +1,47 @@
 <div class="app-builder row">
-  <div class="constructor col third" data-controller="AppBuilder" data-action="Constructor">
-    <div class="resource-list">
-      <div class="nav-bar row">
-        <span class="nav-bar-title">Resources</span>
-      </div>
-      <ul class="row">
-        <li class="item">Users</li>
-        <li class="item">Users</li>
-        <li class="item">Users</li>
-        <li class="item">Users</li>
-        <li class="item">Users</li>
-      </ul>
-    </div>
+  <div class="list col fourth" data-controller="AppBuilder" data-action="List">
+  </div>
 
-    <div class="resource-view row">
+  <div class="constructor col fourth" data-controller="AppBuilder" data-action="Constructor">
+  </div>
 
-    </div>
+  <div class="preview col half" data-controller="AppBuilder" data-action="Preview">
   </div>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+  window.appConfig = <%= @app_config.to_json %>;
+</script>
+
+<script id="resource-list" type="text/x-handlebars-template">
+  <div class="nav-bar row">
+    <span class="title col full">Resources</span>
+  </div>
+  <ul class="row">
+    {{#each entities}}
+      <li class="item">{{ name }}</li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="constructor" type="text/x-handlebars-template">
+  <div class="nav-bar row">
+    <span class="back-to-list col fifth">&#10094;</span>
+    <span class="title col o-fifth">{{ name }}</span>
+  </div>
+
+</script>
+
+<script id="resource-preview" type="text/x-handlebars-template">
+  <div class="resource-preview" data-controller="AppBuilder" data-action="ResourcePreview">
+    <div class="title">
+      {{ name }}
+    </div>
+
+    <ul class="fields">
+      {{#each fields}}
+        <li>{{ name }}:{{ type }}</li>
+      {{/each}}
+    </ul>
+  </div>
+</script>
