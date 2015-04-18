@@ -5,6 +5,7 @@ class AppBuilder < Sinatra::Base
   register Sinatra::Namespace
 
   helpers Helpers::ClientAccess
+  helpers Helpers::Assets
 
   namespace '/builder' do
     get '/?' do

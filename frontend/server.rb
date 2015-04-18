@@ -12,6 +12,7 @@ class Frontend < Sinatra::Base
   use AppBuilder
 
   helpers Helpers::ClientAccess
+  helpers Helpers::Assets
 
   before do
     unless current_client.signed_in?

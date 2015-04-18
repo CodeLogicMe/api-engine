@@ -88,16 +88,16 @@ class AssetLine
   end
 
   class CoffeeScript < SimpleAsset
-    require "coffee-script"
+    require 'coffee-script'
 
-    EXT = "coffee".freeze
+    EXT = 'coffee'.freeze
 
     def initialize(env, root)
-      super(env, root, type: "javascripts", ext: EXT)
+      super(env, root, type: 'javascripts', ext: EXT)
     end
 
     def can_handle?(filename)
-      super(filename, real_ext: "js")
+      super(filename, real_ext: 'js')
     end
 
     def compile(filename)
@@ -106,16 +106,16 @@ class AssetLine
   end
 
   class ES6 < SimpleAsset
-    require "babel/transpiler"
+    require 'babel/transpiler'
 
-    EXT = "es6".freeze
+    EXT = 'es6'.freeze
 
     def initialize(env, root)
-      super(env, root, type: "javascripts", ext: EXT)
+      super(env, root, type: 'javascripts', ext: EXT)
     end
 
     def can_handle?(filename)
-      super(filename, real_ext: "js")
+      super(filename, real_ext: 'js')
     end
 
     def compile(filename)

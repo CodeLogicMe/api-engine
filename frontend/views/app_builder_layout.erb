@@ -14,15 +14,14 @@
       </div>
     </div>
 
-    <script src="/assets/javascripts/polyfills.js"></script>
-    <script src="/assets/javascripts/handlebars.js"></script>
-    <script src="/assets/javascripts/zepto.js"></script>
-    <script src="/assets/javascripts/stik-core.js"></script>
-    <script src="/assets/javascripts/stik-courier.js"></script>
-    <script src="/assets/javascripts/stik-view-bag.js"></script>
-    <script src="/assets/javascripts/stik-dom-lib-loader.js"></script>
-    <script src="/assets/javascripts/behaviors/shownable.js"></script>
-    <script src="/assets/javascripts/app_builder.js"></script>
+    <%= js('polyfills.js',
+           'handlebars.js',
+           'zepto.js',
+           'stik-core.js',
+           'stik-courier.js',
+           'stik-dom-lib-loader.js',
+           'behaviors/shownable.js',
+           'app_builder.js') %>
   </body>
 </html>
 
