@@ -1,3 +1,26 @@
+TYPES = ['string', 'integer', 'datetime']
+VALIDATIONS = ['presence', 'size']
+
+Handlebars.registerHelper 'select_type', ->
+  options = for type in TYPES
+    if @type is type
+      "<option value='#{type}' selected>#{type}</option>"
+    else
+      "<option value='#{type}'>#{type}</option>"
+
+  new Handlebars.SafeString(
+    "<select name='type'>#{options.join('')}</select>"
+  )
+
+Handlebars.registerHelper 'validations', ->
+  options = for val in VALIDATIONS
+    if @validations is undefined or @validations.indexOf(val) is -1
+      "<input type='checkbox' name='validations' value='#{val}' />"
+    else
+      "<input type='checkbox' name='validations' value='#{val}' checked/>"
+
+  new Handlebars.SafeString options.join('')
+
 stik.boundary
   as: 'buildView'
   from: 'controller'

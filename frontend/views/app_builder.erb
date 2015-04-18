@@ -27,8 +27,20 @@
 <script id="constructor" type="text/x-handlebars-template">
   <div class="nav-bar row">
     <span class="back-to-list col fifth">&#10094;</span>
-    <span class="title col o-fifth">{{ name }}</span>
+    <input type="text" name="name" value="{{ name }}" class="col o-fifth" />
   </div>
+
+  <div class="fields row">
+    {{#each fields}}
+      <fieldset>
+        <input type="text" value="{{ name }}" placeholder="Name" />
+        {{select_type}}
+        {{validations}}
+      </fieldset>
+    {{/each}}
+  </div>
+
+  <button type="submit">Save Resource</button>
 </script>
 
 <script id="resource-preview" type="text/x-handlebars-template">
