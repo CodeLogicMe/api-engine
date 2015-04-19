@@ -1,31 +1,29 @@
 @import 'colors'
+@import 'components/button'
 
 .site-header
-  height 40px
-  color white
-  padding 10px
-  background-color gray-blue
+  overflow hidden
 
-.client-menu
-  position relative
+  > *
+    height 50px
+    padding 10px 15px
+    overflow hidden
 
-  &:hover .options
-    display block
+    > *
+      margin-top 4px
 
-  .email
-    &:hover
-      cursor pointer
+  .client-menu
+    position relative
+    color primary-text-color
+    background-color primary-color
 
-  .options
-    top 18px
-    left -10px
-    width 80%
-    position absolute
-    display none
-    background-color gray-blue
+  .nav-menu
+    background-color #FFFFFF
 
-    a
-      padding 10px
-      display block
-      color #fff
-      text-shadow 0 -1px 0 #000
+    a.active
+      color link-active
+      float left
+
+    .new-app
+      float right
+      margin-top 0
