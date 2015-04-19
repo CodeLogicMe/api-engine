@@ -1,18 +1,7 @@
 <div class="my-apps">
-  <a href="/apps/new">create an awesome app</a>
-
-  <div class="my-apps-list row">
-    <% @apps.each do |app| %>
-      <%= erb :_app_preview, locals: { app: app } %>
-      <%= erb :_app_preview, locals: { app: app } %>
-      <%= erb :_app_preview, locals: { app: app } %>
-    <% end %>
-  </div>
-  <div class="app-list row">
-    <% @apps.each do |app| %>
-      <%= erb :_app_preview, locals: { app: app } %>
-      <%= erb :_app_preview, locals: { app: app } %>
-      <%= erb :_app_preview, locals: { app: app } %>
-    <% end %>
-  </div>
+  <% @apps.each do |app| %>
+    <%= erb :_app_summary, locals: { app: app } %>
+    <%= erb :_app_summary, locals: { app: app } %>
+    <%= erb :_app_summary, locals: { app: app } %>
+  <% end %>
 </div>

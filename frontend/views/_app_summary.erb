@@ -1,9 +1,9 @@
-<div class="app-preview col third" data-controller="AppCtrl" data-action="Preview" data-id="<%= app.id %>">
-  <a class="name" href="<%= app_path(app) %>">
-    <%= app.name %>
-  </a>
+<div class="app-summary" data-controller="AppCtrl" data-action="Preview" data-id="<%= app.id %>">
+  <div class="logo" style="background-image:url(http://placehold.it/76x76);"></div>
 
-  <%= erb :_app_enabler, locals: { app: app } %>
+  <a class="name" href="<%= app_path(app) %>">
+    <h1><%= app.name %></h1>
+  </a>
 
   <div class="rate-limit">
     <span class="label">Rate Limit</span>

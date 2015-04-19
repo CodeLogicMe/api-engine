@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -9,12 +10,7 @@
     <%= erb :header %>
 
     <div class="site row">
-      <ul class="site-sidebar col fifth">
-        <a href="/my_apps">My Apps</a>
-      </ul>
-      <div class="site-page col o-fifth">
-        <%= yield %>
-      </div>
+      <%= yield %>
     </div>
 
     <script src="/assets/javascripts/zepto.js"></script>
