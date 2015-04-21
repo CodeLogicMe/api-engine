@@ -34,35 +34,20 @@ class MyApps < Sinatra::Base
         def current_app
           current_client.apps.find_by(system_name: params['slug'])
         end
+      end
 
-        def entity_field_types
-          [
-            OpenStruct.new(name: "String", value: "string"),
-            OpenStruct.new(name: "Integer", value: "integer")
-          ]
-        end
-
-        def select_tag(name, options:)
-          <<-TAG
-              <select name="#{name}\" data-key="#{name}">
-          #{options.map { |opt| option_tag(opt) }.join}
-              </select>
-          TAG
-        end
-
-        def option_tag(option)
-          "<option value=#{option.value}>#{option.name}</option>"
-        end
+      before do
+        @header = :app_header
       end
 
       get '/?' do
         @app = current_app
-        erb :app_detail, layout: :skeleton
+        erb :app_detail, layout: :application
       end
 
       get '/new_entity/?' do
         @app = current_app
-        erb :new_entity, layout: :skeleton
+        erb :new_entity, layout: :application
       end
 
       put '/new_entity/?' do
