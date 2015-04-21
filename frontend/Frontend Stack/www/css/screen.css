@@ -1,0 +1,648 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700,300);
+/* line 5, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../home/epenance/.rvm/gems/ruby-2.2.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 3, ../../scss/_frame.scss */
+html {
+  overflow-y: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+
+/* line 8, ../../scss/_frame.scss */
+body {
+  background: url(../img/bg.png) repeat;
+  font-family: 'Roboto', sans-serif;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* line 14, ../../scss/_frame.scss */
+#topbar {
+  background: #253332;
+  height: 50px;
+  width: 100%;
+  line-height: 50px;
+  padding: 0px 20px;
+}
+/* line 21, ../../scss/_frame.scss */
+#topbar:before, #topbar:after {
+  clear: both;
+  display: block;
+  content: "";
+}
+/* line 27, ../../scss/_frame.scss */
+#topbar #usericon {
+  float: right;
+  margin-top: 18px;
+  cursor: pointer;
+  color: #828a89;
+  line-height: 1;
+  transition: color 0.4s;
+}
+/* line 35, ../../scss/_frame.scss */
+#topbar #usericon:hover {
+  color: #00B286;
+}
+/* line 40, ../../scss/_frame.scss */
+#topbar h1 a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  float: left;
+}
+
+/* line 48, ../../scss/_frame.scss */
+#subbar {
+  background: white;
+  height: 50px;
+  width: 100%;
+  line-height: 50px;
+  padding: 0px 20px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06), 0 2px 10px 0 rgba(0, 0, 0, 0.02);
+  position: relative;
+}
+/* line 57, ../../scss/_frame.scss */
+#subbar h2 {
+  float: left;
+}
+/* line 60, ../../scss/_frame.scss */
+#subbar h2 a {
+  color: #ff5722;
+  text-decoration: none;
+  font-size: 20px;
+}
+/* line 67, ../../scss/_frame.scss */
+#subbar #builderSettings {
+  position: absolute;
+  top: 1px;
+  right: 20px;
+  color: #828a89;
+  cursor: pointer;
+}
+/* line 74, ../../scss/_frame.scss */
+#subbar #builderSettings:hover {
+  color: #00B286;
+}
+/* line 79, ../../scss/_frame.scss */
+#subbar #new_btn {
+  border-radius: 20px;
+  background: #00B286;
+  float: right;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  padding: 10px 35px;
+  line-height: 1;
+  margin-top: 7px;
+  transition: box-shadow 0.4s;
+}
+/* line 91, ../../scss/_frame.scss */
+#subbar #new_btn:hover {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+/* line 96, ../../scss/_frame.scss */
+#subbar #appTitle {
+  width: 200px;
+  float: left;
+  height: 100%;
+  background: #ff5722;
+  margin-left: -20px;
+  padding-left: 20px;
+  color: white;
+  font-size: 18px;
+}
+/* line 107, ../../scss/_frame.scss */
+#subbar #appTabs {
+  list-style-type: none;
+  float: left;
+  padding-left: 20px;
+  width: calc(100% - 200px);
+  overflow: hidden;
+  height: 50px;
+}
+/* line 115, ../../scss/_frame.scss */
+#subbar #appTabs li {
+  display: inline-block;
+  margin-right: 25px;
+}
+/* line 118, ../../scss/_frame.scss */
+#subbar #appTabs li a {
+  height: 50px;
+  color: #948e8c;
+  text-decoration: none;
+  display: block;
+  transition: color 0.2s;
+}
+/* line 125, ../../scss/_frame.scss */
+#subbar #appTabs li a:hover {
+  color: #ff5722;
+}
+/* line 129, ../../scss/_frame.scss */
+#subbar #appTabs li a.active {
+  color: #ff5722;
+  border-bottom: 3px solid #ff5722;
+}
+
+/* line 138, ../../scss/_frame.scss */
+#appArea {
+  width: 100%;
+  max-width: 1020px;
+  margin: auto;
+  padding: 40px;
+}
+/* line 144, ../../scss/_frame.scss */
+#appArea .appWrapper {
+  width: 100%;
+  height: 180px;
+  background: #253332;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 20px;
+  position: relative;
+  transition: box-shadow 0.4s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+/* line 156, ../../scss/_frame.scss */
+#appArea .appWrapper:before, #appArea .appWrapper:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+/* line 162, ../../scss/_frame.scss */
+#appArea .appWrapper:hover {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
+}
+/* line 166, ../../scss/_frame.scss */
+#appArea .appWrapper .appLink {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/* line 176, ../../scss/_frame.scss */
+#appArea .appWrapper .imgArea {
+  width: 75px;
+  float: left;
+}
+/* line 180, ../../scss/_frame.scss */
+#appArea .appWrapper .imgArea img {
+  border-radius: 4px;
+}
+/* line 185, ../../scss/_frame.scss */
+#appArea .appWrapper .descArea {
+  width: calc(100% - 95px);
+  float: left;
+  padding: 0px 20px;
+  color: white;
+}
+/* line 191, ../../scss/_frame.scss */
+#appArea .appWrapper .descArea h3 {
+  font-size: 20px;
+  line-height: 1.5;
+}
+/* line 196, ../../scss/_frame.scss */
+#appArea .appWrapper .descArea p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+/* line 203, ../../scss/_frame.scss */
+#appArea .appWrapper .iconArea {
+  padding: 4px;
+  background: #8bc34a;
+  border-radius: 50%;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 12px;
+  color: #253332;
+}
+
+/* line 216, ../../scss/_frame.scss */
+#builderNav {
+  width: 200px;
+  height: calc(100vh - 100px);
+  background: #253332;
+  padding-top: 10px;
+  float: left;
+}
+/* line 223, ../../scss/_frame.scss */
+#builderNav #search {
+  width: 180px;
+  height: 30px;
+  background: #303d3c;
+  margin: auto;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  color: #b6bec1;
+  line-height: 30px;
+  padding: 0px 10px;
+  font-size: 14px;
+}
+/* line 235, ../../scss/_frame.scss */
+#builderNav #search input {
+  width: 135px;
+  background: transparent;
+  border: none;
+  outline: none;
+  margin-left: 10px;
+  color: #b6bec1;
+  padding-top: 2px;
+}
+/* line 246, ../../scss/_frame.scss */
+#builderNav aside {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 256, ../../scss/_frame.scss */
+#builderNav aside.open .fa-sort-desc {
+  transform: translate(0, -6px) rotate(0deg);
+  margin-right: 10px;
+}
+/* line 261, ../../scss/_frame.scss */
+#builderNav aside.open .table-list {
+  display: block;
+}
+/* line 268, ../../scss/_frame.scss */
+#builderNav aside.active h3 {
+  color: white;
+  background: #00B286;
+}
+/* line 273, ../../scss/_frame.scss */
+#builderNav aside.active .table-list {
+  border-left: 4px solid #00B286;
+  background: #3b4746;
+}
+/* line 281, ../../scss/_frame.scss */
+#builderNav aside h3 {
+  text-transform: uppercase;
+  color: #7b8483;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+/* line 287, ../../scss/_frame.scss */
+#builderNav aside h3 .fa-sort-desc {
+  transform: translate(0, 0px) rotate(-90deg);
+  margin-right: 10px;
+}
+/* line 294, ../../scss/_frame.scss */
+#builderNav aside .table-list {
+  background: transparent;
+  color: white;
+  border-left: 4px solid transparent;
+  display: none;
+}
+/* line 300, ../../scss/_frame.scss */
+#builderNav aside .table-list li {
+  padding: 8px 0px 8px 30px;
+  font-size: 15px;
+  line-height: 1.3;
+  cursor: default;
+}
+/* line 306, ../../scss/_frame.scss */
+#builderNav aside .table-list li i {
+  margin-right: 10px;
+}
+/* line 309, ../../scss/_frame.scss */
+#builderNav aside .table-list li i.fa-info {
+  float: right;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 21px;
+  display: none;
+  cursor: pointer;
+}
+/* line 318, ../../scss/_frame.scss */
+#builderNav aside .table-list li i.fa-info:hover {
+  color: white;
+}
+/* line 324, ../../scss/_frame.scss */
+#builderNav aside .table-list li:hover, #builderNav aside .table-list li.active {
+  background: #00B286;
+}
+/* line 327, ../../scss/_frame.scss */
+#builderNav aside .table-list li:hover i.fa-info, #builderNav aside .table-list li.active i.fa-info {
+  display: inline-block;
+}
+/* line 336, ../../scss/_frame.scss */
+#builderNav .newtable {
+  color: rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-top: 20px;
+  display: block;
+  padding-left: 20px;
+}
+/* line 344, ../../scss/_frame.scss */
+#builderNav .newtable:hover {
+  color: white;
+}
+
+/* line 350, ../../scss/_frame.scss */
+#contentHolder {
+  width: calc(100% - 200px);
+  max-height: calc(100vh - 100px);
+  height: calc(100vh - 100px);
+  float: left;
+  display: table;
+  text-align: center;
+}
+/* line 358, ../../scss/_frame.scss */
+#contentHolder .row {
+  width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+/* line 363, ../../scss/_frame.scss */
+#contentHolder .row .tableWrapper {
+  width: 680px;
+  margin: auto;
+  text-align: left;
+}
+/* line 369, ../../scss/_frame.scss */
+#contentHolder .row .table {
+  width: 160px;
+  height: 180px;
+  padding: 20px;
+  margin: 30px;
+  background: #253332;
+  border-radius: 4px;
+  display: inline-block;
+  text-align: left;
+  vertical-align: top;
+}
+/* line 380, ../../scss/_frame.scss */
+#contentHolder .row .table h2 {
+  color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+/* line 386, ../../scss/_frame.scss */
+#contentHolder .row .table ul {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 10px;
+}
+/* line 390, ../../scss/_frame.scss */
+#contentHolder .row .table ul li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+/* line 394, ../../scss/_frame.scss */
+#contentHolder .row .table ul li:hover {
+  color: white;
+}
+/* line 398, ../../scss/_frame.scss */
+#contentHolder .row .table ul li i {
+  margin-right: 5px;
+}
+/* line 403, ../../scss/_frame.scss */
+#contentHolder .row .table ul li.more span {
+  margin-left: 17px;
+}
+/* line 405, ../../scss/_frame.scss */
+#contentHolder .row .table ul li.more span:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* line 416, ../../scss/_frame.scss */
+#contentHolder .row .table:hover {
+  background: #00B286;
+}
+
+/* line 423, ../../scss/_frame.scss */
+#iModal {
+  width: 540px;
+  height: 270px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  position: fixed;
+  top: calc(50% - 135px);
+  left: calc(50% - 270px);
+  z-index: 1000;
+  padding: 60px 20px 20px 60px;
+  display: none;
+}
+/* line 436, ../../scss/_frame.scss */
+#iModal.active {
+  display: block;
+}
+/* line 440, ../../scss/_frame.scss */
+#iModal .actions {
+  width: calc(100% - 80px);
+  position: absolute;
+  bottom: 20px;
+  left: 60px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 452, ../../scss/_frame.scss */
+#iModal .actions .btn {
+  padding: 8px 30px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  float: left;
+  color: rgba(0, 0, 0, 0.8);
+  background: white;
+  transition: box-shadow 0.4s;
+}
+/* line 465, ../../scss/_frame.scss */
+#iModal .actions .btn:hover {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+/* line 469, ../../scss/_frame.scss */
+#iModal .actions .btn.cancel {
+  float: right;
+  margin-right: 10px;
+}
+/* line 474, ../../scss/_frame.scss */
+#iModal .actions .btn.save {
+  background: #00B286;
+  border: 1px solid #00B286;
+  color: white;
+  float: right;
+}
+/* line 483, ../../scss/_frame.scss */
+#iModal h2 {
+  position: absolute;
+  left: 60px;
+  top: 20px;
+  color: rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: none;
+}
+/* line 492, ../../scss/_frame.scss */
+#iModal h2 span {
+  color: rgba(0, 0, 0, 0.7);
+}
+/* line 497, ../../scss/_frame.scss */
+#iModal ul {
+  color: rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  float: left;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 508, ../../scss/_frame.scss */
+#iModal ul#listOne {
+  margin-right: 100px;
+}
+/* line 511, ../../scss/_frame.scss */
+#iModal ul#listOne input[type="radio"] {
+  display: none;
+}
+/* line 515, ../../scss/_frame.scss */
+#iModal ul#listOne input[type="radio"]:checked + label {
+  color: #00B286;
+}
+/* line 518, ../../scss/_frame.scss */
+#iModal ul#listOne input[type="radio"]:checked + label i {
+  color: #00B286;
+}
+/* line 525, ../../scss/_frame.scss */
+#iModal ul#listTwo li {
+  position: relative;
+  padding-left: 20px;
+}
+/* line 529, ../../scss/_frame.scss */
+#iModal ul#listTwo li input[type="checkbox"] {
+  position: absolute;
+  top: 2px;
+  left: 0px;
+}
+/* line 538, ../../scss/_frame.scss */
+#iModal ul li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+/* line 542, ../../scss/_frame.scss */
+#iModal ul li:hover, #iModal ul li.active {
+  color: #00B286;
+}
+/* line 545, ../../scss/_frame.scss */
+#iModal ul li:hover i, #iModal ul li.active i {
+  color: #00B286;
+}
+/* line 550, ../../scss/_frame.scss */
+#iModal ul li i {
+  margin-right: 10px;
+}
+/* line 555, ../../scss/_frame.scss */
+#iModal ul li input[type="checkbox"]:checked + label {
+  color: #00B286;
+}
+/* line 559, ../../scss/_frame.scss */
+#iModal ul li label {
+  cursor: pointer;
+}
+/* line 566, ../../scss/_frame.scss */
+#iModal .fa {
+  color: rgba(0, 0, 0, 0.2);
+}
+/* line 569, ../../scss/_frame.scss */
+#iModal .fa.fa-info {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+/* line 575, ../../scss/_frame.scss */
+#iModal .fa.fa-times {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+/* line 581, ../../scss/_frame.scss */
+#iModal .fa.fa-times:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* line 6, ../../scss/screen.scss */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

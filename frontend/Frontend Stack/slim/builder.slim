@@ -1,0 +1,158 @@
+doctype html
+html
+  head
+    title API Engine
+    meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport"
+    link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css"
+    link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  body
+    #iModal
+      i class="fa fa-info"
+      i class="fa fa-times"
+      h2 users_<span>username</span>
+      .options
+        ul#listOne
+          li
+            input type="radio" name="tableType" id="string"
+            label for="string" <i class="fa fa-font"></i> String
+          li
+            input type="radio" name="tableType" id="integer" checked="checked"
+            label for="integer"<i class="fa fa-font"></i> Integer
+          li
+            input type="radio" name="tableType" id="date"
+            label for="date"<i class="fa fa-font"></i> Date
+          li
+            input type="radio" name="tableType" id="float"
+            label for="float"<i class="fa fa-database"></i> Float
+          li
+            input type="radio" name="tableType" id="file"
+            label for="file"<i class="fa fa-font"></i> File
+        ul#listTwo
+          li
+            input type="checkbox" id="presence"
+            label for="presence" Presence
+          li
+            input type="checkbox" id="size"
+            label for="size" Size
+          li
+            input type="checkbox" id="uniqueness"
+            label for="uniqueness" Uniqueness
+          li
+            input type="checkbox" id="format"
+            label for="format" Format
+        .actions
+          a.btn.delete href="#" Delete
+          a.btn.save href="#" Save
+          a.btn.cancel href="#" Cancel
+
+
+    #topbar
+      h1
+        a href="index.html" API Engine
+      #usericon
+        i class="fa fa-user"
+    #subbar
+      #appTitle Spotify
+      ul#appTabs
+        li
+          a href="#" Metrics
+        li
+          a.active href="#" Builder
+        li
+          a href="#" Docs
+        li
+          a href="#" Data
+      #builderSettings
+        i class="fa fa-cog"
+    nav#builderNav
+      #search
+        i class="fa fa-search"
+        input type="text" placeholder="Search"
+      aside.open.active
+        h3 <i class="fa fa-sort-desc"></i> USERS
+        ul.table-list
+          li <i class="fa fa-database"></i> id <i class="fa fa-info"></i>
+          li.active <i class="fa fa-font"></i> username <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> email <i class="fa fa-info"></i>
+      aside.open
+        h3 <i class="fa fa-sort-desc"></i> Artists
+        ul.table-list
+          li <i class="fa fa-database"></i> id <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> username <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> email <i class="fa fa-info"></i>
+      aside
+        h3 <i class="fa fa-sort-desc"></i> Albums
+        ul.table-list
+          li <i class="fa fa-database"></i> id <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> username <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> email <i class="fa fa-info"></i>
+      aside
+        h3 <i class="fa fa-sort-desc"></i> Tracks
+        ul.table-list
+          li <i class="fa fa-database"></i> id <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> username <i class="fa fa-info"></i>
+          li <i class="fa fa-font"></i> email <i class="fa fa-info"></i>
+      a.newtable href="#" New table
+    section#contentHolder
+      .row
+        .tableWrapper
+          .table
+            h2 users
+            ul
+              li <i class="fa fa-database"></i> id
+              li <i class="fa fa-font"></i> username
+              li <i class="fa fa-font"></i> email
+              li <i class="fa fa-font"></i> firstname
+              li <i class="fa fa-font"></i> lastname
+              li.more
+                span +3 more
+          .table
+            h2 artists
+            ul
+              li <i class="fa fa-database"></i> id
+              li <i class="fa fa-font"></i> username
+              li <i class="fa fa-font"></i> email
+          .table
+            h2 users
+            ul
+              li <i class="fa fa-database"></i> id
+              li <i class="fa fa-font"></i> username
+              li <i class="fa fa-font"></i> email
+              li <i class="fa fa-font"></i> firstname
+              li <i class="fa fa-font"></i> lastname
+              li.more
+                span +3 more
+          .table
+            h2 users
+            ul
+              li <i class="fa fa-database"></i> id
+              li <i class="fa fa-font"></i> username
+              li <i class="fa fa-font"></i> email
+              li <i class="fa fa-font"></i> firstname
+              li <i class="fa fa-font"></i> lastname
+              li.more
+                span +3 more
+          .table
+            h2 users
+            ul
+              li <i class="fa fa-database"></i> id
+              li <i class="fa fa-font"></i> username
+              li <i class="fa fa-font"></i> email
+              li <i class="fa fa-font"></i> firstname
+              li <i class="fa fa-font"></i> lastname
+              li.more
+                span +3 more
+          .table
+            h2 users
+            ul
+              li <i class="fa fa-database"></i> id
+              li <i class="fa fa-font"></i> username
+              li <i class="fa fa-font"></i> email
+              li <i class="fa fa-font"></i> firstname
+              li <i class="fa fa-font"></i> lastname
+              li.more
+                span +3 more
+
+
+  script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+  script src="js/fancy.js"
