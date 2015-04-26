@@ -10,8 +10,8 @@ RSpec.describe Repository do
           {
             name: 'crouds',
             fields: [
-              { name: 'id', type: 'string' },
-              { name: 'Full Name', type: 'string' },
+              { name: 'id', type: 'text' },
+              { name: 'Full Name', type: 'text' },
               { name: 'created_at', type: 'datetime' },
               { name: 'updated_at', type: 'datetime' },
             ]
@@ -38,9 +38,9 @@ RSpec.describe Repository do
           {
             name: 'fighters',
             fields: [
-              { name: 'id', type: 'string' },
-              { name: 'name', type: 'string' },
-              { name: 'weight', type: 'integer' },
+              { name: 'id', type: 'text' },
+              { name: 'name', type: 'text' },
+              { name: 'weight', type: 'number' },
               { name: 'created_at', type: 'datetime' },
               { name: 'updated_at', type: 'datetime' },
             ]

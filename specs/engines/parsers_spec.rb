@@ -2,7 +2,7 @@ require_relative "../../business/engines/parsers"
 
 RSpec.describe Parsers do
   describe String do
-    subject { Parsers::String }
+    subject { Parsers::Text }
 
     it "with a string" do
       expect(subject.call("lukelex")).to eq "lukelex"
@@ -16,7 +16,7 @@ RSpec.describe Parsers do
   end
 
   describe Integer do
-    subject { Parsers::Integer }
+    subject { Parsers::Number }
 
     it "with an integer as string" do
       expect(subject.call("123")).to eq 123

@@ -14,7 +14,7 @@ RSpec.describe API do
     it "should create the resource" do
       expect(last_response.status).to eql 201
       expect(last_json.name).to eql "Nerdcast"
-      expect(last_json.episodes).to eql 352
+      expect(last_json.episodes).to eql '352.0'
     end
 
     context "without the required data" do

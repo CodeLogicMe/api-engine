@@ -1,5 +1,7 @@
+require 'bigdecimal'
+
 module Parsers
-  String = -> (value) { value.to_s }
-  Integer = -> (value) { value.nil? ? nil : Integer(value) }
+  Text = -> (value) { value.to_s }
+  Number = -> (value) { value.nil? ? nil : BigDecimal.new(value) }
   Datetime = -> (value) { DateTime.parse(value.to_s) }
 end

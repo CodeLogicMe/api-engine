@@ -21,10 +21,10 @@ module Models
         [{
           name: "podcasts",
           fields: [
-            { name: 'id', type: 'string' },
-            { name: 'name', type: 'string', validates: ['presence'] },
-            { name: 'episodes', type: 'integer', validates: ['presence'] },
-            { name: 'created_at', type: 'string' },
+            { name: 'id', type: 'text' },
+            { name: 'name', type: 'text', validates: ['presence'] },
+            { name: 'episodes', type: 'number', validates: ['presence'] },
+            { name: 'created_at', type: 'datetime' },
             { name: 'updated_at', type: 'datetime' }
           ]
         }]
