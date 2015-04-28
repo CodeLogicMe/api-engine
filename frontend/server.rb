@@ -1,15 +1,15 @@
-require "grape"
-require "rack/cors"
+require 'grape'
+require 'rack/cors'
 require_rel '../business/models'
 
 class Frontend < ::Grape::API
   format :json
-  content_type :json, "application/json"
+  content_type :json, 'application/json'
 
   use ::Rack::Cors do
     allow do
-      origins "*"
-      resource "*",
+      origins '*'
+      resource '*',
         headers: :any,
         methods: %i( get post put delete options )
     end
@@ -34,19 +34,39 @@ class Frontend < ::Grape::API
           {
             id: entity[:name],
             name: entity[:name],
-            fields: entity[:fields].map { |field| field_id(entity, field) }
+            fields: entity[:fields].map { |field| field_id(app, entity, field) }
           }
         },
-        fields: app.app_config.entities.flat_map { |entity| fields(entity) }
+        fields: app.app_config.entities.flat_map { |entity| fields(app, entity) }
       }
+    end
+  end
+
+  resource :fields do
+    put ':id' do
+      ids = params.id.split('#')
+      app = Models::Client.first.apps.find_by(system_name: ids[0])
+      entity = app.app_config.entities.find do |entity|
+        entity['name'] == ids[1]
+      end
+      entity['fields'].delete_if do |field|
+        field['name'] == ids[2]
+      end
+
+      params.field.delete('entity')
+      entity['fields'] << params.field.to_h
+
+      app.app_config.save!
+
+      {}
     end
   end
 end
 
-def fields(entity)
+def fields(app, entity)
   entity[:fields].map do |field|
     {
-      id: field_id(entity, field),
+      id: field_id(app, entity, field),
       name: field[:name],
       type: field[:type],
       validates: Array(field[:validates]),
@@ -56,8 +76,8 @@ def fields(entity)
   end
 end
 
-def field_id(entity, field)
-  "#{entity[:name]}##{field[:name]}"
+def field_id(app, entity, field)
+  "#{app.system_name}##{entity[:name]}##{field[:name]}"
 end
 
 def app_fields
