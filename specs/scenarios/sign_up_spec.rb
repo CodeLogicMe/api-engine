@@ -28,21 +28,3 @@ RSpec.describe Models::Client do
     end
   end
 end
-
-RSpec.describe 'Sign up', type: :feature do
-  context 'as a new client' do
-    before do
-      visit '/'
-
-      within('.sign-up-form') do
-        fill_in 'Email', with: 'me@api.com'
-        fill_in 'Password', with: 123456
-        click_button 'Create'
-      end
-    end
-
-    it 'should present its new my apps page' do
-      expect(page).to have_content 'My Apps'
-    end
-  end
-end

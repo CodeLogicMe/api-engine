@@ -2,7 +2,6 @@ ENV['RACK_ENV'] = 'test'
 
 require 'rspec'
 require 'rack/test'
-require 'capybara/rspec'
 
 require File.expand_path('../../config/application', __FILE__)
 
@@ -18,7 +17,6 @@ require_relative 'factories/fabrics'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
-  config.include Capybara::DSL
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
@@ -38,7 +36,6 @@ RSpec.configure do |config|
   end
 end
 
-Capybara.app = Frontend
 def app
   API.new
 end

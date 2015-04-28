@@ -1,26 +1,19 @@
 source 'https://rubygems.org'
 
-gem 'grape'
-gem 'sinatra'
-gem 'sinatra-namespace'
-gem 'mongoid'
-gem 'bcrypt'
-gem 'rack-cors'
-gem 'require_all'
-
-gem 'stylus'
-gem 'babel-transpiler'
-gem 'coffee-script'
+gem 'grape', '~> 0.11'
+gem 'mongoid', '4.0.0'
+gem 'bcrypt', '~> 3.1'
+gem 'rack-cors', '~> 0.4'
+gem 'require_all', '~> 1.3'
 
 group :dvelopment, :test do
   gem 'rspec'
   gem 'rack-test'
-  gem 'factory_girl'
+  gem 'factory_girl', '~> 4.4.0'
   gem 'faker'
   gem 'database_cleaner'
   gem 'pry'
   gem 'did_you_mean'
-  gem 'capybara'
 end
 
 group :development do
