@@ -1,27 +1,3 @@
-class Actions::CreateApp
-  extend Extensions::Parameterizable
-
-  with :name, :client
-
-  def call
-    Models::App.create \
-      client: client,
-      name: name
-  end
-end
-
-class Actions::NewPrivateKey
-  extend Extensions::Parameterizable
-
-  with :public_key
-
-  def call
-    app = Models::App.find_by public_key: public_key
-
-    Models::PrivateKey.create app: app
-  end
-end
-
 class Actions::AuthenticateApp
   extend Extensions::Parameterizable
 
@@ -70,19 +46,5 @@ class Actions::AuthenticateApp
     timestamp = Time.parse(auth.fetch(:timestamp))
     now_utc = Time.now.utc.to_i
     now_utc - TOLERANCE > timestamp.to_i
-  end
-end
-
-class Actions::AddEntity
-  extend Extensions::Parameterizable
-
-  with :name, :fields
-
-  def call(app)
-    set = app.app_config.entities
-    if set.none? { |item| item['name'] == name }
-      set << { name: name, fields: fields }
-      app.app_config.update_attributes entities: set
-    end
   end
 end
