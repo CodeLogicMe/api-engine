@@ -55,12 +55,31 @@ class Frontend < ::Grape::API
   end
 
   resource :fields do
-    put ':id' do
-      ids = params.id.split('#')
-      app = Models::Client.first.apps.find_by system_name: ids[0]
-      entity = app.app_config.entities.find do |entity|
-        entity['name'] == ids[1]
+    helpers do
+      def ids
+        @ids ||= params.fetch('id') { params.field.entity }.split('#')
       end
+
+      def app
+        @app ||= Models::Client.first.apps.find_by system_name: ids[0]
+      end
+
+      def entity
+        entity = app.app_config.entities.find do |entity|
+          entity['name'] == ids[1]
+        end
+      end
+    end
+
+    post do
+      entity['fields'] << params.field.to_h
+
+      app.app_config.save!
+
+      {}
+    end
+
+    put ':id' do
       entity['fields'].delete_if do |field|
         field['name'] == ids[2]
       end
