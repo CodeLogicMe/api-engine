@@ -1,6 +1,7 @@
 require 'grape'
 require 'rack/cors'
-require_rel '../business/models'
+
+require_rel '../business/setup'
 
 class Frontend < ::Grape::API
   format :json
@@ -42,12 +43,21 @@ class Frontend < ::Grape::API
         fields: fields_attrs(app, entity)
       }
     end
+
+    post do
+      p params
+      app = Models::Client.first.apps.find_by(system_name: params.entity.app)
+      Actions::AddEntity
+        .new(params['entity'])
+        .call(app)
+      {}
+    end
   end
 
   resource :fields do
     put ':id' do
       ids = params.id.split('#')
-      app = Models::Client.first.apps.find_by(system_name: ids[0])
+      app = Models::Client.first.apps.find_by system_name: ids[0]
       entity = app.app_config.entities.find do |entity|
         entity['name'] == ids[1]
       end
@@ -73,7 +83,7 @@ def fields_attrs(app, entity)
       type: field[:type],
       validates: Array(field[:validates]),
       internal: field[:internal],
-      entity: entity[:name]
+      entity: "#{app.system_name}##{entity[:name]}"
     }
   end
 end
