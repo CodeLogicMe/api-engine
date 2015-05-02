@@ -2,6 +2,7 @@ require 'grape'
 require 'rack/cors'
 
 require_rel '../business/setup'
+require_rel './serializers'
 
 class Frontend < ::Grape::API
   format :json
@@ -16,36 +17,66 @@ class Frontend < ::Grape::API
     end
   end
 
+  post :login do
+    p params
+    { token: 'a-random-auth-token' }
+  end
+
   resource 'apps' do
+    apps = Models::Client.first.apps
     get do
       {
-        apps: Models::Client.first.apps.map { |app| app_attrs(app) }
+        apps: Serializers::Apps.new(apps).to_h
       }
     end
 
     get '/:app_id' do
       app = Models::Client.first.apps.find_by(system_name: params.app_id)
       {
-        app: app_attrs(app),
-        entities: app.app_config.entities.map { |entity| entity_attrs(app, entity) },
-        fields: app.app_config.entities.flat_map { |entity| fields_attrs(app, entity) }
-      }
-    end
-  end
-
-  resource :entities do
-    get ':id' do
-      ids = params.id.split('#')
-      app = Models::Client.first.apps.find_by(system_name: ids[0])
-      entity = app.app_config.entities.find { |entity| entity['name'] == ids[1] }
-      {
-        entity: entity_attrs(app, entity),
-        fields: fields_attrs(app, entity)
+        app: Serializers::Apps.new(app).to_h[0],
+        entities: Serializers::Entities.new(app, app.app_config.entities).to_h,
+        fields: app.app_config.entities.flat_map do |entity|
+          Serializers::Fields.new(app, entity, entity['fields']).to_h
+        end
       }
     end
 
     post do
+      app = Actions::CreateApp.new(params['app']).call do |app|
+        erb :new_app, layout: :application
+        return
+      end
+    end
+  end
+
+  resource :entities do
+    helpers do
+      def ids
+        @ids ||= params.id.split('#')
+      end
+
+      def app
+        @app ||= Models::Client.first.apps.find_by(system_name: ids[0])
+      end
+    end
+
+    get do
       p params
+      app = Models::Client.first.apps.find_by(system_name: id)
+      app.app_config.entities.map { |entity| entity_attrs(app, entity) }
+    end
+
+    get ':id' do
+      entity = app.app_config.entities.find { |entity| entity['name'] == ids[1] }
+      {
+        entity: Serializers::Entities.new(app, [entity]).to_h[0],
+        fields: app.app_config.entities.flat_map do |entity|
+          Serializers::Fields.new(app, entity, entity['fields']).to_h
+        end
+      }
+    end
+
+    post do
       app = Models::Client.first.apps.find_by(system_name: params.entity.app)
       Actions::AddEntity
         .new(params['entity'])
@@ -65,7 +96,7 @@ class Frontend < ::Grape::API
       end
 
       def entity
-        entity = app.app_config.entities.find do |entity|
+        @entity ||= app.app_config.entities.find do |entity|
           entity['name'] == ids[1]
         end
       end
@@ -102,39 +133,4 @@ class Frontend < ::Grape::API
       {}
     end
   end
-end
-
-def fields_attrs(app, entity)
-  entity[:fields].map do |field|
-    {
-      id: field_id(app, entity, field),
-      name: field[:name],
-      type: field[:type],
-      validates: Array(field[:validates]),
-      internal: field[:internal],
-      entity: "#{app.system_name}##{entity[:name]}"
-    }
-  end
-end
-
-def field_id(app, entity, field)
-  "#{app.system_name}##{entity[:name]}##{field[:name]}"
-end
-
-def app_attrs(app)
-  {
-    id: app.system_name,
-    name: app.name,
-    public_key: app.public_key,
-    private_key: app.private_key.secret,
-    entities: app.app_config.entities.map { |entity| "#{app.system_name}##{entity[:name]}" }
-  }
-end
-
-def entity_attrs(app, entity)
-  {
-    id: "#{app.system_name}##{entity[:name]}",
-    name: entity[:name],
-    fields: entity[:fields].map { |field| field_id(app, entity, field) }
-  }
 end
