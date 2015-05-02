@@ -79,9 +79,18 @@ class Frontend < ::Grape::API
     post do
       app = Models::Client.first.apps.find_by(system_name: params.entity.app)
       Actions::AddEntity
-        .new(params['entity'])
+        .new(params.entity)
         .call(app)
-      {}
+
+      entity = app.config_for(params.entity.name)
+      entity_attrs = Serializers::Entities
+        .new(app, [entity])
+        .to_h[0]
+      fields = Serializers::Fields
+        .new(app, entity, entity['fields'])
+        .to_h
+
+      { entity: entity_attrs, fields: fields }
     end
   end
 
