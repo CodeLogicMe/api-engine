@@ -91,6 +91,16 @@ class Frontend < ::Grape::API
 
       {}
     end
+
+    delete ':id' do
+      entity['fields'].delete_if do |field|
+        field['name'] == ids[2]
+      end
+
+      app.app_config.save!
+
+      {}
+    end
   end
 end
 
