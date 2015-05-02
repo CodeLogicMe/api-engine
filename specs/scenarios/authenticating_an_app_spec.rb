@@ -7,7 +7,7 @@ module Actions
     describe 'GETting' do
       context 'a valid key and secret' do
         let(:auth) do
-          now_utc = Time.now.utc
+          now_utc = Time.now.utc.to_i
           {
             timestamp: now_utc.to_s,
             public_key: jedi_temple.public_key,
@@ -24,7 +24,7 @@ module Actions
       context 'a valid key but invalid secret' do
         now_utc = Time.now.utc
         let(:auth) do
-          now_utc = Time.now.utc
+          now_utc = Time.now.utc.to_i
           {
             timestamp: now_utc.to_s,
             public_key: jedi_temple.public_key,
@@ -43,7 +43,7 @@ module Actions
 
       context 'an invalid key but valid secret' do
         let(:auth) do
-          now_utc = Time.now.utc
+          now_utc = Time.now.utc.to_i
           {
             timestamp: now_utc.to_s,
             public_key: 'super12345invalid09876secret1029384key',
@@ -67,10 +67,10 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
     let(:params) { { what: 'ever' } }
 
     before do
-      timestamp = Time.now.utc
-      header 'Timestamp', timestamp.to_s
-      header 'PublicKey', dark_temple.public_key
-      header 'Hmac', calculate_hmac(verb.upcase, private_key, params, timestamp)
+      timestamp = Time.now.utc.to_i
+      header 'X-Request-Timestamp', timestamp.to_s
+      header 'X-Access-Token', dark_temple.public_key
+      header 'X-Request-Hash', calculate_hmac(verb.upcase, private_key, params, timestamp)
 
       public_send(verb.downcase, url, params)
     end

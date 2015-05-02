@@ -43,8 +43,8 @@ class Actions::AuthenticateApp
   end
 
   def expired?
-    timestamp = Time.parse(auth.fetch(:timestamp))
+    timestamp = Time.at(auth.fetch(:timestamp).to_i).to_i
     now_utc = Time.now.utc.to_i
-    now_utc - TOLERANCE > timestamp.to_i
+    now_utc - TOLERANCE > timestamp
   end
 end

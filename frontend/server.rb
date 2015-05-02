@@ -23,8 +23,8 @@ class Frontend < ::Grape::API
   end
 
   resource 'apps' do
-    apps = Models::Client.first.apps
     get do
+      apps = Models::Client.first.apps
       {
         apps: Serializers::Apps.new(apps).to_h
       }

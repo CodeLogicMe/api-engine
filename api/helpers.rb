@@ -40,9 +40,9 @@ module AuthHelpers
 
   def auth_keys
     {
-      hmac: headers.fetch("Hmac") { "missing" },
-      timestamp: headers.fetch("Timestamp") { "missing" },
-      public_key: headers.fetch("Publickey") { "missing" }
+      hmac: headers.fetch('X-Request-Hash') { 'missing' },
+      timestamp: headers.fetch('X-Request-Timestamp') { 'missing' },
+      public_key: headers.fetch('X-Access-Token') { 'missing' }
     }
   end
 end
