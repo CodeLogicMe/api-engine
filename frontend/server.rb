@@ -86,11 +86,11 @@ class Frontend < ::Grape::API
       entity_attrs = Serializers::Entities
         .new(app, [entity])
         .to_h[0]
-      fields = Serializers::Fields
+      fields_attrs = Serializers::Fields
         .new(app, entity, entity['fields'])
         .to_h
 
-      { entity: entity_attrs, fields: fields }
+      { entity: entity_attrs, fields: fields_attrs }
     end
   end
 
@@ -105,18 +105,24 @@ class Frontend < ::Grape::API
       end
 
       def entity
-        @entity ||= app.app_config.entities.find do |entity|
-          entity['name'] == ids[1]
-        end
+        @entity ||= app.app_config.entity(name: ids[1])
+      end
+
+      def field_repository
+        @field_repo ||= Repositories::Fields
+          .new(app: app, entity: entity)
       end
     end
 
     post do
-      entity['fields'] << params.field.to_h
+      result = field_repository.add(params.field)
 
-      app.app_config.save!
-
-      {}
+      if result.ok?
+        new_field = field_repository.all.last
+        { entity: Serializers::Fields.new(app, entity, [new_field]).to_h[0] }
+      else
+        status(400) and result.errors
+      end
     end
 
     put ':id' do

@@ -1,4 +1,4 @@
-require "hashie/mash"
+require 'hashie/mash'
 
 class EntityBuilder
   def initialize(app, config)

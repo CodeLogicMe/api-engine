@@ -47,6 +47,9 @@ RSpec.describe API do
 
       it 'should not add the second' do
         expect(last_response.status).to eql 400
+        expect(last_json.errors).to match_array [
+          'Name already exists'
+        ]
       end
     end
   end
