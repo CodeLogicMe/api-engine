@@ -33,6 +33,22 @@ RSpec.describe API do
         ]
       end
     end
+
+    context 'with duplicate data' do
+      before do
+        params = { name: "Nerdcast", episodes: 352 }
+        ultra_pod = create :app, :with_config
+
+        2.times do
+          set_auth_headers_for!(ultra_pod, "POST", params)
+          post "/api/podcasts", params
+        end
+      end
+
+      it 'should not add the second' do
+        expect(last_response.status).to eql 400
+      end
+    end
   end
 
   context "for another app" do

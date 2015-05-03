@@ -15,8 +15,8 @@ module Validation
   end
 
   module InstanceMethods
-    def valid?(entity)
-      errors = check_for_errors entity
+    def valid?(entity, context: nil)
+      errors = check_for_errors entity, context
 
       if errors.empty?
         Succeded.new(result: entity)
@@ -24,13 +24,14 @@ module Validation
         Failed.new(errors: errors)
       end
     end
+    alias_method :validate, :valid?
 
     private
 
-    def check_for_errors(entity)
+    def check_for_errors(entity, context)
       self.class.validations.map { |checker|
         value = entity.public_send checker.field
-        unless checker.with? value
+        unless checker.with? value, context
           checker.error_message
         end
       }.compact
@@ -49,7 +50,7 @@ module Validation
   end
 
   class Succeded
-    attr_reader :result
+    attr_accessor :result
     def initialize(result:)
       @result = result
     end

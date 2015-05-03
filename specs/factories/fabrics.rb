@@ -19,13 +19,13 @@ module Models
     factory :app_config, class: AppConfig do
       entities {
         [{
-          name: "podcasts",
-          fields: [
-            { name: 'id', type: 'text' },
-            { name: 'name', type: 'text', validates: ['presence'] },
-            { name: 'episodes', type: 'number', validates: ['presence'] },
-            { name: 'created_at', type: 'datetime' },
-            { name: 'updated_at', type: 'datetime' }
+          'name': 'podcasts',
+          'fields': [
+            { 'name' => 'id', 'type' => 'text', 'validates' => [] },
+            { 'name' => 'name', 'type' => 'text', 'validates' => ['presence', 'uniqueness'] },
+            { 'name' => 'episodes', 'type' => 'number', 'validates' => ['presence'] },
+            { 'name' => 'created_at', 'type' => 'datetime', 'validates' => [] },
+            { 'name' => 'updated_at', 'type' => 'datetime', 'validates' => [] }
           ]
         }]
       }

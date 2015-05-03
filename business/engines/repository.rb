@@ -19,7 +19,7 @@ class Repository < Struct.new(:app, :collection_name)
   end
 
   def valid?(obj)
-    validation_klass.new.valid?(obj)
+    validation_klass.new.valid?(obj, context: all.map(&:attributes))
   end
 
   def save(obj)
@@ -65,9 +65,9 @@ class Repository < Struct.new(:app, :collection_name)
   end
 
   def persist(inst)
-    inst.set("id", BSON::ObjectId.new.to_s)
-    inst.set("created_at", Time.now.utc)
-    inst.set("updated_at", Time.now.utc, force: true)
+    inst.set('id', BSON::ObjectId.new.to_s)
+    inst.set('created_at', Time.now.utc)
+    inst.set('updated_at', Time.now.utc, force: true)
 
     new_collection = all + Array(inst)
 
