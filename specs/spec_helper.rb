@@ -6,7 +6,6 @@ require 'rack/test'
 require File.expand_path('../../config/application', __FILE__)
 
 require './api/server'
-require './frontend/server'
 
 require 'pry'
 

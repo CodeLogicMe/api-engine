@@ -18,7 +18,6 @@ class Frontend < ::Grape::API
   end
 
   post :login do
-    p params
     { token: 'a-random-auth-token' }
   end
 
@@ -61,7 +60,6 @@ class Frontend < ::Grape::API
     end
 
     get do
-      p params
       app = Models::Client.first.apps.find_by(system_name: id)
       app.app_config.entities.map { |entity| entity_attrs(app, entity) }
     end
@@ -119,9 +117,9 @@ class Frontend < ::Grape::API
 
       if result.ok?
         new_field = field_repository.all.last
-        { entity: Serializers::Fields.new(app, entity, [new_field]).to_h[0] }
+        { field: Serializers::Fields.new(app, entity, [new_field]).to_h[0] }
       else
-        status(400) and result.errors
+        status(400) and { errors: result.errors }
       end
     end
 

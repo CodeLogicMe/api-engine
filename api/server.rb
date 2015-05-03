@@ -1,26 +1,14 @@
-require "grape"
-require "rack/cors"
-require_relative "../business/setup"
-require_relative "./helpers"
-require_rel "./resources/*.rb"
+require 'grape'
+require 'rack/cors'
 
-class API < ::Grape::API
-  version "v1", using: :header, vendor: "restinme"
+require_relative '../business/setup'
+require_relative './engine'
+require_relative './frontend'
+
+class API < Grape::API
   format :json
-  content_type :json, "application/json"
-  prefix :api
+  content_type :json, 'application/json'
 
-  use ::Rack::Cors do
-    allow do
-      origins "*"
-      resource "*",
-        headers: :any,
-        methods: %i( get post put delete options )
-    end
-  end
-
-  helpers ::AuthHelpers
-
-  mount ::Resources::Authentication
-  mount ::Resources::Endpoints
+  mount Engine
+  mount Frontend
 end

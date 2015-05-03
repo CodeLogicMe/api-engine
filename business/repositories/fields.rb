@@ -9,7 +9,9 @@ class Repositories::Fields < OpenStruct
     validations = validate field
 
     if validations.ok?
-      entity[:fields] << field.to_h
+      attrs = field.to_h
+      attrs.delete 'entity'
+      entity[:fields] << attrs
       app.save!
     end
 

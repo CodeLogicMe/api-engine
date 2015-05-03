@@ -21,18 +21,40 @@ RSpec.describe Frontend do
   include Rack::Test::Methods
 
   context 'with a new field' do
+    let(:ultra_pod) { create :app, :with_config }
+    let(:entity) { ultra_pod.app_config.entities.first }
+
     before do
-      params = { field: { name: 'number', type: 'number', validates: ['presence'] } }
-      ultra_pod = create :app, :with_config
-      set_auth_headers_for!(ultra_pod, "POST", params)
+      params = { field: { entity: "#{ultra_pod.system_name}#podcasts", name: 'number', type: 'number', validates: ['presence'] } }
+      set_auth_headers_for!(ultra_pod, 'POST', params)
       post '/fields', params
     end
 
     it 'spec_name' do
-      p last_json
       expect(last_response.status).to eql 201
-      expect(last_json.keys).to match_array [
-        :id
+      expect(last_json.field.keys).to match_array %w(
+        id name type validates internal entity
+      )
+    end
+  end
+
+  context 'with an existing field' do
+    let(:ultra_pod) { create :app, :with_config }
+    let(:entity) { ultra_pod.app_config.entities.first }
+
+    before do
+      params = { field: { entity: "#{ultra_pod.system_name}#podcasts", name: 'number', type: 'number', validates: ['presence'] } }
+
+      2.times {
+        set_auth_headers_for!(ultra_pod, 'POST', params)
+        post '/fields', params
+      }
+    end
+
+    it 'spec_name' do
+      expect(last_response.status).to eql 400
+      expect(last_json.errors).to match_array [
+        'Name already exists'
       ]
     end
   end
