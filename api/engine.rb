@@ -7,7 +7,6 @@ class Engine < Grape::API
   version 'v1', using: :header, vendor: 'restinme'
   format :json
   content_type :json, 'application/json'
-  prefix :api
 
   use ::Rack::Cors do
     allow do

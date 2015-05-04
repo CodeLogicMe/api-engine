@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class Repositories::Fields < OpenStruct
   def all
     entity[:fields]
@@ -24,11 +26,11 @@ class Repositories::Fields < OpenStruct
     end
   end
 
+  private
+
   def validate(field)
     FieldValidations.new.validate field, context: all
   end
-
-  private
 
   class FieldValidations
     include Validation

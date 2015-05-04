@@ -57,6 +57,11 @@ class Frontend < ::Grape::API
       def app
         @app ||= Models::Client.first.apps.find_by(system_name: ids[0])
       end
+
+      def entity_repository
+        @entity_repo ||= Repositories::Entities
+          .new(app: app)
+      end
     end
 
     get do
@@ -76,19 +81,21 @@ class Frontend < ::Grape::API
 
     post do
       app = Models::Client.first.apps.find_by(system_name: params.entity.app)
-      Actions::AddEntity
-        .new(params.entity)
-        .call(app)
+      result = entity_repository.add(params.entity)
 
-      entity = app.config_for(params.entity.name)
-      entity_attrs = Serializers::Entities
-        .new(app, [entity])
-        .to_h[0]
-      fields_attrs = Serializers::Fields
-        .new(app, entity, entity['fields'])
-        .to_h
+      if result.ok?
+        entity = entity_repository.all.last
+        entity_attrs = Serializers::Entities
+          .new(app, [entity])
+          .to_h[0]
+        fields_attrs = Serializers::Fields
+          .new(app, entity, entity['fields'])
+          .to_h
 
-      { entity: entity_attrs, fields: fields_attrs }
+        { entity: entity_attrs, fields: fields_attrs }
+      else
+        status(400) and { errors: result.errors }
+      end
     end
   end
 

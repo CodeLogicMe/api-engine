@@ -9,6 +9,6 @@ class API < Grape::API
   format :json
   content_type :json, 'application/json'
 
-  mount Engine
+  mount Engine => '/api'
   mount Frontend
 end
