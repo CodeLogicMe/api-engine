@@ -8,24 +8,37 @@ class Repository < Struct.new(:app, :collection_name)
 
   def all
     Array(app.reload[collection_name])
-      .map { |item| build item  }
+      .map { |record| build record  }
   end
 
   def find(id)
-    item = app.reload[collection_name]
-      .find { |item| item.fetch('id').to_s == id.to_s }
+    record = Array(app.reload[collection_name])
+      .find { |record| record.fetch('id').to_s == id.to_s }
 
-    klass.new item.to_h
+    record or
+      fail RecordNotFound
+
+    klass.new record.to_h
   end
 
   def valid?(obj)
-    validation_klass.new.valid?(obj, context: all.map(&:attributes))
+    siblings = all.map { |record|
+      if record.id != obj.id
+        record.attributes
+      end
+    }.compact
+    validation_klass.new.valid?(obj, context: siblings)
+  end
+
+  def update(obj, params)
+    obj.attributes = params
+    save obj
   end
 
   def save(obj)
     inst = obj.is_a?(Hash) ? build(obj) : obj
     result = valid?(inst)
-    persist(inst)
+    result.ok? and persist(inst)
     result
   end
   alias_method :create, :save
@@ -77,4 +90,6 @@ class Repository < Struct.new(:app, :collection_name)
 
     inst
   end
+
+  RecordNotFound = Class.new(StandardError)
 end

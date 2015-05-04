@@ -1,7 +1,6 @@
 task :environment do
   require_relative './config/application'
   require './api/server'
-  require './frontend/server'
 end
 
 task console: :environment do

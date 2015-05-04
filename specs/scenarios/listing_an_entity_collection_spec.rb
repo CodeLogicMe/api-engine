@@ -23,7 +23,7 @@ RSpec.describe 'listing an entity collection' do
     context 'with existing entries' do
       before do
         10.times do |index|
-          params = { name: "NerdCast-#{index}" }
+          params = { data: { name: "NerdCast-#{index}", episodes: 400, website_url: "something-#{index}" } }
           set_auth_headers_for!(ultra_pod, 'POST', params)
           post '/api/podcasts', params
         end
@@ -37,7 +37,7 @@ RSpec.describe 'listing an entity collection' do
 
         last_json.items.each_with_index do |item, index|
           expect(last_json.items[index].keys)
-            .to match_array %w(id name created_at updated_at)
+            .to match_array %w(id name episodes website_url created_at updated_at)
           expect(last_json.items[index].name)
             .to eql "NerdCast-#{index}"
         end

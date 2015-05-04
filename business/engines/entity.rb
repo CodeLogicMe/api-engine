@@ -41,7 +41,9 @@ module Entity
     attr_reader :attributes
     def attributes=(values)
       values.each do |key, value|
-        set key, value
+        if respond_to?("#{key}=")
+          set key, value
+        end
       end
     end
 

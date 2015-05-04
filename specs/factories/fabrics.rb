@@ -23,6 +23,7 @@ module Models
           'fields': [
             { 'name' => 'id', 'type' => 'text', 'validates' => [] },
             { 'name' => 'name', 'type' => 'text', 'validates' => ['presence', 'uniqueness'] },
+            { 'name' => 'website_url', 'type' => 'text', 'validates' => ['presence', 'uniqueness'] },
             { 'name' => 'episodes', 'type' => 'number', 'validates' => ['presence'] },
             { 'name' => 'created_at', 'type' => 'datetime', 'validates' => [] },
             { 'name' => 'updated_at', 'type' => 'datetime', 'validates' => [] }
