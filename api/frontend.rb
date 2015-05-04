@@ -42,7 +42,7 @@ class Frontend < ::Grape::API
   resource :entities do
     helpers do
       def ids
-        @ids ||= params.id.split('#')
+        @ids ||= params.fetch(:id) { params.entity.app }.split('#')
       end
 
       def app
