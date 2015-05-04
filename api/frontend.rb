@@ -8,15 +8,6 @@ class Frontend < ::Grape::API
   format :json
   content_type :json, 'application/json'
 
-  use ::Rack::Cors do
-    allow do
-      origins '*'
-      resource '*',
-        headers: :any,
-        methods: %i( get post put delete options )
-    end
-  end
-
   post :login do
     { token: 'a-random-auth-token' }
   end

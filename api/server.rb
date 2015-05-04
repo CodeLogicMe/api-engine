@@ -6,8 +6,14 @@ require_relative './engine'
 require_relative './frontend'
 
 class API < Grape::API
-  format :json
-  content_type :json, 'application/json'
+  use ::Rack::Cors do
+    allow do
+      origins '*'
+      resource '*',
+        headers: :any,
+        methods: %i( get post put delete options )
+    end
+  end
 
   mount Engine => '/api'
   mount Frontend
