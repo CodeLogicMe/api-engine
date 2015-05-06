@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'grape', '~> 0.11'
-gem 'sinatra' # just because cloud66 needs it
+gem 'sinatra', require: false # just because cloud66 needs it
 gem 'mongoid', '4.0.0'
 gem 'bcrypt', '~> 3.1'
 gem 'rack-cors', '~> 0.4'
