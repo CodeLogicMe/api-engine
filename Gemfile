@@ -8,6 +8,9 @@ gem 'rack-cors', '~> 0.4'
 gem 'require_all', '~> 1.3'
 gem 'redis'
 
+# logging
+gem 'grape_logging'
+
 group :dvelopment, :test do
   gem 'rspec'
   gem 'rack-test'

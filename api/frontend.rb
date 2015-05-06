@@ -24,11 +24,18 @@ class Frontend < ::Grape::API
     end
 
     def authenticate!
-      error!('401 Unauthorized', 401) unless current_client
+      unless current_client
+        logger.info "#{current_client} has statused"
+        error!('401 Unauthorized', 401)
+      end
     end
 
     def client_apps
       current_client.apps
+    end
+
+    def logger
+      Frontend.logger
     end
   end
 
