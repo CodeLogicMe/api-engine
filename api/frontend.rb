@@ -63,10 +63,8 @@ class Frontend < ::Grape::API
     end
 
     post do
-      app = Actions::CreateApp.new(params['app']).call do |app|
-        erb :new_app, layout: :application
-        return
-      end
+      app = Models::App.create!(client: current_client, name: params.app.name)
+      { app: Serializers::Apps.new(app).to_h[0] }
     end
   end
 
