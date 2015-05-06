@@ -16,5 +16,6 @@ production:
   sessions:
     default:
       database: restinme_production
-      hosts:
-        - localhost:27017
+      hosts: <%= ENV['MONGODB_ADDRESS'] %>
+      options:
+        consistency: strong
