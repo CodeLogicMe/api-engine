@@ -13,8 +13,9 @@ class Models::Client
 
   def self.authenticate(params)
     client = find_by(email: params[:email])
-    client.password_checks?(params[:password])
-    client
+    if client.password_checks?(params[:password])
+      client
+    end
   end
 
   def signed_in?

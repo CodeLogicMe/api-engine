@@ -8,20 +8,51 @@ class Frontend < ::Grape::API
   format :json
   content_type :json, 'application/json'
 
+  helpers do
+    def current_client
+      return nil if headers['Authorization'].nil?
+
+      @current_client ||=
+        begin
+          client_id = Services::AuthToken.retrieve(headers['Authorization'])
+          Models::Client.find client_id
+        end
+    end
+
+    def current_client=(client)
+      @current_client = client
+    end
+
+    def authenticate!
+      error!('401 Unauthorized', 401) unless current_client
+    end
+
+    def client_apps
+      current_client.apps
+    end
+  end
+
   post :login do
-    { token: 'a-random-auth-token' }
+    if client = Models::Client.authenticate(params)
+      token = Services::AuthToken.generate(client)
+      current_client = client
+      { token: token }
+    else
+      status 400
+    end
   end
 
   resource 'apps' do
+    before { authenticate! }
+
     get do
-      apps = Models::Client.first.apps
       {
-        apps: Serializers::Apps.new(apps).to_h
+        apps: Serializers::Apps.new(client_apps).to_h
       }
     end
 
     get '/:app_id' do
-      app = Models::Client.first.apps.find_by(system_name: params.app_id)
+      app = client_apps.find_by(system_name: params.app_id)
       {
         app: Serializers::Apps.new(app).to_h[0],
         entities: Serializers::Entities.new(app, app.app_config.entities).to_h,
@@ -46,7 +77,7 @@ class Frontend < ::Grape::API
       end
 
       def app
-        @app ||= Models::Client.first.apps.find_by(system_name: ids[0])
+        @app ||= client_apps.find_by(system_name: ids[0])
       end
 
       def entity_repository
@@ -56,7 +87,7 @@ class Frontend < ::Grape::API
     end
 
     get do
-      app = Models::Client.first.apps.find_by(system_name: id)
+      app = client_apps.find_by(system_name: id)
       app.app_config.entities.map { |entity| entity_attrs(app, entity) }
     end
 
@@ -71,7 +102,7 @@ class Frontend < ::Grape::API
     end
 
     post do
-      app = Models::Client.first.apps.find_by(system_name: params.entity.app)
+      app = client_apps.find_by(system_name: params.entity.app)
       result = entity_repository.add(params.entity)
 
       if result.ok?
@@ -97,7 +128,7 @@ class Frontend < ::Grape::API
       end
 
       def app
-        @app ||= Models::Client.first.apps.find_by system_name: ids[0]
+        @app ||= client_apps.find_by system_name: ids[0]
       end
 
       def entity
