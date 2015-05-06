@@ -16,6 +16,5 @@ production:
   sessions:
     default:
       database: restinme_production
-      hosts: <%= ENV['MONGODB_ADDRESS'] %>
-      options:
-        consistency: strong
+      hosts:
+        - <%= ENV['MONGODB_ADDRESS'] %>
