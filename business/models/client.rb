@@ -16,6 +16,8 @@ class Models::Client
     if client.password_checks?(params[:password])
       client
     end
+  rescue Mongoid::Errors::DocumentNotFound
+    nil
   end
 
   def signed_in?
