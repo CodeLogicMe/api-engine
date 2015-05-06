@@ -69,6 +69,8 @@ class Frontend < ::Grape::API
   end
 
   resource :entities do
+    before { authenticate! }
+
     helpers do
       def ids
         @ids ||= params.fetch(:id) { params.entity.app }.split('#')
@@ -120,6 +122,8 @@ class Frontend < ::Grape::API
   end
 
   resource :fields do
+    before { authenticate! }
+
     helpers do
       def ids
         @ids ||= params.fetch('id') { params.field.entity }.split('#')
