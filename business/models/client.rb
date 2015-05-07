@@ -20,14 +20,6 @@ class Models::Client
     rescue Mongoid::Errors::DocumentNotFound
       nil
     end
-
-    def find_safe(*args)
-      begin
-        find *args
-      rescue Mongoid::Errors::DocumentNotFound
-        nil
-      end
-    end
   end
 
   def signed_in?

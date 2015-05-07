@@ -15,7 +15,8 @@ class Frontend < ::Grape::API
       @current_client ||=
         begin
           client_id = Services::AuthToken.retrieve(headers['Authorization'])
-          Models::Client.find_safe client_id
+          return nil unless client_id
+          Models::Client.find client_id
         end
     end
 
