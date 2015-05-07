@@ -9,6 +9,12 @@ require_relative './frontend'
 class API < Grape::API
   if ENV['RACK_ENV'] == 'production'
     logger Logger.new GrapeLogging::MultiIO.new(STDOUT, File.open(File.join(__dir__, "../../../shared/log/production.log"), 'a'))
+
+    ::Logger.class_eval { alias :write :'<<' }
+    access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'..','log','access.log')
+    access_logger = ::Logger.new(access_log)
+    error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'..','log','error.log'),"a+")
+    error_logger.sync = true
   else
     logger Logger.new GrapeLogging::MultiIO.new(STDOUT, File.open(File.join(__dir__, "../log/#{ENV['RACK_ENV']}.log"), 'a'))
   end
@@ -20,7 +26,7 @@ class API < Grape::API
   use Rack::CommonLogger, logger
 
   rescue_from :all do |e|
-    MyAPI.logger.error e
+    API.logger.error e
   end
 
   use ::Rack::Cors do
