@@ -11,13 +11,23 @@ class Models::Client
 
   has_many :apps
 
-  def self.authenticate(params)
-    client = find_by(email: params[:email])
-    if client.password_checks?(params[:password])
-      client
+  class << self
+    def authenticate(params)
+      client = find_by(email: params[:email])
+      if client.password_checks?(params[:password])
+        client
+      end
+    rescue Mongoid::Errors::DocumentNotFound
+      nil
     end
-  rescue Mongoid::Errors::DocumentNotFound
-    nil
+
+    def find_safe(*args)
+      begin
+        find *args
+      rescue Mongoid::Errors::DocumentNotFound
+        nil
+      end
+    end
   end
 
   def signed_in?
