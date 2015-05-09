@@ -4,11 +4,15 @@ class Resources::Authentication < Grape::API
   desc 'Authentication test endpoint' do
     failure [401, 'Unauthorized']
     headers [
-      'PublicKey' => {
+      'X-Access-Token' => {
         description: 'Identifies the Application',
         required: true
       },
-      'Hmac' => {
+      'X-Request-Timestamp' => {
+        description: 'When the request was constructed',
+        required: true
+      },
+      'X-Request-Hash' => {
         description: 'A hashed composed by the private key and the query string',
         required: true
       }
@@ -29,7 +33,7 @@ class Resources::Authentication < Grape::API
     { app: current_app.name }
   end
 
-  patch 'authenticate/:id' do
+  put 'authenticate/:id' do
     status 200
     { app: current_app.name }
   end
