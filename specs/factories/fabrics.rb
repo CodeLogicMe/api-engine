@@ -9,10 +9,25 @@ module Models
       client
       name { Faker::Company.name }
 
+      after(:create) do |app|
+        app.tier = create(:tier, :prototype)
+        app.save!
+      end
       trait :with_config do
         after(:create) do |app|
           create :app_config, app: app
         end
+      end
+    end
+
+    factory :tier, class: Tier do
+      name 'small app'
+      recurrency 'monthly'
+      quota 100_000
+
+      trait :prototype do
+        name 'prototype'
+        quota 1000
       end
     end
 

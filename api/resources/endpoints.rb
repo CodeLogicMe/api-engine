@@ -22,12 +22,25 @@ class Resources::Endpoints < Grape::API
           end
         end
     end
+
+    def check_rate_limit!
+      unless RateLimiter.valid?(current_app)
+        error! '403 Forbidden', 403
+      end
+    end
+
+    def hit_rate_limit
+      RateLimiter.hit current_app
+    end
   end
 
   before do
     authenticate_app!
     check_entity_for_current_app!
+    check_rate_limit!
   end
+
+  after { hit_rate_limit }
 
   resource '/:entity_name' do
     get do

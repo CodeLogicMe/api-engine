@@ -1,3 +1,5 @@
+require_relative '../engines/entity_builder'
+
 module Models
   class App
     include Mongoid::Document
@@ -17,8 +19,9 @@ module Models
     belongs_to :client
     embeds_one :private_key
     embeds_one :app_config,
-      class_name: "Models::AppConfig",
+      class_name: 'Models::AppConfig',
       autobuild: true
+    belongs_to :tier
 
     index({ system_name: 1 }, { unique: true, name: "system_name_index" })
 

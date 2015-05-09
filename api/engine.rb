@@ -2,6 +2,7 @@ require 'grape'
 
 require_relative './helpers'
 require_rel './resources/*.rb'
+require_rel './rate_limiter'
 
 class Engine < Grape::API
   version 'v1', using: :header, vendor: 'restinme'
