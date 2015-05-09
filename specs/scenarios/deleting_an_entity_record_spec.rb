@@ -11,10 +11,10 @@ RSpec.describe 'deleting an entity record' do
     before do
       params = { data: { name: 'RapaduraCast', episodes: 40, website_url: 'rapadura-cast.com.br' } }
       set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/api/podcasts', params
+      post '/podcasts', params
 
       set_auth_headers_for!(new_app, 'DELETE', {})
-      delete "/api/podcasts/#{last_json.id}"
+      delete "/podcasts/#{last_json.id}"
     end
 
     it do
@@ -27,17 +27,17 @@ RSpec.describe 'deleting an entity record' do
     before do
       params = { data: { name: 'RapaduraCast', episodes: 30, website_url: 'rapadura-cast.com.br' } }
       set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/api/podcasts', params
+      post '/podcasts', params
 
       set_auth_headers_for!(ultra_pod, 'DELETE', {})
-      delete "/api/podcasts/#{last_json.id}"
+      delete "/podcasts/#{last_json.id}"
     end
 
     it do
       expect(last_response.status).to eql 204
 
       set_auth_headers_for!(ultra_pod, 'GET', {})
-      get '/api/podcasts'
+      get '/podcasts'
       expect(last_json.items.count).to eql 0
     end
   end

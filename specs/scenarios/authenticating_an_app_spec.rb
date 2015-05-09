@@ -88,24 +88,24 @@ RSpec.describe API do
   it_behaves_like \
     'as authenticable endpoint',
     'GET',
-    '/api/authenticate',
+    '/authenticate',
     200
 
   it_behaves_like \
     'as authenticable endpoint',
     'POST',
-    '/api/authenticate',
+    '/authenticate',
     201
 
   it_behaves_like \
     'as authenticable endpoint',
     'PATCH',
-    '/api/authenticate/some_id',
+    '/authenticate/some_id',
     200
 
   it_behaves_like \
     'as authenticable endpoint',
     'DELETE',
-    '/api/authenticate/some_id',
+    '/authenticate/some_id',
     200
 end

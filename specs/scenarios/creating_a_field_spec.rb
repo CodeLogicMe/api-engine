@@ -25,9 +25,15 @@ RSpec.describe Frontend do
     let(:entity) { ultra_pod.app_config.entities.first }
 
     before do
-      params = { field: { entity: "#{ultra_pod.system_name}#podcasts", name: 'number', type: 'number', validates: ['presence'] } }
-      set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/fields', params
+      login_as ultra_pod.client
+      post '/api/fields', {
+        field: {
+          entity: "#{ultra_pod.system_name}#podcasts",
+          name: 'number',
+          type: 'number',
+          validates: ['presence']
+        }
+      }
     end
 
     it 'spec_name' do
@@ -43,11 +49,17 @@ RSpec.describe Frontend do
     let(:entity) { ultra_pod.app_config.entities.first }
 
     before do
-      params = { field: { entity: "#{ultra_pod.system_name}#podcasts", name: 'number', type: 'number', validates: ['presence'] } }
+      login_as ultra_pod.client
 
       2.times {
-        set_auth_headers_for!(ultra_pod, 'POST', params)
-        post '/fields', params
+        post '/api/fields', {
+          field: {
+            entity: "#{ultra_pod.system_name}#podcasts",
+            name: 'number',
+            type: 'number',
+            validates: ['presence']
+          }
+        }
       }
     end
 

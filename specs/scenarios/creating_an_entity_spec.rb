@@ -26,9 +26,10 @@ RSpec.describe Frontend do
     let(:ultra_pod) { create :app }
 
     before do
-      params = { id: ultra_pod.system_name, entity: { app: ultra_pod.system_name, name: 'users' } }
-      set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/entities', params
+      login_as ultra_pod.client
+      post '/api/entities', { id: ultra_pod.system_name, entity: {
+        app: ultra_pod.system_name, name: 'users' }
+      }
     end
 
     it 'should be possible' do
@@ -44,9 +45,10 @@ RSpec.describe Frontend do
     let(:ultra_pod) { create :app }
 
     before do
-      params = { id: ultra_pod.system_name, entity: { app: ultra_pod.system_name } }
-      set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/entities', params
+      login_as ultra_pod.client
+      post '/api/entities', { id: ultra_pod.system_name, entity: {
+        app: ultra_pod.system_name }
+      }
     end
 
     it 'should not be possible' do

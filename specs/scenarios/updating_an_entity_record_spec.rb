@@ -9,7 +9,7 @@ RSpec.describe API do
         params = {}
         ultra_pod = create :app, :with_config
         set_auth_headers_for!(ultra_pod, 'PUT', params)
-        put '/api/podcasts/123invalid456ID', params
+        put '/podcasts/123invalid456ID', params
       end
 
       it 'should not be possible' do
@@ -24,11 +24,11 @@ RSpec.describe API do
         ultra_pod = create :app, :with_config
 
         set_auth_headers_for!(ultra_pod, 'POST', params)
-        post '/api/podcasts/', params
+        post '/podcasts/', params
 
         new_params = { data: { name: 'NerdCast' } }
         set_auth_headers_for!(ultra_pod, 'PUT', new_params)
-        put "/api/podcasts/#{last_json.id}", new_params
+        put "/podcasts/#{last_json.id}", new_params
       end
 
       it 'should be possible' do

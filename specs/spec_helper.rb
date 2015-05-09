@@ -33,6 +33,10 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  config.after(:each) do
+    Grape::Endpoint.before_each nil
+  end
 end
 
 def app
@@ -51,4 +55,9 @@ def set_auth_headers_for!(app, verb, params)
   header 'X-Access-Token', app.public_key
   header 'X-Request-Timestamp', timestamp.to_s
   header 'X-Request-Hash', calculate_hmac(verb, app.private_key.secret, params, timestamp)
+end
+def login_as(client)
+  Grape::Endpoint.before_each do |endpoint|
+    allow(endpoint).to receive(:current_client).and_return client
+  end
 end

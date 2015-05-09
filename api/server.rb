@@ -16,6 +16,6 @@ class API < Grape::API
     end
   end
 
-  mount Engine => '/api'
-  mount Frontend
+  mount Engine
+  mount Frontend => '/api'
 end

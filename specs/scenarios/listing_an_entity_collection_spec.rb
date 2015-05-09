@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe 'listing an entity collection' do
+RSpec.describe 'listing an records from an entity' do
   include Rack::Test::Methods
 
   let(:ultra_pod) { create :app, :with_config }
@@ -10,7 +10,7 @@ RSpec.describe 'listing an entity collection' do
 
     before do
       set_auth_headers_for!(new_app, 'GET', {})
-      get '/api/podcasts'
+      get '/podcasts'
     end
 
     it do
@@ -25,10 +25,10 @@ RSpec.describe 'listing an entity collection' do
         10.times do |index|
           params = { data: { name: "NerdCast-#{index}", episodes: 400, website_url: "something-#{index}" } }
           set_auth_headers_for!(ultra_pod, 'POST', params)
-          post '/api/podcasts', params
+          post '/podcasts', params
         end
         set_auth_headers_for!(ultra_pod, 'GET', {})
-        get '/api/podcasts'
+        get '/podcasts'
       end
 
       it 'should contain all defined fields' do
@@ -47,7 +47,7 @@ RSpec.describe 'listing an entity collection' do
     context 'without entries' do
       before do
         set_auth_headers_for!(ultra_pod, 'GET', {})
-        get '/api/podcasts'
+        get '/podcasts'
       end
 
       it do

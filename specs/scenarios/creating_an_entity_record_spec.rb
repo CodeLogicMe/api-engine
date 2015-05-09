@@ -8,7 +8,7 @@ RSpec.describe API do
       params = { data: { name: 'Nerdcast', episodes: 352, website_url: 'jovemnerd.com.br' } }
       ultra_pod = create :app, :with_config
       set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/api/podcasts', params
+      post '/podcasts', params
     end
 
     it 'should create the resource' do
@@ -21,7 +21,7 @@ RSpec.describe API do
       before do
         mega_pod = create :app, :with_config
         set_auth_headers_for!(mega_pod, 'POST', {})
-        post '/api/podcasts', {}
+        post '/podcasts', {}
       end
 
       it 'should return validations errors' do
@@ -41,7 +41,7 @@ RSpec.describe API do
 
         2.times do
           set_auth_headers_for!(ultra_pod, 'POST', params)
-          post '/api/podcasts', params
+          post '/podcasts', params
         end
       end
 
@@ -58,7 +58,7 @@ RSpec.describe API do
     before do
       create :app, :with_config
       set_auth_headers_for!(create(:app), 'POST', {})
-      post '/api/podcasts', {}
+      post '/podcasts', {}
     end
 
     it 'should not be found' do
