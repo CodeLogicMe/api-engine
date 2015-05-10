@@ -3,12 +3,11 @@ module Models
     include Mongoid::Document
 
     field :name, type: String
-    field :recurrency, type: String
+    field :recurrency, type: String, default: 'monthly'
     field :quota, type: Integer
 
     has_many :apps
 
-    validates :name, :recurrency, :quota,
-      presence: true
+    validates_presence_of :name, :recurrency, :quota
   end
 end

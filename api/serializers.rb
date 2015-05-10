@@ -11,9 +11,46 @@ module Serializers
           name: app.name,
           public_key: app.public_key,
           private_key: app.private_key.secret,
-          entities: app.app_config.entities.map do |entity|
+          entities: app.app_config.entities.map { |entity|
             Entities.idify(app, entity)
-          end
+          },
+          tier: Tiers.idify(app.tier)
+        }
+      end
+    end
+  end
+
+  class Stats
+    def initialize(app)
+      @app = app
+    end
+
+    def to_h
+      {
+        id: 'nevermind',
+        quota: {
+          current: RateLimiter.quota_for(@app),
+          max: @app.tier.quota
+        }
+      }
+    end
+  end
+
+  class Tiers
+    def initialize(tiers)
+      @tiers = Array(tiers)
+    end
+
+    def self.idify(tier)
+      tier.id.to_s
+    end
+
+    def to_h
+      @tiers.map do |tier|
+        {
+          id: Tiers.idify(tier),
+          name: tier.name,
+          quota: tier.quota
         }
       end
     end

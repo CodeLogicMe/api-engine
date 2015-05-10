@@ -33,10 +33,6 @@ class Frontend < ::Grape::API
     def client_apps
       current_client.apps
     end
-
-    def logger
-      Frontend.logger
-    end
   end
 
   post :login do
@@ -183,5 +179,20 @@ class Frontend < ::Grape::API
 
       {}
     end
+  end
+
+  resource :tiers do
+    before { authenticate! }
+
+    get ':id' do
+      tier = Models::Tier.find(params.id)
+      { tier: Serializers::Tiers.new(tier).to_h }
+    end
+  end
+
+  get '/statistics/:app_id' do
+    authenticate!
+    app = client_apps.find_by(system_name: params.app_id)
+    { statistic: Serializers::Stats.new(app).to_h }
   end
 end

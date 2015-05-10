@@ -11,6 +11,12 @@ module RateLimiter
     Quota.new(app).hit!
   end
 
+  def self.quota_for(app)
+    Quota.new(app).hit_count
+  end
+
+  private
+
   Quota ||= Struct.new(:app) do
     def over?
       hit_count >= app.tier.quota
