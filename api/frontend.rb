@@ -49,7 +49,7 @@ class Frontend < ::Grape::API
     end
   end
 
-  resource 'apps' do
+  resource :apps do
     before { authenticate! }
 
     get do

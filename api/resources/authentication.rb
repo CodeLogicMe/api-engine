@@ -18,23 +18,25 @@ class Resources::Authentication < Grape::API
       }
     ]
   end
-  get :authenticate do
-    status 200
-    { app: current_app.name }
-  end
+  namespace :authenticate do
+    get do
+      status 200
+      { app: current_app.name }
+    end
 
-  post :authenticate do
-    status 201
-    { app: current_app.name }
-  end
+    post do
+      status 201
+      { app: current_app.name }
+    end
 
-  delete 'authenticate/:id' do
-    status 200
-    { app: current_app.name }
-  end
+    delete '/:id' do
+      status 200
+      { app: current_app.name }
+    end
 
-  put 'authenticate/:id' do
-    status 200
-    { app: current_app.name }
+    put '/:id' do
+      status 200
+      { app: current_app.name }
+    end
   end
 end
