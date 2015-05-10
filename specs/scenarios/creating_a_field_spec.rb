@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe Repositories::Fields do
+RSpec.describe Repositories::Fields, 'creating a field' do
   context 'a duplicate field' do
     let(:app) { create :app, :with_config }
     let(:entity) { app.app_config.entities.first }
@@ -17,10 +17,10 @@ RSpec.describe Repositories::Fields do
   end
 end
 
-RSpec.describe Frontend do
+RSpec.describe Frontend, 'creating a field' do
   include Rack::Test::Methods
 
-  context 'with a new field' do
+  context 'with a unique set of data' do
     let(:ultra_pod) { create :app, :with_config }
     let(:entity) { ultra_pod.app_config.entities.first }
 
@@ -36,7 +36,7 @@ RSpec.describe Frontend do
       }
     end
 
-    it 'spec_name' do
+    it 'should be able to create it' do
       expect(last_response.status).to eql 201
       expect(last_json.field.keys).to match_array %w(
         id name type validates internal entity
@@ -44,7 +44,7 @@ RSpec.describe Frontend do
     end
   end
 
-  context 'with an existing field' do
+  context 'with an a duplicate set of data' do
     let(:ultra_pod) { create :app, :with_config }
     let(:entity) { ultra_pod.app_config.entities.first }
 
@@ -63,7 +63,7 @@ RSpec.describe Frontend do
       }
     end
 
-    it 'spec_name' do
+    it 'should not be able to create it' do
       expect(last_response.status).to eql 400
       expect(last_json.errors).to match_array [
         'Name already exists'

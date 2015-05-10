@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 module Actions
-  RSpec.describe AuthenticateApp do
+  RSpec.describe AuthenticateApp, 'testing the authentication engine' do
     let(:jedi_temple) { create :app }
 
     describe 'GETting' do
@@ -99,7 +99,7 @@ RSpec.describe API do
 
   it_behaves_like \
     'as authenticable endpoint',
-    'PATCH',
+    'PUT',
     '/authenticate/some_id',
     200
 

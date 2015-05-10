@@ -32,6 +32,8 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning do
       example.run
     end
+    GC.start
+    Redis.new.flushall
   end
 
   config.after(:each) do

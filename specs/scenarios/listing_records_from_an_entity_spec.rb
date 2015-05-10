@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe 'listing an records from an entity' do
+RSpec.describe API, 'listing records from an entity' do
   include Rack::Test::Methods
 
   let(:ultra_pod) { create :app, :with_config }
@@ -22,7 +22,7 @@ RSpec.describe 'listing an records from an entity' do
   describe 'for the current app' do
     context 'with existing entries' do
       before do
-        10.times do |index|
+        5.times do |index|
           params = { data: { name: "NerdCast-#{index}", episodes: 400, website_url: "something-#{index}" } }
           set_auth_headers_for!(ultra_pod, 'POST', params)
           post '/podcasts', params
@@ -33,7 +33,7 @@ RSpec.describe 'listing an records from an entity' do
 
       it 'should contain all defined fields' do
         expect(last_response.status).to eql 200
-        expect(last_json['count']).to eql 10
+        expect(last_json['count']).to eql 5
 
         last_json.items.each_with_index do |item, index|
           expect(last_json.items[index].keys)
