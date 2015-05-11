@@ -1,7 +1,7 @@
 class Resources::Endpoints < Grape::API
   helpers do
-    def check_entity_for_current_app!
-      unless current_app.has_entity?(entity_name)
+    def check_entity_for_current_api!
+      unless current_api.has_entity?(entity_name)
         error!({ errors: ['Not Found'] }, 404)
       end
     end
@@ -11,32 +11,31 @@ class Resources::Endpoints < Grape::API
     end
 
     def current_repository
-      @repository ||= ::Repository.new(current_app, entity_name)
+      @repository ||= ::Repository.new(current_api, entity_name)
     end
 
     def entity_params
       @entity_params ||=
         begin
           (params.data || {}).select do |key, value|
-            current_app.has_field?(entity_name, key)
+            current_api.has_field?(entity_name, key)
           end
         end
     end
 
     def check_rate_limit!
-      unless RateLimiter.valid?(current_app)
+      unless RateLimiter.valid?(current_api)
         error! '403 Forbidden', 403
       end
     end
 
     def hit_rate_limit
-      RateLimiter.hit current_app
+      RateLimiter.hit current_api
     end
   end
 
   before do
-    authenticate_app!
-    check_entity_for_current_app!
+    check_entity_for_current_api!
     check_rate_limit!
   end
 

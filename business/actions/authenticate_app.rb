@@ -1,3 +1,5 @@
+require_relative '../setup'
+
 class Actions::AuthenticateApp
   extend Extensions::Parameterizable
 
@@ -24,14 +26,14 @@ class Actions::AuthenticateApp
   private
 
   def valid_request?(app)
-    ( not expired? ) && valid_hmac?(app)
+    ( not expired? ) && valid_hash?(app)
   end
 
-  def valid_hmac?(app)
-    auth.fetch(:hmac) == calculate_hmac_for(app)
+  def valid_hash?(app)
+    auth.fetch(:hash) == calculate_hash_for(app)
   end
 
-  def calculate_hmac_for(app)
+  def calculate_hash_for(app)
     OpenSSL::HMAC.hexdigest \
       OpenSSL::Digest.new('sha1'),
       app.private_key.secret,

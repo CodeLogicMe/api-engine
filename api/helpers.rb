@@ -1,19 +1,9 @@
 module AuthHelpers
   extend ::Grape::API::Helpers
 
-  def current_app
-    @current_app ||=
-      begin
-        if auth_data[:auth][:public_key] == "missing"
-          error!({}, 404)
-        end
-
-        Actions::AuthenticateApp.new(auth_data).call do
-          error!({ errors: ["Unauthorized"] }, 401)
-        end
-      end
+  def current_api
+    env['current_api']
   end
-  alias_method :authenticate_app!, :current_app
 
   private
 

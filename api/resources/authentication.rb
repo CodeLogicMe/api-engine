@@ -1,6 +1,4 @@
 class Resources::Authentication < Grape::API
-  before { authenticate_app! }
-
   desc 'Authentication test endpoint' do
     failure [401, 'Unauthorized']
     headers [
@@ -21,22 +19,22 @@ class Resources::Authentication < Grape::API
   namespace :authenticate do
     get do
       status 200
-      { app: current_app.name }
+      { app: current_api.name }
     end
 
     post do
       status 201
-      { app: current_app.name }
+      { app: current_api.name }
     end
 
     delete '/:id' do
       status 200
-      { app: current_app.name }
+      { app: current_api.name }
     end
 
     put '/:id' do
       status 200
-      { app: current_app.name }
+      { app: current_api.name }
     end
   end
 end

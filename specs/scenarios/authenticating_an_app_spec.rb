@@ -11,7 +11,7 @@ module Actions
           {
             timestamp: now_utc.to_s,
             public_key: jedi_temple.public_key,
-            hmac: calculate_hmac('GET', jedi_temple.private_key.secret, {}, now_utc)
+            hash: calculate_hmac('GET', jedi_temple.private_key.secret, {}, now_utc)
           }
         end
         let(:data) { { verb: 'GET', query_string: '', auth: auth } }
@@ -28,7 +28,7 @@ module Actions
           {
             timestamp: now_utc.to_s,
             public_key: jedi_temple.public_key,
-            hmac: calculate_hmac('GET', 'super12345invalid09876secret1029384key', {}, now_utc)
+            hash: calculate_hmac('GET', 'super12345invalid09876secret1029384key', {}, now_utc)
           }
         end
         let(:data) { { verb: 'GET', query_string: '', auth: auth } }
@@ -47,12 +47,12 @@ module Actions
           {
             timestamp: now_utc.to_s,
             public_key: 'super12345invalid09876secret1029384key',
-            hmac: calculate_hmac('GET', jedi_temple.private_key.secret, {}, now_utc)
+            hash: calculate_hmac('GET', jedi_temple.private_key.secret, {}, now_utc)
           }
         end
         let(:data) { { verb: 'GET', query_string: '', auth: auth } }
 
-        subject { AuthenticateApp.new(data) }
+        subject { described_class.new(data) }
 
         it { expect{subject.call}.to raise_error Mongoid::Errors::DocumentNotFound }
       end
@@ -61,15 +61,31 @@ module Actions
 end
 
 shared_examples 'as authenticable endpoint' do |verb, url, status|
-  describe 'with a valid HMAC' do
-    let(:dark_temple) { create :app }
-    let(:private_key) { dark_temple.private_key.secret }
+  context 'with invalid auth headers' do
+    let(:ultra_pod) { create :app }
+
+    before do
+      header 'X-Request-Timestamp', '9999999999'
+      header 'X-Access-Token', ultra_pod.public_key
+      header 'X-Request-Hash', 'arandomultrahugehash'
+
+      public_send verb.downcase, url, {}
+    end
+
+    it 'expect the API to refute the request' do
+      expect(last_response.status).to eql 401
+    end
+  end
+
+  context 'with valid auth headers' do
+    let(:ultra_pod) { create :app }
+    let(:private_key) { ultra_pod.private_key.secret }
     let(:params) { { what: 'ever' } }
 
     before do
       timestamp = Time.now.utc.to_i
       header 'X-Request-Timestamp', timestamp.to_s
-      header 'X-Access-Token', dark_temple.public_key
+      header 'X-Access-Token', ultra_pod.public_key
       header 'X-Request-Hash', calculate_hmac(verb.upcase, private_key, params, timestamp)
 
       public_send(verb.downcase, url, params)
@@ -77,7 +93,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
 
     it do
       expect(last_response.status).to eq status
-      expect(last_json['app']).to eq dark_temple.name
+      expect(last_json['app']).to eq ultra_pod.name
     end
   end
 end
