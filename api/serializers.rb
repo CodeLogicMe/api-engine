@@ -29,7 +29,7 @@ module Serializers
       {
         id: 'nevermind',
         quota: {
-          current: RateLimiter.quota_for(@app),
+          current: Middlewares::Terminus.quota_for(@app),
           max: @app.tier.quota
         }
       }

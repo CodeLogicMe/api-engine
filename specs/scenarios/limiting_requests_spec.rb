@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe RateLimiter do
+RSpec.describe API do
   include Rack::Test::Methods
 
   context 'when the quota in over' do
@@ -9,7 +9,7 @@ RSpec.describe RateLimiter do
     end
 
     before do
-      allow_any_instance_of(RateLimiter::Quota).to receive(:hit_count).and_return(1001)
+      allow_any_instance_of(Middlewares::Terminus::Quota).to receive(:hit_count).and_return(1001)
       set_auth_headers_for!(ultra_pod, 'GET', {})
       get '/podcasts'
     end

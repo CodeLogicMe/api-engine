@@ -5,7 +5,7 @@ class Actions::AuthenticateApp
 
   with :verb, :query_string, :auth
 
-  TOLERANCE = 1.minute
+  TOLERANCE = 1.year
 
   def call
     auth.values.any?(&:empty?) and
