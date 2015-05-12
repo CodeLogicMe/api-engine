@@ -1,5 +1,9 @@
 class Resources::Endpoints < Grape::API
   helpers do
+    def current_api
+      env['current_api']
+    end
+
     def check_entity_for_current_api!
       unless current_api.has_entity?(entity_name)
         error!({ errors: ['Not Found'] }, 404)

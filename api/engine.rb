@@ -1,6 +1,5 @@
 require 'grape'
 
-require_relative './helpers'
 require_relative './middlewares/janus'
 require_relative './middlewares/terminus'
 require_relative './middlewares/veritas'
@@ -14,8 +13,6 @@ class Engine < Grape::API
   use Middlewares::Janus
   use Middlewares::Terminus
   use Middlewares::Veritas
-
-  helpers ::AuthHelpers
 
   mount ::Resources::Authentication
   mount ::Resources::Endpoints

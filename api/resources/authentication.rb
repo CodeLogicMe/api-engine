@@ -1,4 +1,10 @@
 class Resources::Authentication < Grape::API
+  helpers do
+    def current_api
+      env['current_api']
+    end
+  end
+
   desc 'Authentication test endpoint' do
     failure [401, 'Unauthorized']
     headers [

@@ -23,7 +23,7 @@ module Middlewares
     private
 
     def auth_for(env)
-      @auth_data ||= {
+      {
         verb: verb(env),
         auth: auth_keys(env),
         query_string: params_string(env)
