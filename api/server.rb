@@ -1,6 +1,5 @@
 require 'grape'
 require 'rack/cors'
-require 'grape_logging'
 
 require_relative '../business/setup'
 require_relative './engine'

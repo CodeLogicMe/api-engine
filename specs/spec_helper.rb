@@ -14,6 +14,9 @@ require 'factory_girl'
 require 'faker'
 require_relative 'factories/fabrics'
 
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 

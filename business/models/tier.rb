@@ -2,6 +2,8 @@ module Models
   class Tier
     include Mongoid::Document
 
+    store_in collection: 'tiers'
+
     field :name, type: String
     field :recurrency, type: String, default: 'monthly'
     field :quota, type: Integer

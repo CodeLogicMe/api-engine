@@ -6,13 +6,18 @@ gem 'mongoid', '4.0.0'
 gem 'bcrypt', '~> 3.1'
 gem 'rack-cors', '~> 0.4'
 gem 'require_all', '~> 1.3'
+
+# in memory database & enqueueing
 gem 'redis'
 gem 'redis-namespace'
 
-# logging
-gem 'grape_logging'
+# background workers
+gem 'sidekiq'
 
-group :dvelopment, :test do
+# request analysis
+gem 'geocoder'
+
+group :development, :test do
   gem 'rspec'
   gem 'rack-test'
   gem 'factory_girl', '~> 4.4.0'
