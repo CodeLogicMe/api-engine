@@ -10,9 +10,9 @@ class Engine < Grape::API
   format :json
   content_type :json, 'application/json'
 
+  use Middlewares::Veritas
   use Middlewares::Janus
   use Middlewares::Terminus
-  use Middlewares::Veritas
 
   mount ::Resources::Authentication
   mount ::Resources::Endpoints

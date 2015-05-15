@@ -1,4 +1,5 @@
 require_relative '../engines/entity_builder'
+require_relative '../extensions'
 
 module Models
   class App
@@ -22,6 +23,8 @@ module Models
       class_name: 'Models::AppConfig',
       autobuild: true
     belongs_to :tier
+    embeds_many :requests,
+      class_name: 'Models::SmartRequest'
 
     index({ system_name: 1 }, { unique: true, name: "system_name_index" })
 

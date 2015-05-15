@@ -2,10 +2,16 @@ source 'https://rubygems.org'
 
 gem 'grape', '~> 0.11'
 gem 'sinatra', require: false # just because cloud66 needs it
-gem 'mongoid', '4.0.0'
-gem 'bcrypt', '~> 3.1'
 gem 'rack-cors', '~> 0.4'
+
+# database
+gem 'mongoid', '4.0.0'
+
+# because I'm lazy
 gem 'require_all', '~> 1.3'
+
+# encription
+gem 'bcrypt', '~> 3.1'
 
 # in memory database & enqueueing
 gem 'redis'
@@ -16,6 +22,7 @@ gem 'sidekiq'
 
 # request analysis
 gem 'geocoder'
+gem 'browser'
 
 group :development, :test do
   gem 'rspec'
