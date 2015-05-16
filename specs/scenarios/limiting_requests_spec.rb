@@ -9,7 +9,7 @@ RSpec.describe API do
     end
 
     before do
-      allow_any_instance_of(Middlewares::Terminus::Quota).to receive(:hit_count).and_return(1001)
+      allow_any_instance_of(Middlewares::Terminus::Quota).to receive(:over?).and_return(true)
       set_auth_headers_for!(ultra_pod, 'GET', {})
       get '/podcasts'
     end

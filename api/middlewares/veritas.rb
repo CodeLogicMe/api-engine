@@ -13,7 +13,7 @@ module Middlewares
 
       timing.finish!
 
-      if response[0].to_s !~ /5\d{2}/
+      if response.header.to_s !~ /5\d{2}/
         stat_request!(env['current_api'], timing, env)
       end
 
