@@ -11,7 +11,7 @@ module Middlewares
         return Rack::Response.new({ errors: ['Not Found'] }, 404)
       end
 
-      current_api = Actions::AuthenticateApp.new(auth_data).call do
+      current_api = Actions::AuthenticateApi.new(auth_data).call do
         return Rack::Response.new({ errors: ['Unauthorized'] }, 401)
       end
 

@@ -10,7 +10,9 @@ class Engine < Grape::API
   format :json
   content_type :json, 'application/json'
 
-  use Middlewares::Veritas
+  if ENV['RACK_ENV'] != 'test'
+    use Middlewares::Veritas
+  end
   use Middlewares::Janus
   use Middlewares::Terminus
 

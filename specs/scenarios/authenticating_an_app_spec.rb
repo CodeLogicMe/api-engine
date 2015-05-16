@@ -1,8 +1,8 @@
 require_relative '../spec_helper'
 
 module Actions
-  RSpec.describe AuthenticateApp, 'testing the authentication engine' do
-    let(:jedi_temple) { create :app }
+  RSpec.describe AuthenticateApi, 'testing the authentication engine' do
+    let(:jedi_temple) { create :api }
 
     describe 'GETting' do
       context 'a valid key and secret' do
@@ -37,7 +37,7 @@ module Actions
 
         it do
           expect{ subject.call }
-            .to raise_error AuthenticateApp::InvalidCredentials
+            .to raise_error AuthenticateApi::InvalidCredentials
         end
       end
 
@@ -62,7 +62,7 @@ end
 
 shared_examples 'as authenticable endpoint' do |verb, url, status|
   context 'with invalid auth headers' do
-    let(:ultra_pod) { create :app }
+    let(:ultra_pod) { create :api }
 
     before do
       header 'X-Request-Timestamp', '9999999999'
@@ -78,7 +78,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
   end
 
   context 'with valid auth headers' do
-    let(:ultra_pod) { create :app }
+    let(:ultra_pod) { create :api }
     let(:private_key) { ultra_pod.private_key.secret }
     let(:params) { { what: 'ever' } }
 
@@ -93,7 +93,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
 
     it do
       expect(last_response.status).to eq status
-      expect(last_json['app']).to eq ultra_pod.name
+      expect(last_json['api']).to eq ultra_pod.name
     end
   end
 end

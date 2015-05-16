@@ -4,8 +4,8 @@ class Actions::NewPrivateKey
   with :public_key
 
   def call
-    app = Models::App.find_by public_key: public_key
+    api = Models::Api.find_by public_key: public_key
 
-    Models::PrivateKey.create app: app
+    Models::PrivateKey.create api: api
   end
 end

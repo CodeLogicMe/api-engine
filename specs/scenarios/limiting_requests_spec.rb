@@ -5,7 +5,7 @@ RSpec.describe API do
 
   context 'when the quota in over' do
     let(:ultra_pod) do
-      create :app, :with_config, tier: create(:tier, :prototype)
+      create :api, :with_config, tier: create(:tier, :prototype)
     end
 
     before do
@@ -21,7 +21,7 @@ RSpec.describe API do
 
   context 'with enough quota available' do
     let(:ultra_pod) do
-      create :app, :with_config, tier: create(:tier, :prototype)
+      create :api, :with_config, tier: create(:tier, :prototype)
     end
 
     before do

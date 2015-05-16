@@ -3,10 +3,10 @@ require_relative '../spec_helper'
 RSpec.describe API do
   include Rack::Test::Methods
 
-  context 'for the current app' do
+  context 'for the current api' do
     before do
       params = { data: { name: 'Nerdcast', episodes: 352, website_url: 'jovemnerd.com.br' } }
-      ultra_pod = create :app, :with_config
+      ultra_pod = create :api, :with_config
       set_auth_headers_for!(ultra_pod, 'POST', params)
       post '/podcasts', params
     end
@@ -19,7 +19,7 @@ RSpec.describe API do
 
     context 'without the required data' do
       before do
-        mega_pod = create :app, :with_config
+        mega_pod = create :api, :with_config
         set_auth_headers_for!(mega_pod, 'POST', {})
         post '/podcasts', {}
       end
@@ -37,7 +37,7 @@ RSpec.describe API do
     context 'with duplicate data' do
       before do
         params = { data: { name: 'Nerdcast', episodes: 352, website_url: 'jovemnerd.com.br' } }
-        ultra_pod = create :app, :with_config
+        ultra_pod = create :api, :with_config
 
         2.times do
           set_auth_headers_for!(ultra_pod, 'POST', params)
@@ -54,10 +54,10 @@ RSpec.describe API do
     end
   end
 
-  context 'for another app' do
+  context 'for another api' do
     before do
-      create :app, :with_config
-      set_auth_headers_for!(create(:app), 'POST', {})
+      create :api, :with_config
+      set_auth_headers_for!(create(:api), 'POST', {})
       post '/podcasts', {}
     end
 

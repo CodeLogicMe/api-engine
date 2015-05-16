@@ -1,9 +1,13 @@
 require_relative '../spec_helper'
 
-RSpec.describe Models::App do
+RSpec.describe Models::Api do
   let(:client) { create :client }
 
-  context 'creating an app' do
+  before do
+    create :tier, :prototype
+  end
+
+  context 'creating an api' do
     subject { described_class.create name: 'Jedi Temple', client: client }
 
     it { expect(subject).to_not be_a_new_record }

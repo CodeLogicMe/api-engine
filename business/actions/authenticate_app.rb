@@ -1,6 +1,6 @@
 require_relative '../setup'
 
-class Actions::AuthenticateApp
+class Actions::AuthenticateApi
   extend Extensions::Parameterizable
 
   with :verb, :query_string, :auth
@@ -11,12 +11,12 @@ class Actions::AuthenticateApp
     auth.values.any?(&:empty?) and
       fail InvalidCredentials
 
-    app = Models::App.find_by public_key: auth.fetch(:public_key)
+    api = Models::Api.find_by public_key: auth.fetch(:public_key)
 
-    valid_request?(app) or
+    valid_request?(api) or
       fail InvalidCredentials
 
-    app
+    api
   rescue InvalidCredentials => e
     block_given? ? yield(e) : raise
   end
@@ -25,18 +25,18 @@ class Actions::AuthenticateApp
 
   private
 
-  def valid_request?(app)
-    ( not expired? ) && valid_hash?(app)
+  def valid_request?(api)
+    ( not expired? ) && valid_hash?(api)
   end
 
-  def valid_hash?(app)
-    auth.fetch(:hash) == calculate_hash_for(app)
+  def valid_hash?(api)
+    auth.fetch(:hash) == calculate_hash_for(api)
   end
 
-  def calculate_hash_for(app)
+  def calculate_hash_for(api)
     OpenSSL::HMAC.hexdigest \
       OpenSSL::Digest.new('sha1'),
-      app.private_key.secret,
+      api.private_key.secret,
       request_string
   end
 

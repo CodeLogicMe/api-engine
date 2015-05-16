@@ -7,7 +7,7 @@ class Models::PrivateKey
 
   random :secret, length: 64
 
-  embedded_in :app
+  embedded_in :api
 
   validates_presence_of :secret
 end

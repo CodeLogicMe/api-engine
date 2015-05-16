@@ -3,13 +3,13 @@ require_relative '../spec_helper'
 RSpec.describe API, 'listing records from an entity' do
   include Rack::Test::Methods
 
-  let(:ultra_pod) { create :app, :with_config }
+  let(:ultra_pod) { create :api, :with_config }
 
-  context 'for another app' do
-    let(:new_app) { create :app }
+  context 'for another api' do
+    let(:new_api) { create :api }
 
     before do
-      set_auth_headers_for!(new_app, 'GET', {})
+      set_auth_headers_for!(new_api, 'GET', {})
       get '/podcasts'
     end
 
@@ -19,7 +19,7 @@ RSpec.describe API, 'listing records from an entity' do
     end
   end
 
-  describe 'for the current app' do
+  describe 'for the current api' do
     context 'with existing entries' do
       before do
         5.times do |index|

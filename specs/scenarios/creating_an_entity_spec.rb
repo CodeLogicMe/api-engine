@@ -2,9 +2,9 @@ require_relative '../spec_helper'
 
 RSpec.describe Repositories::Entities do
   context 'an entity without fields' do
-    let(:app) { create :app }
+    let(:api) { create :api }
 
-    subject { described_class.new(app: app) }
+    subject { described_class.new(api: api) }
 
     before do
       subject.add(name: 'users')
@@ -23,12 +23,12 @@ RSpec.describe Frontend do
   include Rack::Test::Methods
 
   context 'with the required data' do
-    let(:ultra_pod) { create :app }
+    let(:ultra_pod) { create :api }
 
     before do
       login_as ultra_pod.client
       post '/api/entities', { id: ultra_pod.system_name, entity: {
-        app: ultra_pod.system_name, name: 'users' }
+        api: ultra_pod.system_name, name: 'users' }
       }
     end
 
@@ -42,12 +42,12 @@ RSpec.describe Frontend do
   end
 
   context 'without the required data' do
-    let(:ultra_pod) { create :app }
+    let(:ultra_pod) { create :api }
 
     before do
       login_as ultra_pod.client
       post '/api/entities', { id: ultra_pod.system_name, entity: {
-        app: ultra_pod.system_name }
+        api: ultra_pod.system_name }
       }
     end
 

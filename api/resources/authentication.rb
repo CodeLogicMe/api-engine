@@ -9,7 +9,7 @@ class Resources::Authentication < Grape::API
     failure [401, 'Unauthorized']
     headers [
       'X-Access-Token' => {
-        description: 'Identifies the Application',
+        description: 'Identifies the API',
         required: true
       },
       'X-Request-Timestamp' => {
@@ -25,22 +25,22 @@ class Resources::Authentication < Grape::API
   namespace :authenticate do
     get do
       status 200
-      { app: current_api.name }
+      { api: current_api.name }
     end
 
     post do
       status 201
-      { app: current_api.name }
+      { api: current_api.name }
     end
 
     delete '/:id' do
       status 200
-      { app: current_api.name }
+      { api: current_api.name }
     end
 
     put '/:id' do
       status 200
-      { app: current_api.name }
+      { api: current_api.name }
     end
   end
 end

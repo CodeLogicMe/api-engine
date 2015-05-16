@@ -3,17 +3,17 @@ require_relative '../spec_helper'
 RSpec.describe 'deleting an entity record' do
   include Rack::Test::Methods
 
-  let(:ultra_pod) { create :app, :with_config }
+  let(:ultra_pod) { create :api, :with_config }
 
-  context 'for another app' do
-    let(:new_app) { create :app }
+  context 'for another api' do
+    let(:new_api) { create :api }
 
     before do
       params = { data: { name: 'RapaduraCast', episodes: 40, website_url: 'rapadura-cast.com.br' } }
       set_auth_headers_for!(ultra_pod, 'POST', params)
       post '/podcasts', params
 
-      set_auth_headers_for!(new_app, 'DELETE', {})
+      set_auth_headers_for!(new_api, 'DELETE', {})
       delete "/podcasts/#{last_json.id}"
     end
 
@@ -23,7 +23,7 @@ RSpec.describe 'deleting an entity record' do
     end
   end
 
-  context 'for the current app' do
+  context 'for the current api' do
     before do
       params = { data: { name: 'RapaduraCast', episodes: 30, website_url: 'rapadura-cast.com.br' } }
       set_auth_headers_for!(ultra_pod, 'POST', params)

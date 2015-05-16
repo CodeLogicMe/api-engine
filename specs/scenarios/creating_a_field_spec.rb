@@ -2,12 +2,12 @@ require_relative '../spec_helper'
 
 RSpec.describe Repositories::Fields, 'creating a field' do
   context 'a duplicate field' do
-    let(:app) { create :app, :with_config }
-    let(:entity) { app.app_config.entities.first }
+    let(:api) { create :api, :with_config }
+    let(:entity) { api.api_config.entities.first }
     let(:field) { entity[:fields].first }
 
     subject do
-      described_class.new(app: app, entity: entity)
+      described_class.new(api: api, entity: entity)
     end
 
     it 'should not be allowed' do
@@ -21,8 +21,8 @@ RSpec.describe Frontend, 'creating a field' do
   include Rack::Test::Methods
 
   context 'with a unique set of data' do
-    let(:ultra_pod) { create :app, :with_config }
-    let(:entity) { ultra_pod.app_config.entities.first }
+    let(:ultra_pod) { create :api, :with_config }
+    let(:entity) { ultra_pod.api_config.entities.first }
 
     before do
       login_as ultra_pod.client
@@ -45,8 +45,8 @@ RSpec.describe Frontend, 'creating a field' do
   end
 
   context 'with an a duplicate set of data' do
-    let(:ultra_pod) { create :app, :with_config }
-    let(:entity) { ultra_pod.app_config.entities.first }
+    let(:ultra_pod) { create :api, :with_config }
+    let(:entity) { ultra_pod.api_config.entities.first }
 
     before do
       login_as ultra_pod.client

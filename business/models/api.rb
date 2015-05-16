@@ -30,9 +30,12 @@ module Models
 
     validates_presence_of :name, :system_name, :client
 
+    before_save do
+      self.tier ||= Tier.find_by(name: 'prototype')
+    end
+
     after_create do
       self.private_key = PrivateKey.new
-      self.update_attributes tier: Tier.find_by(name: 'prototype')
     end
 
     def to_param

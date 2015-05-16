@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 RSpec.describe Repository do
-  let(:app) { create :app }
+  let(:api) { create :api }
 
   describe '#create' do
     context 'with a single field' do
@@ -18,10 +18,10 @@ RSpec.describe Repository do
           }
         end
 
-        subject { described_class.new(app, 'crouds') }
+        subject { described_class.new(api, 'crouds') }
 
         before do
-          allow(app).to receive(:config_for) { config }
+          allow(api).to receive(:config_for) { config }
           subject.create(full_name: 'Jin Ju')
         end
 
@@ -47,10 +47,10 @@ RSpec.describe Repository do
           }
         end
 
-        subject { described_class.new(app, 'figthers') }
+        subject { described_class.new(api, 'figthers') }
 
         before do
-          allow(app).to receive(:config_for) { config }
+          allow(api).to receive(:config_for) { config }
           subject.create(name: 'John Kicker', weight: '75')
         end
 

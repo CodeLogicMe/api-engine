@@ -5,23 +5,20 @@ module Models
       password { Faker::Internet.password }
     end
 
-    factory :app, class: App do
+    factory :api, class: Api do
       client
       name { Faker::Company.name }
+      association :tier, factory: :tier
 
-      after(:create) do |app|
-        app.tier = create(:tier, :prototype)
-        app.save!
-      end
       trait :with_config do
-        after(:create) do |app|
-          create :app_config, app: app
+        after(:create) do |api|
+          create :api_config, api: api
         end
       end
     end
 
     factory :tier, class: Tier do
-      name 'small app'
+      name 'small api'
       recurrency 'monthly'
       quota 100_000
 
@@ -31,7 +28,7 @@ module Models
       end
     end
 
-    factory :app_config, class: AppConfig do
+    factory :api_config, class: ApiConfig do
       entities {
         [{
           'name': 'podcasts',
@@ -48,7 +45,7 @@ module Models
     end
 
     factory :private_key, class: PrivateKey do
-      app
+      api
     end
   end
 end
