@@ -32,6 +32,7 @@ module Models
 
     after_create do
       self.private_key = PrivateKey.new
+      self.update_attributes tier: Tier.find_by(name: 'prototype')
     end
 
     def to_param
