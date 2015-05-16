@@ -2,7 +2,7 @@ require 'ostruct'
 
 class Repositories::Entities < OpenStruct
   def all
-    app.reload.app_config.entities
+    api.reload.api_config.entities
   end
 
   def add(params)
@@ -11,12 +11,12 @@ class Repositories::Entities < OpenStruct
     validations = validate entity
 
     if validations.ok?
-      set = app.app_config.entities
+      set = api.api_config.entities
       set << {
         'name' => entity.name,
         'fields' => internal_fields
       }
-      app.app_config.update_attributes entities: set
+      api.api_config.update_attributes entities: set
     end
 
     validations

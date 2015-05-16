@@ -30,8 +30,8 @@ class Frontend < ::Grape::API
       end
     end
 
-    def client_apps
-      current_client.apps
+    def client_apis
+      current_client.apis
     end
   end
 
@@ -45,29 +45,29 @@ class Frontend < ::Grape::API
     end
   end
 
-  resource :apps do
+  resource :apis do
     before { authenticate! }
 
     get do
       {
-        apps: Serializers::Apps.new(client_apps).to_h
+        apis: Serializers::Apis.new(client_apis).to_h
       }
     end
 
-    get '/:app_id' do
-      app = client_apps.find_by(system_name: params.app_id)
+    get '/:api_id' do
+      api = client_apis.find_by(system_name: params.api_id)
       {
-        app: Serializers::Apps.new(app).to_h[0],
-        entities: Serializers::Entities.new(app, app.app_config.entities).to_h,
-        fields: app.app_config.entities.flat_map do |entity|
-          Serializers::Fields.new(app, entity, entity['fields']).to_h
+        api: Serializers::Apis.new(api).to_h[0],
+        entities: Serializers::Entities.new(api, api.api_config.entities).to_h,
+        fields: api.api_config.entities.flat_map do |entity|
+          Serializers::Fields.new(api, entity, entity['fields']).to_h
         end
       }
     end
 
     post do
-      app = Models::App.create!(client: current_client, name: params.app.name)
-      { app: Serializers::Apps.new(app).to_h[0] }
+      api = Models::Api.create!(client: current_client, name: params.api.name)
+      { api: Serializers::Apis.new(api).to_h[0] }
     end
   end
 
@@ -76,45 +76,45 @@ class Frontend < ::Grape::API
 
     helpers do
       def ids
-        @ids ||= params.fetch(:id) { params.entity.app }.split('#')
+        @ids ||= params.fetch(:id) { params.entity.api }.split('#')
       end
 
-      def app
-        @app ||= client_apps.find_by(system_name: ids[0])
+      def api
+        @api ||= client_apis.find_by(system_name: ids[0])
       end
 
       def entity_repository
         @entity_repo ||= Repositories::Entities
-          .new(app: app)
+          .new(api: api)
       end
     end
 
     get do
-      app = client_apps.find_by(system_name: id)
-      app.app_config.entities.map { |entity| entity_attrs(app, entity) }
+      api = client_apis.find_by(system_name: id)
+      api.api_config.entities.map { |entity| entity_attrs(api, entity) }
     end
 
     get ':id' do
-      entity = app.app_config.entities.find { |entity| entity['name'] == ids[1] }
+      entity = api.api_config.entities.find { |entity| entity['name'] == ids[1] }
       {
-        entity: Serializers::Entities.new(app, [entity]).to_h[0],
-        fields: app.app_config.entities.flat_map do |entity|
-          Serializers::Fields.new(app, entity, entity['fields']).to_h
+        entity: Serializers::Entities.new(api, [entity]).to_h[0],
+        fields: api.api_config.entities.flat_map do |entity|
+          Serializers::Fields.new(api, entity, entity['fields']).to_h
         end
       }
     end
 
     post do
-      app = client_apps.find_by(system_name: params.entity.app)
+      api = client_apis.find_by(system_name: params.entity.api)
       result = entity_repository.add(params.entity)
 
       if result.ok?
         entity = entity_repository.all.last
         entity_attrs = Serializers::Entities
-          .new(app, [entity])
+          .new(api, [entity])
           .to_h[0]
         fields_attrs = Serializers::Fields
-          .new(app, entity, entity['fields'])
+          .new(api, entity, entity['fields'])
           .to_h
 
         { entity: entity_attrs, fields: fields_attrs }
@@ -132,17 +132,17 @@ class Frontend < ::Grape::API
         @ids ||= params.fetch('id') { params.field.entity }.split('#')
       end
 
-      def app
-        @app ||= client_apps.find_by system_name: ids[0]
+      def api
+        @api ||= client_apis.find_by system_name: ids[0]
       end
 
       def entity
-        @entity ||= app.app_config.entity(name: ids[1])
+        @entity ||= api.api_config.entity(name: ids[1])
       end
 
       def field_repository
         @field_repo ||= Repositories::Fields
-          .new(app: app, entity: entity)
+          .new(api: api, entity: entity)
       end
     end
 
@@ -151,7 +151,7 @@ class Frontend < ::Grape::API
 
       if result.ok?
         new_field = field_repository.all.last
-        { field: Serializers::Fields.new(app, entity, [new_field]).to_h[0] }
+        { field: Serializers::Fields.new(api, entity, [new_field]).to_h[0] }
       else
         status(400) and { errors: result.errors }
       end
@@ -165,7 +165,7 @@ class Frontend < ::Grape::API
       params.field.delete('entity')
       entity['fields'] << params.field.to_h
 
-      app.app_config.save!
+      api.api_config.save!
 
       {}
     end
@@ -175,7 +175,7 @@ class Frontend < ::Grape::API
         field['name'] == ids[2]
       end
 
-      app.app_config.save!
+      api.api_config.save!
 
       {}
     end
@@ -190,9 +190,9 @@ class Frontend < ::Grape::API
     end
   end
 
-  get '/statistics/:app_id' do
+  get '/statistics/:api_id' do
     authenticate!
-    app = client_apps.find_by(system_name: params.app_id)
-    { statistic: Serializers::Stats.new(app).to_h }
+    api = client_apis.find_by(system_name: params.api_id)
+    { statistic: Serializers::Stats.new(api).to_h }
   end
 end

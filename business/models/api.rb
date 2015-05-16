@@ -2,13 +2,13 @@ require_relative '../engines/entity_builder'
 require_relative '../extensions'
 
 module Models
-  class App
+  class Api
     include Mongoid::Document
     include Mongoid::Timestamps
     extend Extensions::Sluggable
     extend Extensions::Randomizable
 
-    store_in collection: "apps"
+    store_in collection: 'apis'
 
     field :name,          type: String
     field :system_name,   type: String
@@ -19,14 +19,14 @@ module Models
 
     belongs_to :client
     embeds_one :private_key
-    embeds_one :app_config,
-      class_name: 'Models::AppConfig',
+    embeds_one :api_config,
+      class_name: 'Models::ApiConfig',
       autobuild: true
     belongs_to :tier
     embeds_many :requests,
       class_name: 'Models::SmartRequest'
 
-    index({ system_name: 1 }, { unique: true, name: "system_name_index" })
+    index({ system_name: 1 }, { unique: true, name: 'system_name_index' })
 
     validates_presence_of :name, :system_name, :client
 
@@ -39,13 +39,13 @@ module Models
     end
 
     def has_entity?(name)
-      app_config.entities.any? do |entity|
+      api_config.entities.any? do |entity|
         entity['name'].to_s == name.to_s
       end
     end
 
     def config_for(name)
-      Hashie::Mash.new app_config.entities.find { |entity|
+      Hashie::Mash.new api_config.entities.find { |entity|
         entity['name'].to_s == name.to_s
       }.to_h
     end
@@ -57,7 +57,7 @@ module Models
     end
 
     def entities
-      app_config.entities.map do |entity|
+      api_config.entities.map do |entity|
         Engines::EntityBuilder.new(self, entity).call
       end
     end

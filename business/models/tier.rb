@@ -8,7 +8,7 @@ module Models
     field :recurrency, type: String, default: 'monthly'
     field :quota, type: Integer
 
-    has_many :apps
+    has_many :apis
 
     validates_presence_of :name, :recurrency, :quota
   end

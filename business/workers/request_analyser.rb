@@ -1,6 +1,6 @@
 require 'sidekiq'
 require 'browser'
-require_relative '../models/app'
+require_relative '../models/api'
 require_relative '../models/smart_request'
 
 module Workers
@@ -10,7 +10,7 @@ module Workers
     require 'geocoder'
 
     def perform(api_id, data)
-      Models::App.find(api_id).requests.create! \
+      Models::Api.find(api_id).requests.create! \
         geolocation: geolocation_from(data),
         browser: browser(data).name,
         platform: browser(data).platform,

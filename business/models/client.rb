@@ -9,7 +9,7 @@ class Models::Client
 
   validates :email, presence: true, uniqueness: true
 
-  has_many :apps
+  has_many :apis
 
   class << self
     def authenticate(params)

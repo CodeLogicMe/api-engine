@@ -1,36 +1,36 @@
 module Serializers
-  class Apps
-    def initialize(apps)
-      @apps = Array(apps)
+  class Apis
+    def initialize(apis)
+      @apis = Array(apis)
     end
 
     def to_h
-      @apps.map do |app|
+      @apis.map do |api|
         {
-          id: app.system_name,
-          name: app.name,
-          public_key: app.public_key,
-          private_key: app.private_key.secret,
-          entities: app.app_config.entities.map { |entity|
-            Entities.idify(app, entity)
+          id: api.system_name,
+          name: api.name,
+          public_key: api.public_key,
+          private_key: api.private_key.secret,
+          entities: api.api_config.entities.map { |entity|
+            Entities.idify(api, entity)
           },
-          tier: Tiers.idify(app.tier)
+          tier: Tiers.idify(api.tier)
         }
       end
     end
   end
 
   class Stats
-    def initialize(app)
-      @app = app
+    def initialize(api)
+      @api = api
     end
 
     def to_h
       {
         id: 'nevermind',
         quota: {
-          current: Middlewares::Terminus.quota_for(@app),
-          max: @app.tier.quota
+          current: Middlewares::Terminus.quota_for(@api),
+          max: @api.tier.quota
         }
       }
     end
@@ -57,46 +57,46 @@ module Serializers
   end
 
   class Entities
-    def initialize(app, collection)
-      @app = app
+    def initialize(api, collection)
+      @api = api
       @entities = Array(collection)
     end
 
-    def self.idify(app, entity)
-      "#{app.system_name}##{entity[:name]}"
+    def self.idify(api, entity)
+      "#{api.system_name}##{entity[:name]}"
     end
 
     def to_h
       @entities.map do |entity|
         {
-          id: self.class.idify(@app, entity),
+          id: self.class.idify(@api, entity),
           name: entity[:name],
-          fields: entity[:fields].map { |field| Fields.idify(@app, entity, field) }
+          fields: entity[:fields].map { |field| Fields.idify(@api, entity, field) }
         }
       end
     end
   end
 
   class Fields
-    def initialize(app, entity, fields)
-      @app = app
+    def initialize(api, entity, fields)
+      @api = api
       @entity = entity
       @fields = Array(fields)
     end
 
-    def self.idify(app, entity, field)
-      "#{app.system_name}##{entity[:name]}##{field[:name]}"
+    def self.idify(api, entity, field)
+      "#{api.system_name}##{entity[:name]}##{field[:name]}"
     end
 
     def to_h
       @fields.map do |field|
         {
-          id: self.class.idify(@app, @entity, field),
+          id: self.class.idify(@api, @entity, field),
           name: field[:name],
           type: field[:type],
           validates: Array(field[:validates]),
           internal: field[:internal],
-          entity: Entities.idify(@app, @entity)
+          entity: Entities.idify(@api, @entity)
         }
       end
     end

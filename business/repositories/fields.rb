@@ -14,7 +14,7 @@ class Repositories::Fields < OpenStruct
       attrs = field.to_h
       attrs.delete 'entity'
       entity[:fields] << attrs
-      app.save!
+      api.save!
     end
 
     validations
