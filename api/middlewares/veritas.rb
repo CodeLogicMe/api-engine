@@ -13,7 +13,7 @@ module Middlewares
 
       timing.finish!
 
-      if response.header.to_s !~ /5\d{2}/
+      if response[0].to_s !~ /5\d{2}/
         stat_request!(env['current_api'], timing, env)
       end
 
@@ -33,7 +33,7 @@ module Middlewares
     end
 
     def enqueue_for_processing(current_api, info)
-      return if info[:ip] == '127.0.0.1'
+      #return if info[:ip] == '127.0.0.1'
 
       Workers::RequestAnalyser.perform_async \
         current_api.id.to_s,

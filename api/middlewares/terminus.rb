@@ -12,7 +12,11 @@ module Middlewares
       quota = Quota.new(env['current_api'])
 
       if quota.over?
-        return Rack::Response.new({ errors: 'Forbidden' }, 403)
+        return [
+          403,
+          { 'Content-Type' => 'application/json' },
+          [{ errors: ['Forbidden'] }.to_json]
+        ]
       end
 
       response = @app.call env

@@ -8,11 +8,19 @@ module Middlewares
       auth_data = auth_for env
 
       if auth_data[:auth][:public_key] == 'missing'
-        return Rack::Response.new({ errors: ['Not Found'] }, 404)
+        return [
+          404,
+          { 'Content-Type' => 'application/json' },
+          [{ errors: ['Not Found'] }.to_json]
+        ]
       end
 
       current_api = Actions::AuthenticateApi.new(auth_data).call do
-        return Rack::Response.new({ errors: ['Unauthorized'] }, 401)
+        return [
+          401,
+          { 'Content-Type' => 'application/json' },
+          [{ errors: ['Unauthorized'] }.to_json]
+        ]
       end
 
       env['current_api'] = current_api
