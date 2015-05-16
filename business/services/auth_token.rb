@@ -3,7 +3,7 @@ require 'redis-namespace'
 require 'securerandom'
 
 module Services::AuthToken
-  STORE = Redis::Namespace.new(:tokens, redis: Redis.new)
+  STORE = Redis::Namespace.new(:tokens, redis: ::REDIS_CLIENT)
 
   class << self
     def retrieve(token)

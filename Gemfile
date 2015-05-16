@@ -14,6 +14,7 @@ gem 'require_all', '~> 1.3'
 gem 'bcrypt', '~> 3.1'
 
 # in memory database & enqueueing
+gem 'hiredis', '~> 0.6.0'
 gem 'redis'
 gem 'redis-namespace'
 

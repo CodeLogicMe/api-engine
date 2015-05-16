@@ -2,7 +2,7 @@ require 'redis-namespace'
 
 module Middlewares
   class Terminus
-    STORE = Redis::Namespace.new(:hit_counts, redis: Redis.new)
+    STORE = Redis::Namespace.new(:hit_counts, redis: ::REDIS_CLIENT)
 
     def initialize(app)
       @app = app
