@@ -8,27 +8,37 @@ module Middlewares
       auth_data = auth_for env
 
       if auth_data[:auth][:public_key] == 'missing'
-        return [
-          404,
-          { 'Content-Type' => 'application/json' },
-          [{ errors: ['Not Found'] }.to_json]
-        ]
+        return missing_api
       end
 
       current_api = Actions::AuthenticateApi.new(auth_data).call do
-        return [
-          401,
-          { 'Content-Type' => 'application/json' },
-          [{ errors: ['Unauthorized'] }.to_json]
-        ]
+        return unauthorized
       end
 
       env['current_api'] = current_api
 
       @app.call env
+    rescue Mongoid::Errors::DocumentNotFound
+      return missing_api
     end
 
     private
+
+    def missing_api
+      [
+        404,
+        { 'Content-Type' => 'application/json' },
+        [{ errors: ['Not Found'] }.to_json]
+      ]
+    end
+
+    def unauthorized
+      [
+        401,
+        { 'Content-Type' => 'application/json' },
+        [{ errors: ['Unauthorized'] }.to_json]
+      ]
+    end
 
     def auth_for(env)
       {

@@ -61,6 +61,19 @@ module Actions
 end
 
 shared_examples 'as authenticable endpoint' do |verb, url, status|
+  context 'without an api' do
+    before do
+      header 'X-Request-Timestamp', '9999999999'
+      header 'X-Access-Token', 'anonexistantpublickey'
+      header 'X-Request-Hash', 'arandomultrahugehash'
+
+      public_send verb.downcase, url, {}
+    end
+
+    it 'expect the API to refute the request' do
+      expect(last_response.status).to eql 404
+    end
+  end
   context 'with invalid auth headers' do
     let(:ultra_pod) { create :api }
 
