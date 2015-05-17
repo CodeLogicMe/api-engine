@@ -1,12 +1,12 @@
 module Models
   class SmartRequest
     include Mongoid::Document
-    include Mongoid::Timestamps
 
     store_in collection: 'smart_requests'
 
     embedded_in :app
 
+    field :status, type: Integer
     field :geolocation, type: Hash
     field :browser, type: String
     field :platform, type: String

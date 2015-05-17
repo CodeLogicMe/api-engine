@@ -10,6 +10,7 @@ module Workers
 
     def perform(api_id, data)
       Models::Api.find(api_id).requests.create! \
+        status: data['status'],
         geolocation: geolocation_from(data),
         browser: browser(data).name,
         platform: browser(data).platform,

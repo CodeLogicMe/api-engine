@@ -13,7 +13,7 @@ module Middlewares
 
       unless [500, 401, 403].include?(response[0])
         timing.finish!
-        stat_request!(env['current_api'], timing, env)
+        stat_request!(env['current_api'], response[0], timing, env)
       end
 
       response
@@ -21,11 +21,12 @@ module Middlewares
 
     private
 
-    def stat_request!(current_api, timing, env)
+    def stat_request!(current_api, status, timing, env)
       relevant_info = {
         ip_address: env['REMOTE_ADDR'],
         language: env['HTTP_ACCEPT_LANGUAGE'],
-        user_agent: env['HTTP_USER_AGENT']
+        user_agent: env['HTTP_USER_AGENT'],
+        status: status
       }.merge(timing.to_h)
 
       enqueue_for_analysis current_api, relevant_info
