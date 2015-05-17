@@ -22,17 +22,13 @@ module Models
     embeds_one :api_config,
       class_name: 'Models::ApiConfig',
       autobuild: true
-    belongs_to :tier
+    embeds_many :tier_usages
     embeds_many :requests,
       class_name: 'Models::SmartRequest'
 
     index({ system_name: 1 }, { unique: true, name: 'system_name_index' })
 
     validates_presence_of :name, :system_name, :client
-
-    before_save do
-      self.tier ||= Tier.find_by(name: 'prototype')
-    end
 
     after_create do
       self.private_key = PrivateKey.new
@@ -64,6 +60,14 @@ module Models
       api_config.entities.map do |entity|
         Engines::EntityBuilder.new(self, entity).call
       end
+    end
+
+    def tier_usage
+      tier_usages.last || FakeTierUsage.new
+    end
+
+    def tier
+      tier_usage.tier
     end
   end
 end

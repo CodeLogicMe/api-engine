@@ -2,8 +2,6 @@ require 'redis-namespace'
 
 module Middlewares
   class Terminus
-    STORE = Redis::Namespace.new(:hit_counts, redis: ::REDIS_CLIENT)
-
     def initialize(app)
       @app = app
     end
@@ -21,26 +19,30 @@ module Middlewares
 
       response = @app.call env
 
-      quota.hit!
+      unless [500].include? response[0]
+        quota.hit!
+      end
 
       response
     end
 
-    def self.quota_for(app)
-      Quota.new(app).hit_count
+    def self.quota_for(api)
+      Quota.new(api).hit_count
     end
 
-    Quota ||= Struct.new(:app) do
+    Quota ||= Struct.new(:api) do
+      STORE = Redis::Namespace.new(:hit_counts, redis: ::REDIS_CLIENT)
+
       def over?
-        hit_count >= app.tier.quota
+        hit_count >= api.tier.quota
       end
 
       def hit_count
-        STORE.get(app.id.to_s).to_i || 0
+        STORE.get(api.id.to_s).to_i || 0
       end
 
       def hit!
-        STORE.incr app.id.to_s
+        STORE.incr api.id.to_s
       end
     end
   end

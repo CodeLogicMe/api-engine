@@ -27,10 +27,6 @@ gem 'browser'
 
 group :development, :test do
   gem 'rspec'
-  gem 'rack-test'
-  gem 'factory_girl', '~> 4.4.0'
-  gem 'faker'
-  gem 'database_cleaner'
   gem 'pry'
   gem 'did_you_mean'
 end
@@ -40,4 +36,12 @@ group :development do
   gem 'executable-hooks'
   gem 'rerun'
   gem 'rb-fsevent'
+end
+
+group :test do
+  gem 'faker'
+  gem 'database_cleaner'
+  gem 'rack-test'
+  gem 'factory_girl', '~> 4.4.0'
+  gem 'timecop'
 end

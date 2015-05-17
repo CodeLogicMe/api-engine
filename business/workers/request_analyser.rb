@@ -1,13 +1,12 @@
 require 'sidekiq'
 require 'browser'
+require 'geocoder'
 require_relative '../models/api'
 require_relative '../models/smart_request'
 
 module Workers
   class RequestAnalyser
     include Sidekiq::Worker
-
-    require 'geocoder'
 
     def perform(api_id, data)
       Models::Api.find(api_id).requests.create! \

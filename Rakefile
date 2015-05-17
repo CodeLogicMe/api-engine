@@ -10,6 +10,14 @@ task console: :environment do
   IRB.start
 end
 
+namespace :db do
+  desc 'Load the seed data from config/db/seeds.rb'
+  task seed: :environment do
+    seed_file = File.join(__dir__, 'config/db', 'seeds.rb')
+    load(seed_file) if File.exist?(seed_file)
+  end
+end
+
 namespace :documentation do
   def pretty_type_name(name)
     name.to_s.split('::').last

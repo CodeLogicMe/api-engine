@@ -66,7 +66,7 @@ class Frontend < ::Grape::API
     end
 
     post do
-      api = Models::Api.create!(client: current_client, name: params.api.name)
+      api = Actions::CreateApi.new(params).call
       { api: Serializers::Apis.new(api).to_h[0] }
     end
   end

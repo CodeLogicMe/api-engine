@@ -12,7 +12,7 @@ module Models
     field :platform, type: String
     field :started_at, type: DateTime
     field :ended_at, type: DateTime
-    field :duration, type: Integer
+    field :duration, type: Float
 
     validates_presence_of :geolocation
   end

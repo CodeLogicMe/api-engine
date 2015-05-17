@@ -74,6 +74,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
       expect(last_response.status).to eql 404
     end
   end
+
   context 'with invalid auth headers' do
     let(:ultra_pod) { create :api }
 

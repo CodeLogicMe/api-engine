@@ -8,7 +8,6 @@ module Models
     factory :api, class: Api do
       client
       name { Faker::Company.name }
-      association :tier, factory: :tier
 
       trait :with_config do
         after(:create) do |api|
@@ -17,10 +16,14 @@ module Models
       end
     end
 
+    factory :tier_usage, class: TierUsage do
+      association :tier, factory: :tier
+    end
+
     factory :tier, class: Tier do
-      name 'small api'
-      recurrency 'monthly'
+      sequence(:name) { |i| "small api - #{i}" }
       quota 100_000
+      price 100
 
       trait :prototype do
         name 'prototype'

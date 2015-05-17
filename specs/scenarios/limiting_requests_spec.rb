@@ -34,3 +34,64 @@ RSpec.describe API do
     end
   end
 end
+
+RSpec.describe Middlewares::Terminus do
+  context 'when quota is over' do
+    let(:rack_app) do
+      double.tap do |dbl|
+        allow(dbl).to receive(:call).and_return([200])
+      end
+    end
+
+    before do
+      allow_any_instance_of(described_class::Quota).to receive(:over?).and_return(true)
+    end
+
+    subject { described_class.new(rack_app) }
+
+    it 'should not allow the request to go through' do
+      expect(subject.call({})[0]).to eql 403
+      expect(rack_app).to_not have_received(:call)
+    end
+  end
+
+  context 'when there is enough quota' do
+    let(:rack_app) do
+      double.tap do |dbl|
+        allow(dbl).to receive(:call).and_return([200])
+      end
+    end
+
+    before do
+      allow_any_instance_of(described_class::Quota).to receive(:over?).and_return(false)
+      expect_any_instance_of(described_class::Quota).to receive(:hit!)
+    end
+
+    subject { described_class.new(rack_app) }
+
+    it 'should allow the request to go through' do
+      expect(subject.call({})[0]).to eql 200
+      expect(rack_app).to have_received(:call)
+    end
+  end
+
+  context 'when the app returns a 500' do
+    let(:rack_app) do
+      double.tap do |dbl|
+        allow(dbl).to receive(:call).and_return([500])
+      end
+    end
+
+    before do
+      allow_any_instance_of(described_class::Quota).to receive(:over?).and_return(false)
+      expect_any_instance_of(described_class::Quota).to_not receive(:hit!)
+    end
+
+    subject { described_class.new(rack_app) }
+
+    it 'should allow the request to go through' do
+      expect(subject.call({})[0]).to eql 500
+      expect(rack_app).to have_received(:call)
+    end
+  end
+end

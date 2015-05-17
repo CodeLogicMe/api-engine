@@ -9,6 +9,7 @@ require './api/server'
 
 require 'pry'
 
+require 'timecop'
 require 'database_cleaner'
 require 'factory_girl'
 require 'faker'
@@ -35,8 +36,6 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning do
       example.run
     end
-    GC.start
-    Redis.new.flushall
   end
 
   config.after(:each) do

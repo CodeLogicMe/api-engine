@@ -1,7 +1,7 @@
 require_relative '../../business/workers/request_analyser'
 
 module Middlewares
-  class Veritas < Grape::Middleware::Base
+  class Veritas
     def initialize(app)
       @app = app
     end
@@ -11,9 +11,8 @@ module Middlewares
 
       response = @app.call env
 
-      timing.finish!
-
-      if response[0].to_s !~ /5\d{2}/
+      unless [500, 401, 403].include?(response[0])
+        timing.finish!
         stat_request!(env['current_api'], timing, env)
       end
 
@@ -29,12 +28,10 @@ module Middlewares
         user_agent: env['HTTP_USER_AGENT']
       }.merge(timing.to_h)
 
-      enqueue_for_processing current_api, relevant_info
+      enqueue_for_analysis current_api, relevant_info
     end
 
-    def enqueue_for_processing(current_api, info)
-      #return if info[:ip] == '127.0.0.1'
-
+    def enqueue_for_analysis(current_api, info)
       Workers::RequestAnalyser.perform_async \
         current_api.id.to_s,
         info
