@@ -50,7 +50,8 @@ module Serializers
         {
           id: Tiers.idify(tier),
           name: tier.name,
-          quota: tier.quota
+          quota: tier.quota,
+          price: tier.price
         }
       end
     end

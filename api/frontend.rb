@@ -58,6 +58,7 @@ class Frontend < ::Grape::API
       api = client_apis.find_by(system_name: params.api_id)
       {
         api: Serializers::Apis.new(api).to_h[0],
+        tiers: Serializers::Tiers.new(api.tier).to_h,
         entities: Serializers::Entities.new(api, api.api_config.entities).to_h,
         fields: api.api_config.entities.flat_map do |entity|
           Serializers::Fields.new(api, entity, entity['fields']).to_h
@@ -67,6 +68,13 @@ class Frontend < ::Grape::API
 
     post do
       api = Actions::CreateApi.new(params).call
+      { api: Serializers::Apis.new(api).to_h[0] }
+    end
+
+    put '/:api_id' do
+      tier = Models::Tier.find(params.api.tier)
+      api = client_apis.find_by(system_name: params.api_id)
+      Actions::ChangeApiTier.new(api: api, tier: tier).call
       { api: Serializers::Apis.new(api).to_h[0] }
     end
   end
@@ -183,6 +191,11 @@ class Frontend < ::Grape::API
 
   resource :tiers do
     before { authenticate! }
+
+    get do
+      tiers = Models::Tier.order_by(:quota.asc)
+      { tiers: Serializers::Tiers.new(tiers).to_h }
+    end
 
     get ':id' do
       tier = Models::Tier.find(params.id)
