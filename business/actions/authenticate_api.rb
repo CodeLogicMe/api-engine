@@ -3,20 +3,19 @@ require_relative '../setup'
 class Actions::AuthenticateApi
   extend Extensions::Parameterizable
 
-  with :verb, :query_string, :auth
-
   TOLERANCE = 1.year
+
+  with :verb, :query_string, :auth
 
   def call
     auth.values.any?(&:empty?) and
       fail InvalidCredentials
 
-    api = Models::Api.find_by public_key: auth.fetch(:public_key)
-
-    valid_request?(api) or
-      fail InvalidCredentials
-
-    api
+    criteria = { public_key: auth.fetch(:public_key) }
+    Models::Api.find_by(criteria).tap do |api|
+      valid_request?(api) or
+        fail InvalidCredentials
+    end
   rescue InvalidCredentials => e
     block_given? ? yield(e) : raise
   end
@@ -47,6 +46,6 @@ class Actions::AuthenticateApi
   def expired?
     timestamp = Time.at(auth.fetch(:timestamp).to_i).to_i
     now_utc = Time.now.utc.to_i
-    now_utc - TOLERANCE > timestamp
+    ( now_utc - TOLERANCE ) > timestamp
   end
 end

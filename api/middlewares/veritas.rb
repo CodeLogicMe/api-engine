@@ -34,8 +34,7 @@ module Middlewares
 
     def enqueue_for_analysis(current_api, info)
       Workers::RequestAnalyser.perform_async \
-        current_api.id.to_s,
-        info
+        current_api.id.to_s, info
     end
 
     class Timing
