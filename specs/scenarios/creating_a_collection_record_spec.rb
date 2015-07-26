@@ -5,22 +5,34 @@ RSpec.describe API do
 
   context 'for the current api' do
     before do
-      params = { data: { name: 'Nerdcast', episodes: 352, website_url: 'jovemnerd.com.br' } }
-      ultra_pod = create :api, :with_config
+      create :tier, :free
+      params = {
+        data: {
+          name: 'Nerdcast',
+          episodes: 352,
+          website: 'jovemnerd.com.br'
+        }
+      }
+      ultra_pod = create :api, :podcast
       set_auth_headers_for!(ultra_pod, 'POST', params)
       post '/podcasts', params
     end
 
     it 'should create the resource' do
       expect(last_response.status).to eql 201
-      expect(last_json.name).to eql 'Nerdcast'
-      expect(last_json.episodes).to eql '352.0'
+      last_json.tap do |json|
+        expect(json.id).to_not be_nil
+        expect(json.created_at).to_not be_nil
+        expect(json.updated_at).to_not be_nil
+        expect(json.name).to eql 'Nerdcast'
+        expect(json.episodes).to eql '352.0'
+      end
     end
 
     context 'without the required data' do
       before do
-        mega_pod = create :api, :with_config
-        set_auth_headers_for!(mega_pod, 'POST', {})
+        ultra_pod = create :api, :podcast
+        set_auth_headers_for!(ultra_pod, 'POST', {})
         post '/podcasts', {}
       end
 
@@ -29,15 +41,21 @@ RSpec.describe API do
         expect(last_json.errors).to match_array [
           "Name can't be blank",
           "Episodes can't be blank",
-          "Website_url can't be blank"
+          "Website can't be blank"
         ]
       end
     end
 
     context 'with duplicate data' do
       before do
-        params = { data: { name: 'Nerdcast', episodes: 352, website_url: 'jovemnerd.com.br' } }
-        ultra_pod = create :api, :with_config
+        params = {
+          data: {
+            name: 'Nerdcast',
+            episodes: 352,
+            website: 'jovemnerd.com.br'
+          }
+        }
+        ultra_pod = create :api, :podcast
 
         2.times do
           set_auth_headers_for!(ultra_pod, 'POST', params)
@@ -48,7 +66,7 @@ RSpec.describe API do
       it 'should not add the second' do
         expect(last_response.status).to eql 400
         expect(last_json.errors).to match_array [
-          'Name already exists', 'Website_url already exists'
+          'Name already exists', 'Website already exists'
         ]
       end
     end
@@ -56,7 +74,8 @@ RSpec.describe API do
 
   context 'for another api' do
     before do
-      create :api, :with_config
+      create :tier, :free
+      create :api, :podcast
       set_auth_headers_for!(create(:api), 'POST', {})
       post '/podcasts', {}
     end

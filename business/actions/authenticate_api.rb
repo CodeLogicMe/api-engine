@@ -3,7 +3,7 @@ require_relative '../setup'
 class Actions::AuthenticateApi
   extend Extensions::Parameterizable
 
-  TOLERANCE = 1.year
+  TOLERANCE = 1.minute
 
   with :verb, :query_string, :auth
 
@@ -12,7 +12,7 @@ class Actions::AuthenticateApi
       fail InvalidCredentials
 
     criteria = { public_key: auth.fetch(:public_key) }
-    Models::Api.find_by(criteria).tap do |api|
+    Models::Api.find_by!(criteria).tap do |api|
       valid_request?(api) or
         fail InvalidCredentials
     end

@@ -57,47 +57,36 @@ module Serializers
     end
   end
 
-  class Entities
-    def initialize(api, collection)
-      @api = api
-      @entities = Array(collection)
-    end
-
-    def self.idify(api, entity)
-      "#{api.system_name}##{entity[:name]}"
+  class Collections
+    def initialize(collections)
+      @collections = Array(collections)
     end
 
     def to_h
-      @entities.map do |entity|
+      @collections.map do |col|
         {
-          id: self.class.idify(@api, entity),
-          name: entity[:name],
-          fields: entity[:fields].map { |field| Fields.idify(@api, entity, field) }
+          id: col.to_param,
+          name: col.name,
+          fields: col.fields.map(&:id)
         }
       end
     end
   end
 
   class Fields
-    def initialize(api, entity, fields)
-      @api = api
-      @entity = entity
+    def initialize(fields)
       @fields = Array(fields)
-    end
-
-    def self.idify(api, entity, field)
-      "#{api.system_name}##{entity[:name]}##{field[:name]}"
     end
 
     def to_h
       @fields.map do |field|
         {
-          id: self.class.idify(@api, @entity, field),
-          name: field[:name],
-          type: field[:type],
-          validates: Array(field[:validates]),
-          internal: field[:internal],
-          entity: Entities.idify(@api, @entity)
+          id: field.to_param,
+          name: field.name,
+          type: field.type,
+          validations: field.validations,
+          internal: false,
+          collection: field.collection_id
         }
       end
     end

@@ -18,6 +18,8 @@ require_relative 'factories/fabrics'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
+ActiveRecord::Base.logger.level = 1
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 

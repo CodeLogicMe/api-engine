@@ -1,11 +1,14 @@
 source 'https://rubygems.org'
 
+# servers
 gem 'grape', '~> 0.11'
 gem 'sinatra', require: false # just because cloud66 needs it
 gem 'rack-cors', '~> 0.4'
 
 # database
-gem 'mongoid', '4.0.0'
+gem 'grape-activerecord'
+gem 'activerecord'
+gem 'pg'
 
 # because I'm lazy
 gem 'require_all', '~> 1.3'

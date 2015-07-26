@@ -1,18 +1,12 @@
 module Models
-  class TierUsage
-    include Mongoid::Document
-    include Mongoid::Timestamps::Created
-
-    store_in collection: 'tier_usages'
-
-    field :deactivated_at, type: Time
-
-    embedded_in :api
-    belongs_to :tier
+  class TierUsage < ActiveRecord::Base
+    belongs_to :api
+    belongs_to :tier,
+      class_name: "Models::Tier"
 
     scope :current, -> { where deactivated_at: nil }
 
-    validates_presence_of :tier
+    validates :tier, :api, presence: true
 
     def deactivate!
       update_attributes deactivated_at: Time.now

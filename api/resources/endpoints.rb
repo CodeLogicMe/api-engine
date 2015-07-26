@@ -1,49 +1,51 @@
 class Resources::Endpoints < Grape::API
   helpers do
     def current_api
-      env['current_api']
+      env.fetch('current_api')
     end
 
-    def check_entity_for_current_api!
-      unless current_api.has_entity?(entity_name)
+    def check_collection_for_current_api!
+      unless current_api.has_collection?(collection_name)
         error!({ errors: ['Not Found'] }, 404)
       end
     end
 
-    def entity_name
-      params[:entity_name]
+    def collection_name
+      params[:collection_name]
+    end
+
+    def collection
+      @collection ||= current_api.collections
+        .find_by!(system_name: collection_name)
     end
 
     def current_repository
-      @repository ||= ::Repository.new(current_api, entity_name)
+      ::Repository.new(collection)
     end
 
-    def entity_params
-      @entity_params ||=
-        begin
-          (params.data || {}).select do |key, value|
-            current_api.has_field?(entity_name, key)
-          end
-        end
+    def collection_params
+      (params.data || {}).select do |key, value|
+        collection.has_field?(key)
+      end
     end
   end
 
   before do
-    check_entity_for_current_api!
+    check_collection_for_current_api!
   end
 
-  resource '/:entity_name' do
+  resource '/:collection_name' do
     get do
       {
         count: current_repository.count,
-        items: current_repository.all.map(&:attributes)
+        items: current_repository.all.map(&:to_h)
       }
     end
 
     post do
-      validations = current_repository.create(entity_params)
+      validations = current_repository.create(collection_params)
       if validations.ok?
-        validations.result.attributes
+        validations.result.to_h
       else
         status 400
         { errors: validations.errors }
@@ -53,15 +55,15 @@ class Resources::Endpoints < Grape::API
     put '/:id' do
       begin
         record = current_repository.find(params.id)
-        validations = current_repository.update record, entity_params
+        validations = current_repository.update record, collection_params
 
         if validations.ok?
-          validations.result.attributes
+          validations.result.to_h
         else
           status 400
           { errors: validations.errors }
         end
-      rescue Repository::RecordNotFound
+      rescue ActiveRecord::RecordNotFound
         status 404
         { errors: ['Record not found'] }
       end

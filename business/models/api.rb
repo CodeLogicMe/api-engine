@@ -2,34 +2,28 @@ require_relative '../engines/entity_builder'
 require_relative '../extensions'
 
 module Models
-  class Api
-    include Mongoid::Document
-    include Mongoid::Timestamps
+  class Api < ActiveRecord::Base
     extend Extensions::Sluggable
     extend Extensions::Randomizable
-
-    store_in collection: 'apis'
-
-    field :name,          type: String
-    field :system_name,   type: String
-    field :public_key,    type: String
 
     slug :name, on: :system_name
     random :public_key, length: 64
 
     belongs_to :client
-    embeds_one :private_key
-    embeds_one :api_config,
-      class_name: 'Models::ApiConfig',
-      autobuild: true
-    embeds_many :tier_usages
-    embeds_many :requests,
-      class_name: 'Models::SmartRequest'
+    has_one :private_key, dependent: :destroy
+    has_many :collections, dependent: :destroy
+    has_many :records
+    has_many :tier_usages, dependent: :destroy
+    has_many :tiers, through: :tier_usages
+    has_many :requests, class_name: 'Models::SmartRequest'
 
-    index({ system_name: 1 }, { unique: true, name: 'system_name_index' })
+    default_scope { includes(:tiers, :collections) }
 
-    validates_presence_of :name, :system_name, :client
+    validates :name, :system_name, :client, presence: true
 
+    before_create do
+      self.tier_usages.build tier: Tier.free.first
+    end
     after_create do
       self.private_key = PrivateKey.new
     end
@@ -38,32 +32,22 @@ module Models
       system_name
     end
 
-    def has_entity?(name)
-      api_config.entities.any? do |entity|
-        entity['name'].to_s == name.to_s
-      end
-    end
-
-    def config_for(name)
-      Hashie::Mash.new api_config.entities.find { |entity|
-        entity['name'].to_s == name.to_s
-      }.to_h
-    end
-
-    def has_field?(entity_name, field_name)
-      Repositories::Fields
-        .new(app: self, entity: config_for(entity_name))
-        .exists?(field_name)
+    def has_collection?(name)
+      collections.where(system_name: name).exists?
     end
 
     def entities
-      api_config.entities.map do |entity|
-        Engines::EntityBuilder.new(self, entity).call
+      collections.map do |collection|
+        ::EntityBuilder.new(self, collection).call
       end
     end
 
+    def collection(sys_name)
+      collections.where("id = :key OR system_name = :key", key: sys_name).first!
+    end
+
     def tier_usage
-      tier_usages.last || FakeTierUsage.new
+      tier_usages.current.first
     end
 
     def tier

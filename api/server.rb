@@ -6,6 +6,8 @@ require_relative './engine'
 require_relative './frontend'
 
 class API < Grape::API
+  include Grape::ActiveRecord::Extension
+
   use ::Rack::Cors do
     allow do
       origins '*'

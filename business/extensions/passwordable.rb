@@ -3,7 +3,6 @@ require 'bcrypt'
 module Extensions::Passwordable
   def self.included(recipient)
     recipient.class_eval do
-      field :password_hash, type: String
       validates_presence_of :password_hash
     end
   end

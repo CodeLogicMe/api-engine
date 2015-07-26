@@ -1,19 +1,8 @@
 module Models
-  class SmartRequest
-    include Mongoid::Document
+  class SmartRequest < ActiveRecord::Base
+    belongs_to :app
 
-    store_in collection: 'smart_requests'
-
-    embedded_in :app
-
-    field :status, type: Integer
-    field :geolocation, type: Hash
-    field :browser, type: String
-    field :platform, type: String
-    field :started_at, type: DateTime
-    field :ended_at, type: DateTime
-    field :duration, type: Float
-
-    validates_presence_of :geolocation
+    validates :ip, :geolocation, :status, presence: true
+    validates :started_at, :ended_at, presence: true
   end
 end

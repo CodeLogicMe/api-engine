@@ -18,7 +18,7 @@ module Middlewares
       env['current_api'] = current_api
 
       @app.call env
-    rescue Mongoid::Errors::DocumentNotFound
+    rescue ActiveRecord::RecordNotFound
       return missing_api
     end
 

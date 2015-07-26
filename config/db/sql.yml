@@ -1,0 +1,20 @@
+defaults: &DEFAULTS
+  adapter: postgresql
+  encoding: 'utf8'
+  pool: 10
+  timeout: 5000
+
+development:
+  <<: *DEFAULTS
+  database: restinme_development
+
+test:
+  <<: *DEFAULTS
+  database: restinme_test
+  pool: 5
+  timeout: 1000
+
+production:
+  <<: *DEFAULTS
+  user: root
+  database: restinme

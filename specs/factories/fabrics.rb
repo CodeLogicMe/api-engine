@@ -7,17 +7,24 @@ module Models
 
     factory :api, class: Api do
       client
-      name { Faker::Company.name }
+      sequence :name do |n|
+        Faker::App.name + n.to_s
+      end
 
-      trait :with_config do
+      trait :podcast do
         after(:create) do |api|
-          create :api_config, api: api
+          create(:collection, :podcast, api: api)
         end
       end
     end
 
+    factory :private_key, class: PrivateKey do
+      api
+    end
+
     factory :tier_usage, class: TierUsage do
-      association :tier, factory: :tier
+      api
+      tier
     end
 
     factory :tier, class: Tier do
@@ -25,30 +32,60 @@ module Models
       quota 100_000
       price 100
 
+      trait :free do
+        name 'free'
+        quota 500
+        price 0
+      end
+
       trait :prototype do
         name 'prototype'
         quota 1000
       end
     end
 
-    factory :api_config, class: ApiConfig do
-      entities {
-        [{
-          'name': 'podcasts',
-          'fields': [
-            { 'name' => 'id', 'type' => 'text', 'validates' => [] },
-            { 'name' => 'name', 'type' => 'text', 'validates' => ['presence', 'uniqueness'] },
-            { 'name' => 'website_url', 'type' => 'text', 'validates' => ['presence', 'uniqueness'] },
-            { 'name' => 'episodes', 'type' => 'number', 'validates' => ['presence'] },
-            { 'name' => 'created_at', 'type' => 'datetime', 'validates' => [] },
-            { 'name' => 'updated_at', 'type' => 'datetime', 'validates' => [] }
-          ]
-        }]
-      }
+    factory :collection, class: Collection do
+      api
+      name { Faker::Lorem.word }
+
+      trait :podcast do
+        name 'podcasts'
+        after(:build) do |c|
+          create(:field, :name, collection: c)
+          create(:field, :website, collection: c)
+          create(:field, :episodes, collection: c)
+        end
+      end
     end
 
-    factory :private_key, class: PrivateKey do
-      api
+    factory :field, class: Field do
+      collection
+      name { Faker::Hacker.noun }
+      type 'text'
+      validations []
+
+      trait :name do
+        name 'name'
+        type 'text'
+        validations ['presence', 'uniqueness']
+      end
+
+      trait :website do
+        name 'website'
+        type 'text'
+        validations ['presence', 'uniqueness']
+      end
+
+      trait :episodes do
+        name 'episodes'
+        type 'number'
+        validations ['presence']
+      end
+    end
+
+    factory :record, class: Record do
+      api { collection.api }
+      collection
     end
   end
 end

@@ -54,14 +54,18 @@ module Actions
 
         subject { described_class.new(data) }
 
-        it { expect{subject.call}.to raise_error Mongoid::Errors::DocumentNotFound }
+        it { expect{subject.call}.to raise_error ActiveRecord::RecordNotFound }
       end
     end
   end
 end
 
-shared_examples 'as authenticable endpoint' do |verb, url, status|
-  context 'without an api' do
+shared_examples 'an authenticable endpoint' do |verb, url, status|
+  before do
+    create(:tier, :free)
+  end
+
+  context 'with an invalid access token' do
     before do
       header 'X-Request-Timestamp', '9999999999'
       header 'X-Access-Token', 'anonexistantpublickey'
@@ -75,7 +79,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
     end
   end
 
-  context 'with invalid auth headers' do
+  context 'with an invalid request hash' do
     let(:ultra_pod) { create :api }
 
     before do
@@ -105,7 +109,7 @@ shared_examples 'as authenticable endpoint' do |verb, url, status|
       public_send(verb.downcase, url, params)
     end
 
-    it do
+    it 'expect the API to accept the request' do
       expect(last_response.status).to eq status
       expect(last_json['api']).to eq ultra_pod.name
     end
@@ -116,25 +120,25 @@ RSpec.describe API do
   include Rack::Test::Methods
 
   it_behaves_like \
-    'as authenticable endpoint',
+    'an authenticable endpoint',
     'GET',
     '/authenticate',
     200
 
   it_behaves_like \
-    'as authenticable endpoint',
+    'an authenticable endpoint',
     'POST',
     '/authenticate',
     201
 
   it_behaves_like \
-    'as authenticable endpoint',
+    'an authenticable endpoint',
     'PUT',
     '/authenticate/some_id',
     200
 
   it_behaves_like \
-    'as authenticable endpoint',
+    'an authenticable endpoint',
     'DELETE',
     '/authenticate/some_id',
     200

@@ -19,9 +19,8 @@ module Middlewares
 
       response = @app.call env
 
-      unless [500].include? response[0]
+      [500].include?(response.status) or
         quota.hit!
-      end
 
       response
     end

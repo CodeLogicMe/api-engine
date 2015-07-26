@@ -1,9 +1,11 @@
 require_relative '../spec_helper'
 
-RSpec.describe API, 'listing records from an entity' do
+RSpec.describe API, 'listing collection records' do
   include Rack::Test::Methods
 
-  let(:ultra_pod) { create :api, :with_config }
+  before { create :tier, :free }
+
+  let(:ultra_pod) { create :api, :podcast }
 
   context 'for another api' do
     let(:new_api) { create :api }
@@ -23,7 +25,13 @@ RSpec.describe API, 'listing records from an entity' do
     context 'with existing entries' do
       before do
         5.times do |index|
-          params = { data: { name: "NerdCast-#{index}", episodes: 400, website_url: "something-#{index}" } }
+          params = {
+            data: {
+              name: "NerdCast-#{index}",
+              episodes: 400,
+              website: "something-#{index}"
+            }
+          }
           set_auth_headers_for!(ultra_pod, 'POST', params)
           post '/podcasts', params
         end
@@ -37,7 +45,7 @@ RSpec.describe API, 'listing records from an entity' do
 
         last_json.items.each_with_index do |item, index|
           expect(last_json.items[index].keys)
-            .to match_array %w(id name episodes website_url created_at updated_at)
+            .to match_array %w(id name episodes website created_at updated_at)
           expect(last_json.items[index].name)
             .to eql "NerdCast-#{index}"
         end

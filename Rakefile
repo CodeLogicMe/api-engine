@@ -1,3 +1,6 @@
+require 'bundler/setup'
+require 'grape/activerecord/rake'
+
 task :environment do
   require_relative './config/application'
   require './api/server'
@@ -11,6 +14,11 @@ task console: :environment do
 end
 
 namespace :db do
+  task :environment do
+    require_relative './config/application'
+    require './api/server'
+  end
+
   desc 'Load the seed data from config/db/seeds.rb'
   task seed: :environment do
     seed_file = File.join(__dir__, 'config/db', 'seeds.rb')

@@ -15,27 +15,42 @@ module Entity
     private
 
     def getter(name, parser)
-      -> { parser.call @attributes[name] }
+      -> { parser.call @record.data[name.to_s] }
     end
 
     def setter(name, parser)
-      -> (value) { @attributes[name] = parser.call(value) }
+      -> (value) {
+        @record.data[name.to_s] = parser.call(value)
+      }
     end
   end
 
   module InstanceMethods
-    def initialize(fields = {})
-      @attributes = {}
+    extend Forwardable
 
-      fields.each do |field, value|
-        set field, value
-      end
+    def initialize(record)
+      @record =
+        if record.is_a?(Models::Record)
+          record
+        else
+          Models::Record.new(data: record)
+        end
     end
 
     def set(field, value, force: false)
       #return if value.present? and not force
 
       public_send "#{field}=", value
+    end
+
+    def_delegator :@record, :save!, :persist!
+    def_delegator :@record, :destroy, :remove!
+    def_delegators :@record, :id
+
+    def to_h
+      @record.data.keys
+        .map { |field| [field, public_send(field)] }
+        .to_h.merge(@record.internal_data)
     end
 
     attr_reader :attributes
@@ -47,8 +62,15 @@ module Entity
       end
     end
 
+    def collection=(value)
+      @record.collection = value
+      if value.api
+        @record.api = value.api
+      end
+    end
+
     def to_s
-      "#<#{self.class.name} @attributes=#{@attributes}, @app_id=\"#{@app_id}\">"
+      "#<#{self.class.name} @data=#{@record.data} \">"
     end
     alias_method :inspect, :to_s
   end

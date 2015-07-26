@@ -79,27 +79,18 @@ class Frontend < ::Grape::API
     end
   end
 
-  resource :entities do
+  resource :collections do
     before { authenticate! }
 
     helpers do
-      def ids
-        @ids ||= params.fetch(:id) { params.entity.api }.split('#')
-      end
-
       def api
-        @api ||= client_apis.find_by(system_name: ids[0])
-      end
-
-      def entity_repository
-        @entity_repo ||= Repositories::Entities
-          .new(api: api)
+        @api ||= client_apis.find(params.api_id)
       end
     end
 
     get do
       api = client_apis.find_by(system_name: id)
-      api.api_config.entities.map { |entity| entity_attrs(api, entity) }
+      { collections: api.collections.to_h }
     end
 
     get ':id' do
@@ -113,21 +104,20 @@ class Frontend < ::Grape::API
     end
 
     post do
-      api = client_apis.find_by(system_name: params.entity.api)
-      result = entity_repository.add(params.entity)
+      collection = api.collections.build(params.collection)
 
-      if result.ok?
-        entity = entity_repository.all.last
-        entity_attrs = Serializers::Entities
-          .new(api, [entity])
-          .to_h[0]
+      if collection.save
+        collection_attrs = Serializers::Collections
+          .new(collection).to_h[0]
         fields_attrs = Serializers::Fields
-          .new(api, entity, entity['fields'])
-          .to_h
+          .new(collection.fields).to_h
 
-        { entity: entity_attrs, fields: fields_attrs }
+        {
+          collection: collection_attrs,
+          fields: fields_attrs
+        }
       else
-        status(400) and { errors: result.errors }
+        status(400) and { errors: collection.errors.full_messages }
       end
     end
   end
@@ -136,32 +126,23 @@ class Frontend < ::Grape::API
     before { authenticate! }
 
     helpers do
-      def ids
-        @ids ||= params.fetch('id') { params.field.entity }.split('#')
-      end
-
       def api
-        @api ||= client_apis.find_by system_name: ids[0]
+        @api ||= client_apis.find(params.api_id)
       end
 
-      def entity
-        @entity ||= api.api_config.entity(name: ids[1])
-      end
-
-      def field_repository
-        @field_repo ||= Repositories::Fields
-          .new(api: api, entity: entity)
+      def collection
+        @collection ||= api
+          .collection(params.field.collection_id)
       end
     end
 
     post do
-      result = field_repository.add(params.field)
+      field = collection.fields.build params.field
 
-      if result.ok?
-        new_field = field_repository.all.last
-        { field: Serializers::Fields.new(api, entity, [new_field]).to_h[0] }
+      if field.save
+        { field: Serializers::Fields.new(field).to_h[0] }
       else
-        status(400) and { errors: result.errors }
+        status(400) and { errors: field.errors.full_messages }
       end
     end
 

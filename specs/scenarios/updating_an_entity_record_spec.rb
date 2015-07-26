@@ -3,10 +3,12 @@ require_relative '../spec_helper'
 RSpec.describe API, 'updating an entity record' do
   include Rack::Test::Methods
 
+  before { create :tier, :free }
+
   context 'Updating' do
     context 'a non existant record' do
       before do
-        ultra_pod = create :api, :with_config
+        ultra_pod = create :api, :podcast
         set_auth_headers_for!(ultra_pod, 'PUT', {})
         put '/podcasts/123invalid456ID'
       end
@@ -19,8 +21,14 @@ RSpec.describe API, 'updating an entity record' do
 
     context 'an existing record' do
       before do
-        params = { data: { name: 'Nerdcast', episodes: 362, website_url: 'jovermnerd.com.br' } }
-        ultra_pod = create :api, :with_config
+        params = {
+          data: {
+            name: 'Nerdcast',
+            episodes: 362,
+            website: 'jovermnerd.com.br'
+          }
+        }
+        ultra_pod = create :api, :podcast
 
         set_auth_headers_for!(ultra_pod, 'POST', params)
         post '/podcasts/', params

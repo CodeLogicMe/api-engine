@@ -2,17 +2,12 @@ require "hashie/mash"
 require_relative "./validation"
 
 class ValidationBuilder
-  def initialize(app, config)
-    @app = app
-    @config = Hashie::Mash.new config
+  def initialize(collection)
+    @collection = collection
   end
 
   def call
-    klass = bootstrap_klass
-
-    mix_in_validations klass
-
-    klass
+    bootstrap_klass.tap &method(:mix_in_validations)
   end
 
   private
@@ -24,9 +19,8 @@ class ValidationBuilder
   end
 
   def mix_in_validations(klass)
-    @config
-      .fields
-      .select { |f| Array(f.validates).any? }
+    @collection.fields
+      .select { |f| Array(f.validations).any? }
       .each { |f| FieldValidation.new(f).apply_on klass }
   end
 
@@ -39,10 +33,10 @@ end
 
 require "ostruct"
 
-class FieldValidation < OpenStruct
+class FieldValidation < Struct.new(:field)
   def apply_on(klass)
     field_name = proper_field_name
-    validates.each do |name|
+    field.validations.each do |name|
       validator = Validators.const_get(name.capitalize)
       klass.instance_eval do
         validate field_name.to_s, with: validator
@@ -51,6 +45,6 @@ class FieldValidation < OpenStruct
   end
 
   def proper_field_name
-    name.downcase.gsub /\s/, '_'
+    field.name.downcase.gsub /\s/, '_'
   end
 end

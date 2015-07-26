@@ -1,17 +1,13 @@
 require 'hashie/mash'
 
 class EntityBuilder
-  def initialize(app, config)
-    @app = app
-    @config = Hashie::Mash.new config
+  def initialize(api, collection)
+    @api = api
+    @collection = collection
   end
 
   def call
-    klass = bootstrap_klass
-
-    mix_in_fields klass
-
-    klass
+    bootstrap_klass.tap &method(:mix_in_fields)
   end
 
   private
@@ -20,14 +16,14 @@ class EntityBuilder
     name = collection_name
 
     # I need these variables available in the next lexical scope
-    app_name = @app.name.classify
-    klass_name = @config.name.classify
+    api_name = @api.name.classify
+    klass_name = @collection.name.classify
 
     Class.new do
       include Entity
 
       klass_name_proc = -> {
-        "#{app_name}::#{klass_name}"
+        "#{api_name}::#{klass_name}"
       }
 
       define_singleton_method :name, klass_name_proc
@@ -37,20 +33,20 @@ class EntityBuilder
   end
 
   def collection_name
-    @config.name.pluralize.underscore
+    @collection.name.pluralize.underscore
   end
 
   def mix_in_fields(klass)
-    @config
-      .fields
-      .each { |f| FieldConfig.new(f).apply_on klass }
+    @collection.fields.each do |f|
+      FieldConfig.new(f).apply_on klass
+    end
   end
 end
 
-class FieldConfig < OpenStruct
+class FieldConfig < Struct.new(:field)
   def apply_on(klass)
     field_name = proper_field_name
-    parser = Parsers.const_get(type.capitalize)
+    parser = Parsers.const_get(field.type.capitalize)
     klass.instance_eval do
       field field_name.to_s, parser
     end
@@ -59,6 +55,6 @@ class FieldConfig < OpenStruct
   private
 
   def proper_field_name
-    name.downcase.gsub /\s/, '_'
+    field.name.downcase.gsub /\s/, '_'
   end
 end
