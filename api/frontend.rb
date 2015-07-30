@@ -36,10 +36,11 @@ class Frontend < ::Grape::API
   end
 
   post :login do
-    if client = Models::Client.authenticate(params)
-      token = Services::AuthToken.generate(client)
+    client = Contexts::AuthenticableClient
+      .authenticate(*params.values_at(:email, :password))
+    if client.signed_in?
       current_client = client
-      { token: token }
+      { token: client.token }
     else
       status 400
     end

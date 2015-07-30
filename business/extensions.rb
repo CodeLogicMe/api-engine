@@ -1,5 +1,4 @@
 module Extensions
-  require_relative './extensions/passwordable'
   require_relative './extensions/parameterizable'
 
   module Sluggable

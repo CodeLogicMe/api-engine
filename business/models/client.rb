@@ -1,20 +1,11 @@
 class Models::Client < ActiveRecord::Base
-  include Extensions::Passwordable
-
   validates :email, presence: true, uniqueness: true
+  validates_presence_of :password_hash
 
   has_many :apis
 
-  def self.authenticate(params)
-    client = find_by(email: params[:email])
-    if client.password_checks?(params[:password])
-      client
-    end
-  rescue ActiveRecord::RecordNotFound
-    nil
-  end
-
-  def signed_in?
-    true
+  def password=(new_password)
+    self.password_hash = Context::AuthenticableClient
+      .to_crypt_hash(new_password)
   end
 end
