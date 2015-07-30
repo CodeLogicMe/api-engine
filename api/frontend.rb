@@ -50,25 +50,31 @@ class Frontend < ::Grape::API
     before { authenticate! }
 
     get do
+      apis = current_client.apis.includes(:private_key)
       {
-        apis: Serializers::Apis.new(client_apis).to_h
+        apis: Serializers::Apis.new(apis).to_h
       }
     end
 
     get '/:api_id' do
-      api = client_apis.find_by(system_name: params.api_id)
+      api = current_client.apis
+        .includes(tier_usages: :tier)
+        .includes(collections: :fields)
+        .includes(:private_key)
+        .find_by(system_name: params.api_id)
       {
         api: Serializers::Apis.new(api).to_h[0],
         tiers: Serializers::Tiers.new(api.tier).to_h,
-        entities: Serializers::Entities.new(api, api.api_config.entities).to_h,
-        fields: api.api_config.entities.flat_map do |entity|
+        collections: Serializers::Collections.new(api.collections).to_h,
+        fields: api.collections.flat_map do |entity|
           Serializers::Fields.new(api, entity, entity['fields']).to_h
         end
       }
     end
 
     post do
-      api = Actions::CreateApi.new(params).call
+      data = { name: params.api.name }
+      api = current_client.apis.create!(data)
       { api: Serializers::Apis.new(api).to_h[0] }
     end
 

@@ -11,10 +11,8 @@ module Serializers
           name: api.name,
           public_key: api.public_key,
           private_key: api.private_key.secret,
-          entities: api.api_config.entities.map { |entity|
-            Entities.idify(api, entity)
-          },
-          tier: Tiers.idify(api.tier)
+          collections: api.collections.map(&:to_param),
+          tier: api.tier.to_param
         }
       end
     end
