@@ -2,7 +2,6 @@ require 'grape'
 require 'rack/cors'
 
 require_relative '../business/setup'
-require_relative './engine'
 
 require_relative 'engine/authentication'
 require_relative 'engine/collection'
@@ -29,7 +28,10 @@ class API < Grape::API
   format :json
   content_type :json, 'application/json'
 
-  mount Engine
+  namespace :engine do
+    mount Engine::Authentication
+    mount Engine::Collection
+  end
 
   namespace :api do
     mount Frontend::Login

@@ -1,4 +1,4 @@
-require_relative '../../business/workers/request_analyser'
+require_relative '../../../business/workers/request_analyser'
 
 module Middlewares
   class Veritas

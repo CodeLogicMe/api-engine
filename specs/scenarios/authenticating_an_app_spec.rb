@@ -65,7 +65,7 @@ shared_examples 'an authenticable endpoint' do |verb, url, status|
     create(:tier, :free)
   end
 
-  context 'with an invalid access token' do
+  context 'that given an invalid access token' do
     before do
       header 'X-Request-Timestamp', '9999999999'
       header 'X-Access-Token', 'anonexistantpublickey'
@@ -74,12 +74,12 @@ shared_examples 'an authenticable endpoint' do |verb, url, status|
       public_send verb.downcase, url, {}
     end
 
-    it 'expect the API to refute the request' do
+    it 'should refute the API request' do
       expect(last_response.status).to eql 404
     end
   end
 
-  context 'with an invalid request hash' do
+  context 'that given an invalid request hash' do
     let(:ultra_pod) { create :api }
 
     before do
@@ -90,12 +90,12 @@ shared_examples 'an authenticable endpoint' do |verb, url, status|
       public_send verb.downcase, url, {}
     end
 
-    it 'expect the API to refute the request' do
+    it 'should refute the API request' do
       expect(last_response.status).to eql 401
     end
   end
 
-  context 'with valid auth headers' do
+  context 'that given valid auth headers' do
     let(:ultra_pod) { create :api }
     let(:private_key) { ultra_pod.private_key.secret }
     let(:params) { { what: 'ever' } }
@@ -109,7 +109,7 @@ shared_examples 'an authenticable endpoint' do |verb, url, status|
       public_send(verb.downcase, url, params)
     end
 
-    it 'expect the API to accept the request' do
+    it 'should accept the API request' do
       expect(last_response.status).to eq status
       expect(last_json['api']).to eq ultra_pod.name
     end
@@ -122,24 +122,24 @@ RSpec.describe API do
   it_behaves_like \
     'an authenticable endpoint',
     'GET',
-    '/authenticate',
+    '/engine/authenticate',
     200
 
   it_behaves_like \
     'an authenticable endpoint',
     'POST',
-    '/authenticate',
+    '/engine/authenticate',
     201
 
   it_behaves_like \
     'an authenticable endpoint',
     'PUT',
-    '/authenticate/some_id',
+    '/engine/authenticate/some_id',
     200
 
   it_behaves_like \
     'an authenticable endpoint',
     'DELETE',
-    '/authenticate/some_id',
+    '/engine/authenticate/some_id',
     200
 end
