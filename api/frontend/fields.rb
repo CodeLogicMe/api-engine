@@ -18,6 +18,10 @@ module Frontend
           @collection ||= current_client.collections
             .find(params.field.collection)
         end
+
+        def field
+          @field ||= collection.fields.find(params.id)
+        end
       end
 
       post do
@@ -34,16 +38,16 @@ module Frontend
       end
 
       put ':id' do
-        entity['fields'].delete_if do |field|
-          field['name'] == ids[2]
+        field.update_attributes \
+          name: params.field.name,
+          type: params.field.type,
+          validations: params.field.validations
+
+        if field.save
+          { field: Serializers::Fields.new(field).to_h.first }
+        else
+          status(400) and { errors: field.errors.full_messages }
         end
-
-        params.field.delete('entity')
-        entity['fields'] << params.field.to_h
-
-        api.api_config.save!
-
-        {}
       end
 
       delete ':id' do
