@@ -20,13 +20,13 @@ module Frontend
           .includes(tier_usages: :tier)
           .includes(collections: :fields)
           .includes(:private_key)
-          .find_by(system_name: params.api_id)
+          .find(params.api_id)
         {
           api: Serializers::Apis.new(api).to_h[0],
           tiers: Serializers::Tiers.new(api.tier).to_h,
           collections: Serializers::Collections.new(api.collections).to_h,
-          fields: api.collections.flat_map do |entity|
-            Serializers::Fields.new(api, entity, entity['fields']).to_h
+          fields: api.collections.flat_map do |collection|
+            Serializers::Fields.new(collection.fields).to_h
           end
         }
       end

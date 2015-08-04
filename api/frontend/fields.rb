@@ -10,17 +10,21 @@ module Frontend
 
       helpers do
         def api
-          @api ||= current_client.apis.find(params.api_id)
+          @api ||= current_client.apis.find(params.api)
         end
 
         def collection
-          @collection ||= api
-            .collection(params.field.collection_id)
+          # TODO: find a way to submit the api id from ember
+          @collection ||= current_client.collections
+            .find(params.field.collection)
         end
       end
 
       post do
-        field = collection.fields.build params.field
+        field = collection.fields.build \
+          name: params.field.name,
+          type: params.field.type,
+          validations: params.field.validations
 
         if field.save
           { field: Serializers::Fields.new(field).to_h[0] }

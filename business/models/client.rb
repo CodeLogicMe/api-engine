@@ -5,6 +5,7 @@ class Models::Client < ActiveRecord::Base
   validates_presence_of :password_hash
 
   has_many :apis
+  has_many :collections, through: :apis
 
   def password=(new_password)
     self.password_hash = Contexts::AuthenticableClient
