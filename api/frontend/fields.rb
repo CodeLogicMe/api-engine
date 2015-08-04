@@ -20,7 +20,7 @@ module Frontend
         end
 
         def field
-          @field ||= collection.fields.find(params.id)
+          @field ||= current_client.fields.find(params.id)
         end
       end
 
@@ -51,13 +51,7 @@ module Frontend
       end
 
       delete ':id' do
-        entity['fields'].delete_if do |field|
-          field['name'] == ids[2]
-        end
-
-        api.api_config.save!
-
-        {}
+        field.destroy!
       end
     end
   end

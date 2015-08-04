@@ -6,6 +6,7 @@ class Models::Client < ActiveRecord::Base
 
   has_many :apis
   has_many :collections, through: :apis
+  has_many :fields, through: :collections
 
   def password=(new_password)
     self.password_hash = Contexts::AuthenticableClient
