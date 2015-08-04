@@ -1,3 +1,5 @@
+require_relative '../contexts/authenticable_client'
+
 class Models::Client < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates_presence_of :password_hash
@@ -5,7 +7,7 @@ class Models::Client < ActiveRecord::Base
   has_many :apis
 
   def password=(new_password)
-    self.password_hash = Context::AuthenticableClient
+    self.password_hash = Contexts::AuthenticableClient
       .to_crypt_hash(new_password)
   end
 end

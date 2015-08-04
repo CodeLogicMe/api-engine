@@ -17,13 +17,13 @@ module Contexts
     end
 
     def to_crypt_hash(password)
-      ::BCrypt::Password.create pass
+      ::BCrypt::Password.create password
     end
 
     private
 
-    def password_checks?(client, pass)
-      ::BCrypt::Password.new(client.password_hash) == pass
+    def password_checks?(client, password)
+      ::BCrypt::Password.new(client.password_hash) == password
     end
 
     class Authenticated < SimpleDelegator
