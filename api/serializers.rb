@@ -7,7 +7,7 @@ module Serializers
     def to_h
       @apis.map do |api|
         {
-          id: api.system_name,
+          id: api.to_param,
           name: api.name,
           public_key: api.public_key,
           private_key: api.private_key.secret,

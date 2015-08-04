@@ -28,10 +28,6 @@ module Models
       self.private_key = PrivateKey.new
     end
 
-    def to_param
-      system_name
-    end
-
     def has_collection?(name)
       collections.where(system_name: name).exists?
     end

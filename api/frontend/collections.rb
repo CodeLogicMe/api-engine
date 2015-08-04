@@ -10,7 +10,8 @@ module Frontend
 
       helpers do
         def api
-          @api ||= current_client.apis.find(params.api_id)
+          @api ||= current_client.apis
+            .find(params.collection.api)
         end
       end
 
@@ -30,7 +31,8 @@ module Frontend
       end
 
       post do
-        collection = api.collections.build(params.collection)
+        collection = api.collections
+          .build(name: params.collection.name)
 
         if collection.save
           collection_attrs = Serializers::Collections

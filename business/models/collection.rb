@@ -2,7 +2,7 @@ module Models
   class Collection < ActiveRecord::Base
     extend Extensions::Sluggable
 
-    belongs_to :api
+    belongs_to :api, class_name: 'Models::Api'
     has_many :fields, dependent: :destroy
     has_many :records, dependent: :destroy
 
