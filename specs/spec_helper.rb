@@ -46,7 +46,7 @@ RSpec.configure do |config|
 end
 
 def app
-  API.new
+  API
 end
 def last_json
   Hashie::Mash.new JSON.parse(last_response.body)
