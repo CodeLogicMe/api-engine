@@ -10,10 +10,10 @@ RSpec.describe API do
     end
 
     before do
-      allow_any_instance_of(Middlewares::Terminus::Quota)
+      allow_any_instance_of(Terminus::Quota)
         .to receive(:over?).and_return(true)
       set_auth_headers_for!(ultra_pod, 'GET', {})
-      get '/podcasts'
+      get '/engine/podcasts'
     end
 
     it 'should not allow the request to go through' do
@@ -29,7 +29,7 @@ RSpec.describe API do
 
     before do
       set_auth_headers_for!(ultra_pod, 'GET', {})
-      get '/podcasts'
+      get '/engine/podcasts'
     end
 
     it 'should allow the request to go through' do
@@ -38,70 +38,71 @@ RSpec.describe API do
   end
 end
 
-RSpec.describe Middlewares::Terminus do
-  context 'when quota is over' do
-    let(:rack_app) do
-      double.tap do |dbl|
-        allow(dbl).to receive(:call).and_return([200])
+module Terminus
+  RSpec.describe Middleware do
+    context 'when quota is over' do
+      let(:rack_app) do
+        double.tap do |dbl|
+          allow(dbl).to receive(:call).and_return([200])
+        end
+      end
+
+      before do
+        allow_any_instance_of(Quota).to receive(:over?).and_return(true)
+      end
+
+      subject { described_class.new(rack_app) }
+
+      it 'should not allow the request to go through' do
+        expect(subject.call({}).status).to eql 403
+        expect(rack_app).to_not have_received(:call)
       end
     end
 
-    before do
-      allow_any_instance_of(described_class::Quota).to receive(:over?).and_return(true)
-    end
+    context 'when there is enough quota' do
+      let(:success) { Rack::Response.new({}, 200)}
+      let(:rack_app) do
+        double.tap do |dbl|
+          allow(dbl).to receive(:call).and_return(success)
+        end
+      end
+      let(:env) { { 'current_api' => double(:api, id: 1) } }
 
-    subject { described_class.new(rack_app) }
+      before do
+        allow_any_instance_of(Quota)
+          .to receive(:over?).and_return(false)
+        allow(Quota::STORE).to receive(:incr)
+      end
 
-    it 'should not allow the request to go through' do
-      expect(subject.call({})[0]).to eql 403
-      expect(rack_app).to_not have_received(:call)
-    end
-  end
+      subject { described_class.new(rack_app) }
 
-  context 'when there is enough quota' do
-    let(:success) { Rack::Response.new([], 200) }
-    let(:rack_app) do
-      double.tap do |dbl|
-        allow(dbl).to receive(:call).and_return(success)
+      it 'should allow the request to go through' do
+        expect(subject.call(env).status).to eql 200
+        expect(rack_app).to have_received(:call)
       end
     end
 
-    before do
-      allow_any_instance_of(described_class::Quota)
-        .to receive(:over?).and_return(false)
-      expect_any_instance_of(described_class::Quota)
-        .to receive(:hit!)
-    end
-
-    subject { described_class.new(rack_app) }
-
-    it 'should allow the request to go through' do
-      expect(subject.call({}).status).to eql 200
-      expect(rack_app).to have_received(:call)
-    end
-  end
-
-  context 'when the app returns a 500' do
-    let(:internal_error) { Rack::Response.new([], 500) }
-    let(:rack_app) do
-      double.tap do |dbl|
-        allow(dbl).to receive(:call)
-          .and_return(internal_error)
+    context 'when the app returns a 500' do
+      let(:internal_error) { Rack::Response.new({}, 500) }
+      let(:rack_app) do
+        double.tap do |dbl|
+          allow(dbl).to receive(:call)
+            .and_return(internal_error)
+        end
       end
-    end
 
-    before do
-      allow_any_instance_of(described_class::Quota)
-        .to receive(:over?).and_return(false)
-      expect_any_instance_of(described_class::Quota)
-        .to_not receive(:hit!)
-    end
+      before do
+        allow_any_instance_of(Quota)
+          .to receive(:over?).and_return(false)
+        allow(Quota::STORE).to receive(:incr)
+      end
 
-    subject { described_class.new(rack_app) }
+      subject { described_class.new(rack_app) }
 
-    it 'should allow the request to go through' do
-      expect(subject.call({}).status).to eql 500
-      expect(rack_app).to have_received(:call)
+      it 'should allow the request to go through' do
+        expect(subject.call({}).status).to eql 500
+        expect(rack_app).to have_received(:call)
+      end
     end
   end
 end

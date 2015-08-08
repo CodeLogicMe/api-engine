@@ -1,6 +1,6 @@
 require 'grape'
 require_relative 'janus/middleware'
-require_relative 'middlewares/terminus'
+require_relative 'terminus/middleware'
 require_relative 'veritas/middleware'
 
 module Engine
@@ -9,7 +9,7 @@ module Engine
       use Veritas::Middleware
     end
     use Janus::Middleware
-    use Middlewares::Terminus
+    use Terminus::Middleware
 
     helpers do
       def current_api

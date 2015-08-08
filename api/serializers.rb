@@ -1,3 +1,5 @@
+require_relative './engine/terminus/quota'
+
 module Serializers
   class Apis
     def initialize(apis)
@@ -27,7 +29,7 @@ module Serializers
       {
         id: 'nevermind',
         quota: {
-          current: Middlewares::Terminus.quota_for(@api),
+          current: Terminus::Quota.new(@api).hit_count,
           max: @api.tier.quota
         }
       }
