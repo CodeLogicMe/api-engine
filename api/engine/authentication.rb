@@ -1,9 +1,9 @@
 require 'grape'
-require_relative 'middlewares/janus'
+require_relative 'janus/middleware'
 
 module Engine
   class Authentication < Grape::API
-    use Middlewares::Janus
+    use Janus::Middleware
 
     helpers do
       def current_api

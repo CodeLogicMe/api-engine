@@ -1,5 +1,5 @@
 require 'grape'
-require_relative 'middlewares/janus'
+require_relative 'janus/middleware'
 require_relative 'middlewares/terminus'
 require_relative 'middlewares/veritas'
 
@@ -8,7 +8,7 @@ module Engine
     if ENV['RACK_ENV'] != 'test'
       use Middlewares::Veritas
     end
-    use Middlewares::Janus
+    use Janus::Middleware
     use Middlewares::Terminus
 
     helpers do
