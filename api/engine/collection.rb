@@ -1,12 +1,12 @@
 require 'grape'
 require_relative 'janus/middleware'
 require_relative 'middlewares/terminus'
-require_relative 'middlewares/veritas'
+require_relative 'veritas/middleware'
 
 module Engine
   class Collection < Grape::API
     if ENV['RACK_ENV'] != 'test'
-      use Middlewares::Veritas
+      use Veritas::Middleware
     end
     use Janus::Middleware
     use Middlewares::Terminus
