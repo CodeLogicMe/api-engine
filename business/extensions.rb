@@ -11,6 +11,8 @@ module Extensions
     end
 
     def to_slug(value)
+      return unless value
+
       value.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
     end
   end
