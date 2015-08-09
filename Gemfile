@@ -32,6 +32,7 @@ group :development, :test do
   gem 'rspec'
   gem 'pry'
   gem 'did_you_mean'
+  gem 'dotenv-rails'
 end
 
 group :development do

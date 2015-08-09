@@ -14,8 +14,6 @@ require_relative 'frontend/tiers'
 require_relative 'frontend/statistics'
 
 class API < Grape::API
-  include Grape::ActiveRecord::Extension
-
   use ::Rack::Cors do
     allow do
       origins '*'

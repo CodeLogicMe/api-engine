@@ -38,6 +38,7 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning do
       example.run
     end
+    REDIS_CLIENT.flushdb
   end
 
   config.after(:each) do
