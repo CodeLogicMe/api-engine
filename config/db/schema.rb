@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 1) do
     t.string   "name",        null: false
     t.string   "system_name", null: false
     t.string   "public_key"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "apis", ["public_key"], name: "index_apis_on_public_key", unique: true, using: :btree
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 1) do
   create_table "clients", force: :cascade do |t|
     t.string   "email",         null: false
     t.string   "password_hash", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "clients", ["email"], name: "index_clients_on_email", unique: true, using: :btree
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 1) do
     t.integer  "api_id",      null: false
     t.string   "name",        null: false
     t.string   "system_name", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "collections", ["name"], name: "index_collections_on_name", using: :btree
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(version: 1) do
     t.integer  "api_id",        null: false
     t.integer  "collection_id", null: false
     t.hstore   "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "records", ["api_id", "collection_id"], name: "index_records_on_api_id_and_collection_id", using: :btree

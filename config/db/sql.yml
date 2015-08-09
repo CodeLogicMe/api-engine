@@ -6,15 +6,14 @@ defaults: &DEFAULTS
 
 development:
   <<: *DEFAULTS
-  database: restinme_development
+  database: api_tie_development
 
 test:
   <<: *DEFAULTS
-  database: restinme_test
+  database: api_tie_test
   pool: 5
   timeout: 1000
 
 production:
   <<: *DEFAULTS
-  user: root
-  database: restinme
+  database: api_tie

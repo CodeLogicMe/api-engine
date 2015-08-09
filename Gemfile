@@ -6,7 +6,7 @@ gem 'sinatra', require: false # just because cloud66 needs it
 gem 'rack-cors', '~> 0.4'
 
 # database
-gem 'grape-activerecord'
+gem 'grape-activerecord', git: 'git@github.com:CodeLogicMe/grape-activerecord.git'
 gem 'activerecord'
 gem 'pg'
 

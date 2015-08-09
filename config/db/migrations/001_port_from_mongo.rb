@@ -5,7 +5,7 @@ class PortFromMongo < ActiveRecord::Migration
     create_table :clients do |t|
       t.string :email, null: false
       t.string :password_hash, null: false
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :clients, :email, unique: true
 
@@ -14,7 +14,7 @@ class PortFromMongo < ActiveRecord::Migration
       t.string :name, null: false
       t.string :system_name, null: false
       t.string :public_key
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :apis, :system_name, unique: true
     add_index :apis, :public_key, unique: true
@@ -30,7 +30,7 @@ class PortFromMongo < ActiveRecord::Migration
       t.references :api, null: false
       t.string :name, null: false
       t.string :system_name, null: false
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :collections, :name
     add_index :collections, :system_name
@@ -46,7 +46,7 @@ class PortFromMongo < ActiveRecord::Migration
       t.references :api, null: false
       t.references :collection, null: false
       t.hstore :data
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :records, [:api_id, :collection_id]
     add_index :records, :data, using: :gin

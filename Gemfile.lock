@@ -1,3 +1,12 @@
+GIT
+  remote: git@github.com:CodeLogicMe/grape-activerecord.git
+  revision: aada3c56ee6710ef452b4e680cf8a479ff1c3129
+  specs:
+    grape-activerecord (1.0.0)
+      activerecord (~> 4.0)
+      grape (~> 0.1)
+      hashie-forbidden_attributes (~> 0.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -72,10 +81,6 @@ GEM
       rack-accept
       rack-mount
       virtus (>= 1.0.0)
-    grape-activerecord (1.0.0)
-      activerecord (~> 4.0)
-      grape (~> 0.1)
-      hashie-forbidden_attributes (~> 0.1.1)
     hashie (3.4.2)
     hashie-forbidden_attributes (0.1.1)
       hashie (>= 3.0)
@@ -190,7 +195,7 @@ DEPENDENCIES
   foreman
   geocoder
   grape (~> 0.11)
-  grape-activerecord
+  grape-activerecord!
   hiredis (~> 0.6.0)
   pg
   pry
