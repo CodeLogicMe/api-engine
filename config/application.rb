@@ -4,7 +4,9 @@ require 'rubygems'
 require 'bundler/setup'
 require 'require_all'
 
-require 'dotenv'
-Dotenv.load
+if %w(development test).include? ENV['RACK_ENV']
+  require 'dotenv'
+  Dotenv.load
+end
 
 require_all 'config/initializers/*.rb'
