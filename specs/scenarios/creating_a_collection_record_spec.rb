@@ -15,7 +15,7 @@ RSpec.describe API do
       }
       ultra_pod = create :api, :podcast
       set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/podcasts', params
+      post '/engine/podcasts', params
     end
 
     it 'should create the resource' do
@@ -33,7 +33,7 @@ RSpec.describe API do
       before do
         ultra_pod = create :api, :podcast
         set_auth_headers_for!(ultra_pod, 'POST', {})
-        post '/podcasts', {}
+        post '/engine/podcasts', {}
       end
 
       it 'should return validations errors' do
@@ -59,7 +59,7 @@ RSpec.describe API do
 
         2.times do
           set_auth_headers_for!(ultra_pod, 'POST', params)
-          post '/podcasts', params
+          post '/engine/podcasts', params
         end
       end
 
