@@ -17,3 +17,4 @@ test:
 production:
   <<: *DEFAULTS
   database: api_tie
+  host: <%= ENV['POSTGRESQL_URL_INT'] %>
