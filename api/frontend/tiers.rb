@@ -9,7 +9,7 @@ module Frontend
       before { authenticate! }
 
       get do
-        tiers = Models::Tier.order_by(quota: :asc)
+        tiers = Models::Tier.order(quota: :asc)
         { tiers: Serializers::Tiers.new(tiers).to_h }
       end
 
