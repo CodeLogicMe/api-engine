@@ -12,12 +12,12 @@ RSpec.describe API, 'listing collection records' do
 
     before do
       set_auth_headers_for!(new_api, 'GET', {})
-      get '/podcasts'
+      get '/engine/podcasts'
     end
 
     it do
       expect(last_response.status).to eql 404
-      expect(last_json.errors).to eql ['Not Found']
+      expect(last_json.errors).to eql ['Collection could not be found']
     end
   end
 
@@ -33,10 +33,10 @@ RSpec.describe API, 'listing collection records' do
             }
           }
           set_auth_headers_for!(ultra_pod, 'POST', params)
-          post '/podcasts', params
+          post '/engine/podcasts', params
         end
         set_auth_headers_for!(ultra_pod, 'GET', {})
-        get '/podcasts'
+        get '/engine/podcasts'
       end
 
       it 'should contain all defined fields' do
@@ -55,7 +55,7 @@ RSpec.describe API, 'listing collection records' do
     context 'without entries' do
       before do
         set_auth_headers_for!(ultra_pod, 'GET', {})
-        get '/podcasts'
+        get '/engine/podcasts'
       end
 
       it do
