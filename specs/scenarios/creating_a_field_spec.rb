@@ -11,9 +11,8 @@ RSpec.describe Frontend, 'creating a field' do
       login_as ultra_pod.client
 
       post '/api/fields', {
-        api_id: ultra_pod.id,
         field: {
-          collection_id: collection.id,
+          collection: collection.id,
           name: 'episode_number',
           type: 'number',
           validations: ['presence']
@@ -38,9 +37,8 @@ RSpec.describe Frontend, 'creating a field' do
 
       2.times {
         post '/api/fields', {
-          api_id: ultra_pod.id,
           field: {
-            collection_id: collection.id,
+            collection: collection.id,
             name: 'number',
             type: 'number',
             validations: ['presence']
