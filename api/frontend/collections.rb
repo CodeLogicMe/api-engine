@@ -21,12 +21,10 @@ module Frontend
       end
 
       get ':id' do
-        entity = api.api_config.entities.find { |entity| entity['name'] == ids[1] }
+        collection = current_client.collections.find(params.id)
         {
-          entity: Serializers::Entities.new(api, [entity]).to_h[0],
-          fields: api.api_config.entities.flat_map do |entity|
-            Serializers::Fields.new(api, entity, entity['fields']).to_h
-          end
+          collections: Serializers::Collections.new([collection]).to_h.first,
+          fields: Serializers::Fields.new(collection.fields).to_h
         }
       end
 
