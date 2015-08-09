@@ -12,7 +12,7 @@ module Models
 
     slug :name, on: :system_name
 
-    default_scope { includes(:fields).order(:name) }
+    default_scope { includes(:fields) }
 
     def has_field?(name)
       fields.where(name: name).exists?
