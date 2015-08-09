@@ -21,15 +21,15 @@ RSpec.describe 'deleting an entity record' do
         }
       }
       set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/podcasts', params
+      post '/engine/podcasts', params
 
       set_auth_headers_for!(new_api, 'DELETE', {})
-      delete "/podcasts/#{last_json.id}"
+      delete "/engine/podcasts/#{last_json.id}"
     end
 
     it do
       expect(last_response.status).to eql 404
-      expect(last_json.errors).to eql ['Not Found']
+      expect(last_json.errors).to eql ['Collection could not be found']
     end
   end
 
@@ -43,17 +43,17 @@ RSpec.describe 'deleting an entity record' do
         }
       }
       set_auth_headers_for!(ultra_pod, 'POST', params)
-      post '/podcasts', params
+      post '/engine/podcasts', params
 
       set_auth_headers_for!(ultra_pod, 'DELETE', {})
-      delete "/podcasts/#{last_json.id}"
+      delete "/engine/podcasts/#{last_json.id}"
     end
 
     it do
       expect(last_response.status).to eql 204
 
       set_auth_headers_for!(ultra_pod, 'GET', {})
-      get '/podcasts'
+      get '/engine/podcasts'
       expect(last_json.items.count).to eql 0
     end
   end

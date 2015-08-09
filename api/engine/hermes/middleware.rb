@@ -17,7 +17,7 @@ module Hermes
 
     def missing_collection
       Rack::Response.new \
-        [{ errors: ['Collection could not found'] }.to_json],
+        [{ errors: ['Collection could not be found'] }.to_json],
         404,
         { 'Content-Type' => 'application/json' }
     end
