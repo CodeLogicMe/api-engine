@@ -1,0 +1,14 @@
+---
+# The Skylight ID for this application. This should be committed to
+# source control. It is not currently in use, but may be utilized in
+# future agent releases.
+application: ApiTie
+
+# The authentication token for the application.
+authentication: b7sPlcQoj--6FWwXJF0faSoL09w3kJMPXpmDLQLa7Mg
+
+daemon:
+  sockdir_path: /tmp/
+  pidfile_path: /tmp/pids
+
+log_file: log/skylight.log

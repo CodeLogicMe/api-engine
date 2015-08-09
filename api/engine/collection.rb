@@ -1,4 +1,5 @@
 require 'grape'
+
 require_relative 'janus/middleware'
 require_relative 'terminus/middleware'
 require_relative 'veritas/middleware'

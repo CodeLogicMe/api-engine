@@ -1,5 +1,6 @@
 require 'grape'
 require_relative 'auth_helpers'
+require_relative 'serializers/stats'
 
 module Frontend
   class Statistics < Grape::API

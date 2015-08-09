@@ -28,6 +28,9 @@ gem 'sidekiq'
 gem 'geocoder'
 gem 'browser'
 
+# Monitoring
+gem 'skylight', '~> 0.8.0.beta.3'
+
 group :development, :test do
   gem 'rspec'
   gem 'pry'

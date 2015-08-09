@@ -1,6 +1,9 @@
 require 'grape'
 require 'rack/cors'
 
+require_relative 'response_normalizer'
+require 'skylight'
+
 require_relative '../business/setup'
 
 require_relative 'engine/authentication'
@@ -25,6 +28,9 @@ class API < Grape::API
 
   format :json
   content_type :json, 'application/json'
+
+  use Skylight::Middleware
+  use ResponseNormalizer
 
   namespace :engine do
     mount Engine::Authentication
