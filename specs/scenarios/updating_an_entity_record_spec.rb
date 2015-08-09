@@ -10,7 +10,7 @@ RSpec.describe API, 'updating an entity record' do
       before do
         ultra_pod = create :api, :podcast
         set_auth_headers_for!(ultra_pod, 'PUT', {})
-        put '/podcasts/123invalid456ID'
+        put '/engine/podcasts/123invalid456ID'
       end
 
       it 'should not be possible' do
@@ -31,11 +31,11 @@ RSpec.describe API, 'updating an entity record' do
         ultra_pod = create :api, :podcast
 
         set_auth_headers_for!(ultra_pod, 'POST', params)
-        post '/podcasts/', params
+        post '/engine/podcasts/', params
 
         new_params = { data: { name: 'NerdCast' } }
         set_auth_headers_for!(ultra_pod, 'PUT', new_params)
-        put "/podcasts/#{last_json.id}", new_params
+        put "/engine/podcasts/#{last_json.id}", new_params
       end
 
       it 'should be possible' do
