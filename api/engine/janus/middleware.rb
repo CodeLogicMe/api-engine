@@ -21,19 +21,17 @@ module Janus
     private
 
     def missing_api
-      [
+      Rack::Response.new \
+        [{ errors: ['Not Found'] }.to_json],
         404,
-        { 'Content-Type' => 'application/json' },
-        [{ errors: ['Not Found'] }.to_json]
-      ]
+        { 'Content-Type' => 'application/json' }
     end
 
     def unauthorized
-      [
+      Rack::Response.new \
+        [{ errors: ['Unauthorized'] }.to_json],
         401,
-        { 'Content-Type' => 'application/json' },
-        [{ errors: ['Unauthorized'] }.to_json]
-      ]
+        { 'Content-Type' => 'application/json' }
     end
   end
 end
