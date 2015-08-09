@@ -2,6 +2,7 @@ require 'grape'
 require_relative 'janus/middleware'
 require_relative 'terminus/middleware'
 require_relative 'veritas/middleware'
+require_relative 'hermes/middleware'
 
 module Engine
   class Collection < Grape::API
@@ -10,16 +11,11 @@ module Engine
     end
     use Janus::Middleware
     use Terminus::Middleware
+    use Hermes::Middleware
 
     helpers do
       def current_api
         env.fetch('current_api')
-      end
-
-      def check_collection_for_current_api!
-        unless current_api.has_collection?(collection_name)
-          error!({ errors: ['Not Found'] }, 404)
-        end
       end
 
       def collection_name
@@ -40,10 +36,6 @@ module Engine
           collection.has_field?(key)
         end
       end
-    end
-
-    before do
-      check_collection_for_current_api!
     end
 
     resource '/:collection_name' do
