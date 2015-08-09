@@ -7,7 +7,7 @@ require 'skylight'
 require_relative '../business/setup'
 
 require_relative 'engine/authentication'
-require_relative 'engine/collection'
+require_relative 'engine/records'
 
 require_relative 'frontend/login'
 require_relative 'frontend/apis'
@@ -34,7 +34,7 @@ class API < Grape::API
 
   namespace :engine do
     mount Engine::Authentication
-    mount Engine::Collection
+    mount Engine::Records
   end
 
   namespace :api do

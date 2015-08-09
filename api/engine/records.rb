@@ -6,7 +6,7 @@ require_relative 'veritas/middleware'
 require_relative 'hermes/middleware'
 
 module Engine
-  class Collection < Grape::API
+  class Records < Grape::API
     if ENV['RACK_ENV'] != 'test'
       use Veritas::Middleware
     end
