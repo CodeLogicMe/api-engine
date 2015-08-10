@@ -30,7 +30,7 @@ module Frontend
           collections: api.collections.map { |collection|
             Serializers::Collection.new(collection).to_h },
           fields: api.collections.flat_map { |collection|
-              collection.fields.map { |field|
+              collection.all_fields.map { |field|
                 Serializers::Field.new(field).to_h
               }
             }

@@ -12,6 +12,7 @@ gem 'pg'
 
 # because I'm lazy
 gem 'require_all', '~> 1.3'
+gem 'closed_struct'
 
 # encription
 gem 'bcrypt', '~> 3.1'
