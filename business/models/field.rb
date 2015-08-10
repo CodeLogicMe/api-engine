@@ -7,5 +7,9 @@ module Models
     validates :name, presence: true,
       uniqueness: { scope: :collection }
     validates :type, presence: true
+
+    def internal
+      false
+    end
   end
 end

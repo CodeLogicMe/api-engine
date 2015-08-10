@@ -8,7 +8,7 @@ module Serializers
       {
         id: @collection.to_param,
         name: @collection.name,
-        fields: @collection.fields.map(&:id)
+        fields: @collection.fields.map(&:to_param)
       }
     end
   end

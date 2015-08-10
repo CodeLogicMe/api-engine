@@ -21,38 +21,44 @@ module Models
     end
 
     def all_fields
-      fields + internal_fields
+      internal_fields + fields
     end
 
     private
 
     def internal_fields
       [
-        ClosedStruct.new({
+        InternalField.new({
           id: -1,
           name: 'id',
-          type: 'string',
+          type: 'text',
           validations: ['presence', 'uniqueness'],
           internal: true,
-          collection_id: self.id
+          collection: self
         }),
-        ClosedStruct.new({
+        InternalField.new({
           id: -2,
           name: 'created_at',
           type: 'datetime',
           validations: ['presence'],
           internal: true,
-          collection_id: self.id
+          collection: self
         }),
-        ClosedStruct.new({
+        InternalField.new({
           id: -3,
           name: 'updated_at',
           type: 'datetime',
           validations: ['presence'],
           internal: true,
-          collection_id: self.id
+          collection: self
         })
       ]
+    end
+
+    class InternalField < ClosedStruct
+      def to_param
+        id.to_s
+      end
     end
   end
 end

@@ -33,7 +33,7 @@ module Frontend
               collection.all_fields.map { |field|
                 Serializers::Field.new(field).to_h
               }
-            }
+            }.uniq { |a| a.fetch(:id) }
         }
       end
 

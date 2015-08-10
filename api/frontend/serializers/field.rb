@@ -10,8 +10,8 @@ module Serializers
         name: @field.name,
         type: @field.type,
         validations: @field.validations,
-        internal: false,
-        collection: @field.collection_id
+        internal: @field.internal,
+        collection: @field.collection.to_param
       }
     end
   end
