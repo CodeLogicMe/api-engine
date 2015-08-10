@@ -1,3 +1,5 @@
+require_relative 'quota'
+
 module Terminus
   class Middleware
     def initialize(app)

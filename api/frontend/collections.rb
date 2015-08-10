@@ -23,8 +23,9 @@ module Frontend
       get ':id' do
         collection = current_client.collections.find(params.id)
         {
-          collections: Serializers::Collections.new([collection]).to_h.first,
-          fields: Serializers::Fields.new(collection.fields).to_h
+          collection: Serializers::Collection.new(collection).to_h,
+          fields: collection.fields.map { |field|
+            Serializers::Field.new(field).to_h }
         }
       end
 
@@ -33,17 +34,14 @@ module Frontend
           .build(name: params.collection.name)
 
         if collection.save
-          collection_attrs = Serializers::Collections
-            .new(collection).to_h[0]
-          fields_attrs = Serializers::Fields
-            .new(collection.fields).to_h
-
           {
-            collection: collection_attrs,
-            fields: fields_attrs
+            collection: Serializers::Collection.new(collection).to_h,
+            fields: collection.fields.map { |field|
+              Serializers::Field.new(field) }
           }
         else
-          status(400) and { errors: collection.errors.full_messages }
+          status(400) and
+            { errors: collection.errors.full_messages }
         end
       end
     end

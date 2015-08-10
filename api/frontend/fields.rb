@@ -31,9 +31,10 @@ module Frontend
           validations: params.field.validations
 
         if field.save
-          { field: Serializers::Fields.new(field).to_h[0] }
+          { field: Serializers::Field.new(field).to_h }
         else
-          status(400) and { errors: field.errors.full_messages }
+          status(400) and
+            { errors: field.errors.full_messages }
         end
       end
 
@@ -44,9 +45,10 @@ module Frontend
           validations: params.field.validations
 
         if field.save
-          { field: Serializers::Fields.new(field).to_h.first }
+          { field: Serializers::Field.new(field).to_h }
         else
-          status(400) and { errors: field.errors.full_messages }
+          status(400) and
+            { errors: field.errors.full_messages }
         end
       end
 

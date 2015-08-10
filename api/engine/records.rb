@@ -26,7 +26,9 @@ module Engine
       end
 
       post do
-        validations = current_repository.create(collection_params)
+        validations = current_repository
+          .create(collection_params)
+
         if validations.ok?
           validations.result.to_h
         else
@@ -38,7 +40,8 @@ module Engine
       put '/:id' do
         begin
           record = current_repository.find(params.id)
-          validations = current_repository.update record, collection_params
+          validations = current_repository
+            .update(record, collection_params)
 
           if validations.ok?
             validations.result.to_h

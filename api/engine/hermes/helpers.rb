@@ -1,7 +1,7 @@
 module Hermes
   module Helpers
     def collection_name
-      params[:collection_name]
+      params.fetch :collection_name
     end
 
     def collection
@@ -16,7 +16,7 @@ module Hermes
     end
 
     def current_repository
-      ::Repository.new(collection)
+      ::Repository.new collection
     end
   end
 end
