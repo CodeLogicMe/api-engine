@@ -1,9 +1,9 @@
 require 'grape'
 
-require_relative 'janus/middleware'
+require_relative 'janus/all'
 require_relative 'terminus/middleware'
 require_relative 'veritas/middleware'
-require_relative 'hermes/middleware'
+require_relative 'hermes/all'
 
 module Engine
   class Records < Grape::API
@@ -14,30 +14,8 @@ module Engine
     use Terminus::Middleware
     use Hermes::Middleware
 
-    helpers do
-      def current_api
-        env.fetch('current_api')
-      end
-
-      def collection_name
-        params[:collection_name]
-      end
-
-      def collection
-        @collection ||= current_api.collections
-          .find_by!(system_name: collection_name)
-      end
-
-      def current_repository
-        ::Repository.new(collection)
-      end
-
-      def collection_params
-        (params.data || {}).select do |key, value|
-          collection.has_field?(key)
-        end
-      end
-    end
+    helpers Janus::Helpers
+    helpers Hermes::Helpers
 
     resource '/:collection_name' do
       get do
