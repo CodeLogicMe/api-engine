@@ -31,7 +31,7 @@ gem 'browser'
 
 # Logging & Monitoring
 gem 'skylight', '~> 0.8.0.beta.3'
-gem 'grape_logging'
+gem 'grape_logging', '~> 1.1'
 
 group :development, :test do
   gem 'rspec'

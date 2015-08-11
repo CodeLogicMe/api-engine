@@ -202,7 +202,7 @@ DEPENDENCIES
   geocoder
   grape (~> 0.13)
   grape-activerecord!
-  grape_logging
+  grape_logging (~> 1.1)
   hiredis (~> 0.6.0)
   pg
   pry
