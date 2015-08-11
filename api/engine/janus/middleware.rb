@@ -1,7 +1,10 @@
 require_relative './request'
+require 'skylight'
 
 module Janus
   class Middleware
+    include Skylight::Helpers
+
     def initialize(app)
       @app = app
     end
@@ -9,11 +12,13 @@ module Janus
     def call(env)
       request = Request.new(env)
 
-      request.identifiable? or
-        return missing_api
+      Skylight.instrument title: 'Janus is authenticating' do
+        request.identifiable? or
+          return missing_api
 
-      request.valid? or
-        return unauthorized
+        request.valid? or
+          return unauthorized
+      end
 
       @app.(env.merge('current_api' => request.api))
     end
