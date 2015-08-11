@@ -33,9 +33,11 @@ class API < Grape::API
   use Skylight::Middleware
   use ResponseNormalizer
 
-  logger.formatter = GrapeLogging::Formatters::Default.new
-  logger Logger.new GrapeLogging::MultiIO.new(STDOUT, File.open("log/#{ENV['RACK_ENV']}.log", 'a'))
-  use GrapeLogging::Middleware::RequestLogger, { logger: logger }
+  unless ENV['RACK_ENV'] == 'test'
+    logger.formatter = GrapeLogging::Formatters::Default.new
+    logger Logger.new GrapeLogging::MultiIO.new(STDOUT, File.open("log/#{ENV['RACK_ENV']}.log", 'a'))
+    use GrapeLogging::Middleware::RequestLogger, { logger: logger }
+  end
 
   namespace :engine do
     mount Engine::Authentication
