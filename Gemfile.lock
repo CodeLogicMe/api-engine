@@ -82,6 +82,8 @@ GEM
       rack-accept
       rack-mount
       virtus (>= 1.0.0)
+    grape_logging (1.1.2)
+      grape
     hashie (3.4.2)
     hashie-forbidden_attributes (0.1.1)
       hashie (>= 3.0)
@@ -200,6 +202,7 @@ DEPENDENCIES
   geocoder
   grape (~> 0.13)
   grape-activerecord!
+  grape_logging
   hiredis (~> 0.6.0)
   pg
   pry

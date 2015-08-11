@@ -29,8 +29,9 @@ gem 'sidekiq'
 gem 'geocoder'
 gem 'browser'
 
-# Monitoring
+# Logging & Monitoring
 gem 'skylight', '~> 0.8.0.beta.3'
+gem 'grape_logging'
 
 group :development, :test do
   gem 'rspec'

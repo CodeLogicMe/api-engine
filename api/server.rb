@@ -3,6 +3,7 @@ require 'rack/cors'
 
 require_relative 'response_normalizer'
 require 'skylight'
+require 'grape_logging'
 
 require_relative '../business/setup'
 
@@ -31,6 +32,10 @@ class API < Grape::API
 
   use Skylight::Middleware
   use ResponseNormalizer
+
+  logger.formatter = GrapeLogging::Formatters::Default.new
+  logger Logger.new GrapeLogging::MultiIO.new(STDOUT, File.open("log/#{ENV['RACK_ENV']}.log", 'a'))
+  use GrapeLogging::Middleware::RequestLogger, { logger: logger }
 
   namespace :engine do
     mount Engine::Authentication
