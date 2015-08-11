@@ -7,7 +7,7 @@ module Veritas
     end
 
     def call(env)
-      Timing.track(env) do
+      Tracker.(env) do
         @app.(env)
       end
     end

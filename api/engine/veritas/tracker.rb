@@ -5,11 +5,11 @@ module Veritas
   module Tracker
     extend self
 
-    def track(env)
+    def call(env)
       timing = Timing.new
 
       yield.tap do |response|
-        if success?(response[0])
+        if success?(response.status)
           timing.finish!
           stat_request!(env['current_api'], response[0], timing, env)
         end
