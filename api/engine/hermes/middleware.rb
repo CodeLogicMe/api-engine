@@ -1,14 +1,19 @@
 require_relative './travel'
+require 'skylight'
 
 module Hermes
   class Middleware
+    include Skylight::Helpers
+
     def initialize(app)
       @app = app
     end
 
     def call(env)
-      Travel.new(env).possible? or
-        return missing_collection
+      Skylight.instrument title: 'Hermes is checking the routing' do
+        Travel.new(env).possible? or
+          return missing_collection
+      end
 
       @app.(env)
     end
