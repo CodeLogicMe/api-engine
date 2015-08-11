@@ -60,7 +60,7 @@ module Terminus
     end
 
     context 'when there is enough quota' do
-      let(:success) { Rack::Response.new({}, 200)}
+      let(:success) { Rack::Response.new({}, 200) }
       let(:rack_app) do
         double.tap do |dbl|
           allow(dbl).to receive(:call).and_return(success)
