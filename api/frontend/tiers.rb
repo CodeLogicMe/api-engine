@@ -10,12 +10,14 @@ module Frontend
 
       get do
         tiers = Models::Tier.order(quota: :asc)
-        { tiers: Serializers::Tiers.new(tiers).to_h }
+        { tiers: tiers.map { |tier|
+          Serializers::Tier.new(tier).to_h }
+        }
       end
 
       get ':id' do
         tier = Models::Tier.find(params.id)
-        { tier: Serializers::Tiers.new(tier).to_h }
+        { tier: Serializers::Tier.new(tier).to_h }
       end
     end
   end
