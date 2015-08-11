@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # servers
-gem 'grape', '~> 0.11'
+gem 'grape', '~> 0.13'
 gem 'sinatra', require: false # just because cloud66 needs it
 gem 'rack-cors', '~> 0.4'
 
