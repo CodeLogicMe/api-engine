@@ -20,7 +20,9 @@ module Janus
           return unauthorized
       end
 
-      @app.(env.merge('current_api' => request.api))
+      env.merge!('current_api' => request.api)
+
+      @app.(env)
     end
 
     private
