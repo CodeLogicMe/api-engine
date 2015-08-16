@@ -7,7 +7,7 @@ module Validators
     end
 
     def error_message
-      "#{field.to_s.capitalize} can't be blank"
+      "can't be blank"
     end
   end
 
@@ -26,7 +26,7 @@ module Validators
     end
 
     def error_message
-      "#{field.to_s.capitalize} already exists"
+      'has already been taken'
     end
   end
 
@@ -36,7 +36,7 @@ module Validators
     end
 
     def error_message
-      "#{field.to_s.capitalize} can't be smaller than #{size}"
+      "can't be smaller than #{size}"
     end
   end
 end

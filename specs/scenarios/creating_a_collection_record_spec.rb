@@ -38,11 +38,10 @@ RSpec.describe API do
 
       it 'should return validations errors' do
         expect(last_response.status).to eql 400
-        expect(last_json.errors).to match_array [
-          "Name can't be blank",
-          "Episodes can't be blank",
-          "Website can't be blank"
-        ]
+        expect(last_json.errors).to eql \
+          'name' => ["can't be blank"],
+          'episodes' => ["can't be blank"],
+          'website' => ["can't be blank"]
       end
     end
 
@@ -65,9 +64,9 @@ RSpec.describe API do
 
       it 'should not add the second' do
         expect(last_response.status).to eql 400
-        expect(last_json.errors).to match_array [
-          'Name already exists', 'Website already exists'
-        ]
+        expect(last_json.errors).to eql \
+          'name' => ['has already been taken'],
+          'website' => ['has already been taken']
       end
     end
   end

@@ -29,17 +29,20 @@ module Validation
     private
 
     def check_for_errors(entity, context)
-      self.class.validations.map { |checker|
-        value = entity.public_send checker.field
-        unless checker.with? value, context
-          checker.error_message
-        end
-      }.compact
+      Hash.new([]).tap do |errors|
+        self.class.validations.each { |checker|
+          value = entity.public_send checker.field
+          unless checker.with? value, context
+            errors[checker.field] += Array(checker.error_message)
+          end
+        }
+      end
     end
   end
 
   class Failed
     attr_reader :errors
+
     def initialize(errors:)
       @errors = errors
     end
@@ -51,6 +54,7 @@ module Validation
 
   class Succeded
     attr_accessor :result
+
     def initialize(result:)
       @result = result
     end
