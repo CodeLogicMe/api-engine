@@ -11,7 +11,7 @@ module Veritas
       yield.tap do |response|
         if success?(response.status)
           timing.finish!
-          stat_request!(env['current_api'], response[0], timing, env)
+          stat_request!(env['current_api'], response.status, timing, env)
         end
       end
     end
@@ -19,7 +19,7 @@ module Veritas
     private
 
     def success?(status)
-      not [500, 401, 403].include?(status)
+      not [500, 401, 403, 404].include?(status)
     end
 
     def stat_request!(current_api, status, timing, env)
