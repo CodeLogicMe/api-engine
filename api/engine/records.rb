@@ -20,8 +20,14 @@ module Engine
     resource '/:collection_name' do
       get do
         {
-          count: current_repository.count,
-          items: current_repository.all.map(&:to_h)
+          meta: {
+            page: {
+              offset: params.offset || 1,
+              limit: 10,
+              total: current_repository.count
+            }
+          },
+          data: current_repository.all(params.offset, 10).map(&:to_h)
         }
       end
 

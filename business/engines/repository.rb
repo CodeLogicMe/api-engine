@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'kaminari/sinatra'
 
 class Repository < Struct.new(:collection)
   extend Forwardable
@@ -6,8 +7,9 @@ class Repository < Struct.new(:collection)
   def_delegator :klass, :new, :build
   def_delegators :all, :first, :count
 
-  def all
-    collection.records.reload.map &method(:build)
+  def all(offset=1, amount=10)
+    collection.records.page(offset).per(amount)
+      .reload.map &method(:build)
   end
 
   def find(id)

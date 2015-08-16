@@ -9,6 +9,7 @@ gem 'rack-cors', '~> 0.4'
 gem 'grape-activerecord', git: 'git@github.com:CodeLogicMe/grape-activerecord.git'
 gem 'activerecord'
 gem 'pg'
+gem 'kaminari', '~> 0.16.3'
 
 # because I'm lazy
 gem 'require_all', '~> 1.3'

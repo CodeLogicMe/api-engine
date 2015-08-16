@@ -54,7 +54,7 @@ RSpec.describe 'deleting an entity record' do
 
       set_auth_headers_for!(ultra_pod, 'GET', {})
       get '/engine/podcasts'
-      expect(last_json.items.count).to eql 0
+      expect(last_json.data.count).to eql 0
     end
   end
 end

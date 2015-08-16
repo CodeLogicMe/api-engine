@@ -41,12 +41,12 @@ RSpec.describe API, 'listing collection records' do
 
       it 'should contain all defined fields' do
         expect(last_response.status).to eql 200
-        expect(last_json['count']).to eql 5
+        expect(last_json.meta.page.total).to eql 5
 
-        last_json.items.each_with_index do |item, index|
-          expect(last_json.items[index].keys)
+        last_json.data.each_with_index do |item, index|
+          expect(last_json.data[index].keys)
             .to match_array %w(id name episodes website created_at updated_at)
-          expect(last_json.items[index].name)
+          expect(last_json.data[index].name)
             .to eql "NerdCast-#{index}"
         end
       end
@@ -60,7 +60,7 @@ RSpec.describe API, 'listing collection records' do
 
       it do
         expect(last_response.status).to eql 200
-        expect(last_json['count']).to eql 0
+        expect(last_json.meta.page.total).to eql 0
       end
     end
   end
