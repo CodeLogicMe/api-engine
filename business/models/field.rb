@@ -7,6 +7,7 @@ module Models
     validates :name, presence: true,
       uniqueness: { scope: :collection }
     validates :type, presence: true
+    validates_exclusion_of :name, in: %w(type)
 
     def internal
       false

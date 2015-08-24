@@ -44,10 +44,12 @@ RSpec.describe API, 'listing collection records' do
         expect(last_json.meta.page.total).to eql 5
 
         last_json.data.each_with_index do |item, index|
-          expect(last_json.data[index].keys)
-            .to match_array %w(id name episodes website created_at updated_at)
-          expect(last_json.data[index].name)
-            .to eql "NerdCast-#{index}"
+          last_json.data[index].tap do |item|
+            expect(item.keys).to \
+              match_array %w(type id name episodes website created_at updated_at)
+            expect(item.name).to eql("NerdCast-#{index}")
+            expect(item.type == "podcasts")
+          end
         end
       end
     end

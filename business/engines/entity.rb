@@ -51,6 +51,7 @@ module Entity
       @record.data.keys
         .map { |field| [field, public_send(field)] }
         .to_h.merge(@record.internal_data)
+        .merge({ type: @record.collection.name })
     end
 
     attr_reader :attributes
