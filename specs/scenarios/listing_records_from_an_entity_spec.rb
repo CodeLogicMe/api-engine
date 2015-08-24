@@ -18,6 +18,7 @@ RSpec.describe API, 'listing collection records' do
     it do
       expect(last_response.status).to eql 404
       expect(last_json.errors).to eql ['Collection could not be found']
+      expect(last_json.keys).to_not include('data')
     end
   end
 
@@ -63,6 +64,7 @@ RSpec.describe API, 'listing collection records' do
       it do
         expect(last_response.status).to eql 200
         expect(last_json.meta.page.total).to eql 0
+        expect(last_json.data.length).to eql 0
       end
     end
   end
