@@ -9,9 +9,9 @@ module Models
 
     scope :siblings_of, -> (record) {
       if record.id
-        where("records.id NOT IN (?)", record.id)
+        where('records.id NOT IN (?)', record.id)
       else
-        where("records.id IS NOT ?", record.id)
+        where('records.id IS NOT ?', record.id)
       end
     }
 

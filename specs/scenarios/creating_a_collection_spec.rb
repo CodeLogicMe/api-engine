@@ -15,10 +15,10 @@ RSpec.describe Frontend do
 
     it 'should be possible' do
       expect(last_response.status).to eql 201
-      expect(last_json.keys)
-        .to match_array %w(collection fields)
-      expect(last_json.collection.keys)
-        .to match_array %w(id name fields)
+      expect(last_json.keys).to \
+        match_array %w(collection fields)
+      expect(last_json.collection.keys).to \
+        match_array %w(id name fields)
     end
   end
 
