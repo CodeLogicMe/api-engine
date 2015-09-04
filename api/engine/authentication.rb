@@ -1,15 +1,11 @@
 require 'grape'
-require_relative 'janus/middleware'
+require_relative 'janus/all'
 
 module Engine
   class Authentication < Grape::API
     use Janus::Middleware
 
-    helpers do
-      def current_api
-        env.fetch 'current_api'
-      end
-    end
+    helpers Janus::Helpers
 
     desc 'Authentication test endpoint' do
       failure [401, 'Unauthorized']
