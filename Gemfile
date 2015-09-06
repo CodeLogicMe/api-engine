@@ -24,7 +24,7 @@ gem 'redis', '~> 3.2'
 gem 'redis-namespace', '~> 1.5'
 
 # background workers
-gem 'sidekiq', '~> 3.5'
+gem 'sidekiq'
 
 # request analysis
 gem 'geocoder', '~> 1.2'
@@ -44,7 +44,8 @@ end
 group :development do
   gem 'foreman'
   gem 'executable-hooks'
-  gem 'rerun'
+  gem 'rerun', '~> 0.10'
+  gem 'listen', '~> 2.10'
   gem 'rb-fsevent'
 end
 
