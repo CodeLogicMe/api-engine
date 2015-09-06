@@ -8,6 +8,17 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
   end
 
   describe "when #{verb.upcase}ing" do
+    context 'without a public key' do
+      before do
+        public_send verb.downcase, url, {}
+      end
+
+      it 'should refute the API request' do
+        expect(last_response.status).to eql 404
+        expect(last_json.errors).to match_array ['API could not be found']
+      end
+    end
+
     context 'with an invalid authentication data' do
       before do
         header 'X-Request-Timestamp', '9999999999'
