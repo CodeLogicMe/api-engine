@@ -1,6 +1,10 @@
 module ApiSpecHelpers
   def last_json
-    Hashie::Mash.new JSON.parse(last_response.body)
+    parse_json last_response
+  end
+
+  def parse_json(response)
+    Hashie::Mash.new JSON.parse(response.body)
   end
 
   def calculate_hmac(verb, private_key, params, timestamp)

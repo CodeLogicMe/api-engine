@@ -14,8 +14,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eql 404
-        expect(last_json.errors).to match_array ['API could not be found']
+        expect(last_response).to not_be_found
       end
     end
 
@@ -29,7 +28,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eql 404
+        expect(last_response).to not_be_found
       end
     end
 
@@ -45,7 +44,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eql 401
+        expect(last_response).to be_unauthorized
       end
     end
 
@@ -64,7 +63,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eql 404
+        expect(last_response).to not_be_found
       end
     end
 
@@ -81,7 +80,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eql 401
+        expect(last_response).to be_unauthorized
       end
     end
 
@@ -99,7 +98,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eql 401
+        expect(last_response).to be_unauthorized
       end
     end
 
@@ -117,7 +116,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
       end
 
       it 'should refute the API request' do
-        expect(last_response.status).to eq 401
+        expect(last_response).to be_unauthorized
       end
     end
 

@@ -14,6 +14,7 @@ require 'database_cleaner'
 require 'factory_girl'
 require 'faker'
 require_relative 'api_spec_helpers'
+require_relative 'api_spec_expectations'
 require_relative 'factories/fabrics'
 
 require 'sidekiq/testing'

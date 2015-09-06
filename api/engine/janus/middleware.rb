@@ -29,7 +29,7 @@ module Janus
 
     def missing_api
       Rack::Response.new \
-        [{ errors: ['API could not found'] }.to_json],
+        [{ errors: ['API could not be found'] }.to_json],
         404,
         { 'Content-Type' => 'application/json' }
     end
