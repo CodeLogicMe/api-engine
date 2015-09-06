@@ -8,7 +8,7 @@ gem 'rack-cors', '~> 0.4'
 # database
 gem 'grape-activerecord', git: 'git@github.com:CodeLogicMe/grape-activerecord.git'
 gem 'activerecord'
-gem 'pg'
+gem 'pg', '~> 0.18'
 gem 'kaminari', '~> 0.16.3'
 
 # because I'm lazy
@@ -20,18 +20,18 @@ gem 'bcrypt', '~> 3.1'
 
 # in memory database & enqueueing
 gem 'hiredis', '~> 0.6.0'
-gem 'redis'
-gem 'redis-namespace'
+gem 'redis', '~> 3.2'
+gem 'redis-namespace', '~> 1.5'
 
 # background workers
-gem 'sidekiq'
+gem 'sidekiq', '~> 3.5'
 
 # request analysis
-gem 'geocoder'
-gem 'browser'
+gem 'geocoder', '~> 1.2'
+gem 'browser', '~> 1.0'
 
 # Logging & Monitoring
-gem 'skylight', '~> 0.8.0.beta.3'
+gem 'skylight', '~> 0.8'
 gem 'grape_logging', '~> 1.1'
 
 group :development, :test do
@@ -52,6 +52,6 @@ group :test do
   gem 'faker'
   gem 'database_cleaner'
   gem 'rack-test'
-  gem 'factory_girl', '~> 4.4.0'
+  gem 'factory_girl'
   gem 'timecop'
 end
