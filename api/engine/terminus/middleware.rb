@@ -1,5 +1,5 @@
 require_relative 'quota'
-require 'skylight'
+require_relative '../../measure'
 
 module Terminus
   class Middleware
@@ -10,12 +10,10 @@ module Terminus
     end
 
     def call(env)
-      quota = Quota.new(env['current_api'])
+      quota = measure(Quota.new(env['current_api']))
 
-      Skylight.instrument title: 'Terminus is verifying the quota' do
-        quota.over? and
-          return forbidden
-      end
+      quota.over? and
+        return forbidden
 
       quota.hit! do
         @app.(env)
@@ -29,6 +27,13 @@ module Terminus
         [{ errors: ['Forbidden'] }.to_json],
         403,
         { 'Content-Type' => 'application/json' }
+    end
+
+    def measure(quota)
+      Measure.new quota, {
+        :over? => 'Terminus is verifying the quota',
+        :hit! => 'Terminus is registering a hit'
+      }
     end
   end
 end

@@ -1,5 +1,5 @@
 require_relative './travel'
-require 'skylight'
+require_relative '../../measure'
 
 module Hermes
   class Middleware
@@ -10,10 +10,10 @@ module Hermes
     end
 
     def call(env)
-      Skylight.instrument title: 'Hermes is checking the routing' do
-        Travel.new(env).possible? or
-          return missing_collection
-      end
+      travel = measure(Travel.new(env))
+
+      travel.possible? or
+        return missing_collection
 
       @app.(env)
     end
@@ -25,6 +25,12 @@ module Hermes
         [{ errors: ['Collection could not be found'] }.to_json],
         404,
         { 'Content-Type' => 'application/json' }
+    end
+
+    def measure(travel)
+      Measure.new travel, {
+        :possible? => 'Hermes is checking the routing'
+      }
     end
   end
 end
