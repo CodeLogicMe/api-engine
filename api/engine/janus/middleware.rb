@@ -1,5 +1,5 @@
 require_relative './request'
-require 'skylight'
+require_relative '../../measure'
 
 module Janus
   class Middleware
@@ -10,15 +10,13 @@ module Janus
     end
 
     def call(env)
-      request = Request.new(env)
+      request = measure(Request.new(env))
 
-      Skylight.instrument title: 'Janus is authenticating' do
-        request.identifiable? or
-          return missing_api
+      request.identifiable? or
+        return missing_api
 
-        request.valid? or
-          return unauthorized
-      end
+      request.valid? or
+        return unauthorized
 
       env.merge!('current_api' => request.api)
 
@@ -39,6 +37,13 @@ module Janus
         [{ errors: ['Unauthorized'] }.to_json],
         401,
         { 'Content-Type' => 'application/json' }
+    end
+
+    def measure(request)
+      Measure.new request, {
+        :identifiable? => 'Janus is identifying the API',
+        :valid? => "Janus is authorizing the API's request"
+      }
     end
   end
 end
