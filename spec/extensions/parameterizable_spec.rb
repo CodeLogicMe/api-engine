@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 module Extensions
   RSpec.describe Parameterizable do

@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 RSpec.describe 'deleting a collection record' do
   include Rack::Test::Methods

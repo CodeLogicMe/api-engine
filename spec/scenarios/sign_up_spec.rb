@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 RSpec.describe Models::Client do
   context 'given an non existant client' do

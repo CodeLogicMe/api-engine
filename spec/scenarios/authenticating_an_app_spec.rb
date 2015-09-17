@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
   include Rack::Test::Methods

@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 RSpec.describe API, 'listing collection records' do
   include Rack::Test::Methods
