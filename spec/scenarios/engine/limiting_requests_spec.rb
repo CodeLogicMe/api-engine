@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe API do
+RSpec.describe Engine do
   include Rack::Test::Methods
 
   context 'when the quota in over' do

@@ -18,7 +18,7 @@ RSpec.describe Frontend, 'creating a field' do
     before do
       login_as ultra_pod.client
 
-      post '/api/fields', { field: field_params }
+      post '/frontend/fields', { field: field_params }
     end
 
     it 'should be able to create it' do
@@ -55,7 +55,7 @@ RSpec.describe Frontend, 'creating a field' do
       login_as ultra_pod.client
 
       2.times {
-        post '/api/fields', {
+        post '/frontend/fields', {
           field: {
             collection: collection.id,
             name: 'number',

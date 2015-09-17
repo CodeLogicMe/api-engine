@@ -44,7 +44,7 @@ class API < Grape::API
     mount Engine::Records
   end
 
-  namespace :api do
+  namespace :frontend do
     mount Frontend::Login
     mount Frontend::Apis
     mount Frontend::Collections

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'deleting a collection record' do
+RSpec.describe Engine, 'deleting a collection record' do
   include Rack::Test::Methods
 
   before do

@@ -142,7 +142,7 @@ RSpec.shared_examples 'an authenticable endpoint' do |verb, url, status|
   end
 end
 
-RSpec.describe API do
+RSpec.describe Engine do
   it_behaves_like \
     'an authenticable endpoint',
     'GET',

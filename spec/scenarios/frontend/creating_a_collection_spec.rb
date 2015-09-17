@@ -8,7 +8,7 @@ RSpec.describe Frontend do
 
     before do
       login_as ultra_pod.client
-      post '/api/collections', {
+      post '/frontend/collections', {
         collection: { api: ultra_pod.id, name: 'users' }
       }
     end
@@ -27,7 +27,7 @@ RSpec.describe Frontend do
 
     before do
       login_as ultra_pod.client
-      post '/api/collections', {
+      post '/frontend/collections', {
         collection: { api: ultra_pod.id }
       }
     end

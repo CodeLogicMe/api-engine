@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe API, 'listing collection records' do
+RSpec.describe Engine, 'listing collection records' do
   include Rack::Test::Methods
 
   before { create :tier, :free }
