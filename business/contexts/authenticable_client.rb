@@ -23,7 +23,7 @@ module Contexts
     private
 
     def password_checks?(client, password)
-      ::BCrypt::Password.new(client.password_hash) == password
+      client.password_hash == ::BCrypt::Password.create(password)
     end
 
     class Authenticated < SimpleDelegator
