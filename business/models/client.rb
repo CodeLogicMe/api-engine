@@ -1,6 +1,8 @@
 require_relative '../contexts/authenticable_client'
 
 class Models::Client < ActiveRecord::Base
+  serialize :email, Email
+
   validates :email, presence: true, uniqueness: true
   validates_presence_of :password_hash
 
