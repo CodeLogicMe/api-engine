@@ -1,4 +1,4 @@
-require 'bcrypt'
+require_relative '../models/password'
 
 module Contexts
   module AuthenticableClient
@@ -6,7 +6,7 @@ module Contexts
 
     def authenticate(email, password)
       client = Models::Client.find_by!(email: email)
-      if password_checks?(client, password)
+      if client.password == Password.new(password)
         token = Services::AuthToken.generate(client)
         Authenticated.new client, token
       else
@@ -16,15 +16,7 @@ module Contexts
       Unauthenticated.new
     end
 
-    def to_crypt_hash(password)
-      ::BCrypt::Password.create password
-    end
-
     private
-
-    def password_checks?(client, password)
-      ::BCrypt::Password.new(client.password_hash) == password
-    end
 
     class Authenticated < SimpleDelegator
       def initialize(client, token)

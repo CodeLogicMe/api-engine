@@ -2,7 +2,8 @@ module Models
   FactoryGirl.define do
     factory :client, class: Client do
       email { Faker::Internet.email }
-      password { Faker::Internet.password }
+      # password { Faker::Internet.password }
+      password "12345"
     end
 
     factory :api, class: Api do
