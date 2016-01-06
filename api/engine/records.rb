@@ -17,7 +17,14 @@ module Engine
     helpers Janus::Helpers
     helpers Hermes::Helpers
 
-    resource '/:collection_name' do
+    rescue_from ActiveRecord::RecordNotFound do
+      Rack::Response.new \
+        [{ errors: ["Record not found"] }.to_json],
+        404,
+        { "Content-Type" => "application/json" }
+    end
+
+    resource "/:collection_name" do
       get do
         {
           meta: {
@@ -43,31 +50,21 @@ module Engine
         end
       end
 
-      put '/:id' do
-        begin
-          record = current_repository.find(params.id)
-          validations = current_repository
-            .update(record, collection_params)
+      put "/:id" do
+        record = current_repository.find(params.id)
+        validations = current_repository
+          .update(record, collection_params)
 
-          if validations.ok?
-            validations.result.to_h
-          else
-            status 400
-            { errors: validations.errors }
-          end
-        rescue ActiveRecord::RecordNotFound
-          status 404
-          { errors: ['Record not found'] }
+        if validations.ok?
+          validations.result.to_h
+        else
+          status 400
+          { errors: validations.errors }
         end
       end
 
-      delete '/:id' do
-        begin
-          current_repository.delete params.fetch(:id)
-        rescue ActiveRecord::RecordNotFound
-          status 404
-          { errors: ['Record not found'] }
-        end
+      delete "/:id" do
+        current_repository.delete params.fetch(:id)
       end
     end
   end
