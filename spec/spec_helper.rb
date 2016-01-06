@@ -20,8 +20,6 @@ require_relative 'factories/fabrics'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
-require 'did_you_mean'
-
 ActiveRecord::Base.logger.level = 1
 
 RSpec.configure do |config|

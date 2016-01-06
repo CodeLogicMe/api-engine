@@ -37,7 +37,6 @@ gem 'grape_logging', '~> 1.1'
 group :development, :test do
   gem 'rspec'
   gem 'pry'
-  gem 'did_you_mean'
   gem 'dotenv-rails'
 end
 
