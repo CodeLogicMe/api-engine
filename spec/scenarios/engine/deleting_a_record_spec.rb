@@ -51,7 +51,7 @@ RSpec.describe Engine, 'deleting a collection record' do
       end
 
       it do
-        expect(last_response.status).to eql 204
+        expect(last_response.status).to eql 200
 
         set_auth_headers_for!(ultra_pod, 'GET', {})
         get '/engine/podcasts'

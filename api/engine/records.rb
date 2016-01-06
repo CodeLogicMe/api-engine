@@ -64,7 +64,6 @@ module Engine
       delete '/:id' do
         begin
           current_repository.delete params.fetch(:id)
-          status 204
         rescue ActiveRecord::RecordNotFound
           status 404
           { errors: ['Record not found'] }
