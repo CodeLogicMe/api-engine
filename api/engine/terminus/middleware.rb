@@ -3,8 +3,6 @@ require_relative '../../measure'
 
 module Terminus
   class Middleware
-    include Skylight::Helpers
-
     def initialize(app)
       @app = app
     end

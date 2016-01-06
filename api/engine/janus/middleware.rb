@@ -1,10 +1,8 @@
-require_relative './request'
-require_relative '../../measure'
+require_relative "./request"
+require_relative "../../measure"
 
 module Janus
   class Middleware
-    include Skylight::Helpers
-
     def initialize(app)
       @app = app
     end

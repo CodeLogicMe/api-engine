@@ -1,8 +1,9 @@
-require 'redis-namespace'
+require "redis-namespace"
+require_relative "../../../config/initializers/redis"
 
 module Terminus
   class Quota
-    STORE = Redis::Namespace.new(:hit_counts, redis: ::REDIS_CLIENT)
+    STORE = ::Redis::Namespace.new(:hit_counts, redis: ::REDIS_CLIENT)
 
     def initialize(api)
       @api = api
