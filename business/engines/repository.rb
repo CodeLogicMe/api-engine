@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'kaminari/sinatra'
 
-class Repository < Struct.new(:collection)
+Repository = Struct.new(:collection) do
   extend Forwardable
 
   def_delegator :klass, :new, :build

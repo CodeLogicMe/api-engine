@@ -31,9 +31,7 @@ class ValidationBuilder
   end
 end
 
-require "ostruct"
-
-class FieldValidation < Struct.new(:field)
+FieldValidation = Struct.new(:field) do
   def apply_on(klass)
     field_name = proper_field_name
     field.validations.each do |name|

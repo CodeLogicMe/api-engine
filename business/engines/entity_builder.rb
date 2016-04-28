@@ -41,7 +41,7 @@ class EntityBuilder
   end
 end
 
-class FieldConfig < Struct.new(:field)
+FieldConfig = Struct.new(:field) do
   def apply_on(klass)
     field_name = proper_field_name
     parser = Parsers.const_get(field.type.capitalize)
