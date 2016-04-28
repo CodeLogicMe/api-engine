@@ -16,6 +16,7 @@ require_relative 'frontend/collections'
 require_relative 'frontend/fields'
 require_relative 'frontend/tiers'
 require_relative 'frontend/statistics'
+require_relative 'frontend/records'
 
 class API < Grape::API
   use ::Rack::Cors do
@@ -48,6 +49,7 @@ class API < Grape::API
     mount Frontend::Login
     mount Frontend::Apis
     mount Frontend::Collections
+    mount Frontend::Records
     mount Frontend::Fields
     mount Frontend::Tiers
     mount Frontend::Statistics

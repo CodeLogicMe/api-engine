@@ -22,5 +22,7 @@ module Models
         updated_at: updated_at
       }
     end
+
+    alias_method :to_h, :attributes
   end
 end
