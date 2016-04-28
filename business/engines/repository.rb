@@ -7,7 +7,7 @@ Repository = Struct.new(:collection) do
   def_delegator :klass, :new, :build
   def_delegators :all, :first, :count
 
-  def all(offset=1, amount=10)
+  def all(offset = 1, amount = 10)
     collection.records.page(offset).per(amount)
       .reload.map(&method(:build))
   end
@@ -17,9 +17,8 @@ Repository = Struct.new(:collection) do
   end
 
   def valid?(obj)
-    siblings = collection.records
-      .siblings_of(obj).map(&:data)
-    validation_klass.new.valid?(obj, context: siblings)
+    siblings = collection.records.siblings_of(obj, collection_id: collection.id)
+    validation_klass.new.valid? obj, context: siblings
   end
 
   def update(obj, params)

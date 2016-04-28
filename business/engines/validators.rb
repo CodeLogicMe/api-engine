@@ -15,18 +15,11 @@ module Validators
     def with?(value, context)
       return true unless value
 
-      context = Array(context)
-      if context.first.is_a? Hash
-        context.none? do |item|
-          item[field.to_s] == value
-        end
-      else
-        not context.include? value
-      end
+      context.where("data -> ? = ?", field, value).none?
     end
 
     def error_message
-      'has already been taken'
+      "has already been taken"
     end
   end
 

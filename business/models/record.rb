@@ -7,12 +7,15 @@ module Models
 
     default_scope { order(created_at: :asc) }
 
-    scope :siblings_of, -> (record) {
-      if record.id
-        where('records.id NOT IN (?)', record.id)
-      else
-        where('records.id IS NOT ?', record.id)
-      end
+    scope :siblings_of, -> (record, collection_id: nil) {
+      ids = {
+        collection_id: (collection_id || record.collection_id),
+        id: Array(record.id || -1)
+      }
+      where <<~SQL, **ids
+        records.collection_id = :collection_id
+        AND records.id NOT IN (:id)
+      SQL
     }
 
     def internal_data

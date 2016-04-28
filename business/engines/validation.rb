@@ -15,7 +15,7 @@ module Validation
   end
 
   module InstanceMethods
-    def valid?(entity, context: nil)
+    def valid?(entity, context:)
       errors = check_for_errors entity, context
 
       if errors.empty?

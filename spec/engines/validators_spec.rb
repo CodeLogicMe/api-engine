@@ -45,82 +45,50 @@ RSpec.describe Validators::Presence do
 end
 
 RSpec.describe Validators::Uniqueness do
-  describe '#with?' do
-    context 'an Array' do
-      context 'given a nil value' do
-        subject { described_class.new(:name) }
+  describe "#with?" do
+    context "given a nil value" do
+      subject { described_class.new(:name) }
 
-        it 'should be valid' do
-          expect(subject.with?(nil, [])).to eql true
-        end
-      end
-
-      context 'given an empty string' do
-        subject { described_class.new(:name) }
-
-        it 'should be valid' do
-          expect(subject.with?('', [])).to eql true
-        end
-      end
-
-      context 'given an existing value' do
-        subject { described_class.new(:name) }
-
-        it 'should not be valid' do
-          expect(subject.with?('exists', ['exists']))
-            .to eql false
-        end
-      end
-
-      context 'given a non existing value' do
-        subject { described_class.new(:name) }
-
-        it 'should be valid' do
-          expect(subject.with?('doesnt-exists', ['exists']))
-            .to eql true
-        end
+      it "should be valid" do
+        expect(subject.with?(nil, scope([]))).to eql true
       end
     end
 
-    context 'with a hash' do
-      context 'with a nil value' do
-        subject { described_class.new(:email) }
+    context "given an empty string" do
+      subject { described_class.new(:name) }
 
-        it 'should be valid' do
-          expect(subject.with?(nil, {})).to eql true
-        end
+      it "should be valid" do
+        expect(subject.with?("", scope([]))).to eql true
       end
+    end
 
-      context 'with an empty string' do
-        subject { described_class.new(:email) }
+    context "given an existing value" do
+      subject { described_class.new(:name) }
 
-        it 'should be valid' do
-          expect(subject.with?('', {})).to eql true
-        end
+      it "should not be valid" do
+        expect(subject.with?("exists", scope(["exists"])))
+          .to eql false
       end
+    end
 
-      context 'with an existing value' do
-        let(:data) { [{ 'email' => 'exist@example.com'} ] }
-        subject { described_class.new(:email) }
+    context "given a non existing value" do
+      subject { described_class.new(:name) }
 
-        it 'should not be valid' do
-          expect(subject.with?('exist@example.com', data))
-            .to eql false
-        end
-      end
-
-      context 'with a non existing value' do
-        let(:data) { [{ 'email' => 'exist@example.com'} ] }
-        subject { described_class.new(:email) }
-
-        it 'should be valid' do
-          expect(subject.with?('doesnt-exist@example.com', data))
-            .to eql true
-        end
+      it "should be valid" do
+        expect(subject.with?("doesnt-exists", scope([])))
+          .to eql true
       end
     end
   end
+
+  def scope(value)
+    Class.new.tap do |obj|
+      allow(obj).to \
+        receive(:where).and_return(value)
+    end
+  end
 end
+
 RSpec.describe Validators::Size do
   describe "#with?" do
     context "a nil value" do
@@ -164,5 +132,3 @@ RSpec.describe Validators::Size do
     end
   end
 end
-
-

@@ -18,7 +18,7 @@ RSpec.describe Engine do
       post '/engine/podcasts', params
     end
 
-    it 'should create the resource' do
+    it 'should create the record' do
       expect(last_response.status).to eql 201
       last_json.tap do |json|
         expect(json.id).to_not be_nil
@@ -62,11 +62,11 @@ RSpec.describe Engine do
         end
       end
 
-      it 'should not add the second' do
+      it "should not add the second record" do
         expect(last_response.status).to eql 400
         expect(last_json.errors).to eql \
-          'name' => ['has already been taken'],
-          'website' => ['has already been taken']
+          "name" => ["has already been taken"],
+          "website" => ["has already been taken"]
       end
     end
   end

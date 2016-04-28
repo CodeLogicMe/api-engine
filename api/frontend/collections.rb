@@ -13,15 +13,20 @@ module Frontend
           @api ||= current_client.apis
             .find(params.collection.api)
         end
+
+        def collection
+          api.collections.find_by system_name: id
+        end
       end
 
       get do
-        api = client_apis.find_by(system_name: id)
+        api = colection
         { collections: api.collections.to_h }
       end
 
       get ':id' do
-        collection = current_client.collections.find(params.id)
+        collection = api.collections.find(params.id)
+
         {
           collection: Serializers::Collection.new(collection).to_h,
           fields: collection.fields.map { |field|
