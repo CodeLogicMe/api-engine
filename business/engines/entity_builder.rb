@@ -55,6 +55,6 @@ class FieldConfig < Struct.new(:field)
   private
 
   def proper_field_name
-    field.name.downcase.gsub /\s/, '_'
+    field.name.downcase.gsub(/\s/, '_')
   end
 end

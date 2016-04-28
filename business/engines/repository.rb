@@ -9,7 +9,7 @@ class Repository < Struct.new(:collection)
 
   def all(offset=1, amount=10)
     collection.records.page(offset).per(amount)
-      .reload.map &method(:build)
+      .reload.map(&method(:build))
   end
 
   def find(id)

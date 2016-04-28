@@ -13,6 +13,7 @@ module Frontend
 
       get do
         apis = current_client.apis.includes(:private_key)
+
         {
           apis: apis.map { |api| Serializers::Api.new(api).to_h }
         }
@@ -24,6 +25,7 @@ module Frontend
           .includes(collections: :fields)
           .includes(:private_key)
           .find(params.api_id)
+
         {
           api: Serializers::Api.new(api).to_h,
           tiers: [Serializers::Tier.new(api.tier).to_h],
@@ -40,6 +42,7 @@ module Frontend
       post do
         data = { name: params.api.name }
         api = current_client.apis.create!(data)
+
         { api: Serializers::Api.new(api).to_h }
       end
 
@@ -47,6 +50,7 @@ module Frontend
         tier = Models::Tier.find(params.api.tier)
         api = current_client.apis.find(params.api_id)
         Actions::ChangeApiTier.new(api: api, tier: tier).call
+
         { api: Serializers::Api.new(api).to_h }
       end
     end

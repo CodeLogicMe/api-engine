@@ -45,6 +45,6 @@ class FieldValidation < Struct.new(:field)
   end
 
   def proper_field_name
-    field.name.downcase.gsub /\s/, '_'
+    field.name.downcase.gsub(/\s/, "_")
   end
 end
