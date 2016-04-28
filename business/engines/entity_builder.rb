@@ -13,8 +13,6 @@ class EntityBuilder
   private
 
   def bootstrap_klass
-    name = collection_name
-
     # I need these variables available in the next lexical scope
     api_name = @api.name.classify
     klass_name = @collection.name.classify
